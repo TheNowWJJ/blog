@@ -1,5 +1,5 @@
 # Site settings
-title: 阳光如初. 
+title: 阳光如初.
 description: sunshineasbefore.github.io/blog
 favicon: /blog/assets/img/avatar.JPG
 baseurl: /blog
@@ -9,7 +9,7 @@ rss_url:
 # Build settings
 
 highlight: true
-#highlighter: rouge
+highlighter: rouge
 
 timezone: Asia/Shanghai
 

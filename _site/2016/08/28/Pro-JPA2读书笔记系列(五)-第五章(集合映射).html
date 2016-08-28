@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Pro JPA2 读书笔记系列(五)</title>
+  <meta name="description" content="Pro JPA2 第五章(集合映射)  5.1关系和元素集合  映射集合实际上存在三种可以存储的对象:映射实体的,可嵌入的和基本类型的集合.  当源实体用友一个包含目标实体类型的实例集合时,称之为一个多值关系.然儿,可嵌入的集合和基本类型的集合不是关系,它们只是元素的集合,因而称之为元素集合(element co...">
+
+  <link rel="canonical" href="https://liungkejin.github.io/2016/08/28/Pro-JPA2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E7%B3%BB%E5%88%97(%E4%BA%94)-%E7%AC%AC%E4%BA%94%E7%AB%A0(%E9%9B%86%E5%90%88%E6%98%A0%E5%B0%84).html">
+
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="/assets/css/icard_resume.css"> -->
+  <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/css/blog.css" >
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+
+  <link rel="icon" type="image/png" href="/assets/img/avatar.JPG">
+
+  <!-- Google fonts -->
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Open+Sans:300' type='text/css'>
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro' type='text/css'>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="assets/js/html5shiv.min.js"></script>
+  <script src="assets/js/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+    <body>
+        <header class="bloghead">
+    <dev class="authorheader">
+        <a href="/">
+            <img alt="My Avatar" src="/blog/assets/img/avatar.JPG"/>
+        </a>
+        <dev class="blogtitle">
+            <h1><a href="/">Barton</a></h1>
+            <h5> 怀揣梦想,永不止步! </h5>
+        </dev>
+    </dev>
+
+    <nav class="menu" role="nav">
+        <ul>
+            <li><a href="/">主页</a></li>
+            <li>|</li>
+            <li><a href="/menu.html">文章列表</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="https://github.com/sunshineasbefore">Github</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="/about.html"> 关于我 </a></li>
+        </ul>
+    </nav>
+</header>
+
+
+        <main class="blogmain">
+            <header>
+                <h1 class="article-title">Pro JPA2 读书笔记系列(五)</h1>
+                <p class="article-time">
+                    2016年08月28日 星期六,  发表于 <span>济南</span>
+                </p>
+                <p class="article-hint">
+                    如果你对本文有任何的建议或者疑问, 可以在
+                    <a href="https://github.com/sunshineasbefore/blog/issues" target="_blank">这里给我提 Issues</a>, 谢谢! :)
+                </p>
+            </header>
+            <p><strong>Pro JPA2 第五章(集合映射)</strong></p>
+
+<ul>
+  <li>
+    <p>5.1关系和元素集合
+  映射集合实际上存在三种可以存储的对象:映射实体的,可嵌入的和基本类型的集合.
+  当源实体用友一个包含目标实体类型的实例集合时,称之为一个多值关系.然儿,可嵌入的集合和基本类型的集合不是关系,它们只是元素的集合,因而称之为元素集合(element collection).关系定义了独立实体之间的关联,而元素集合包含了依赖于引用实体的对象,并且只能通过包含它们的实体进行检索.
+  关系和元素集合之间的一个世纪区别在于用来表示它们的注解.关系至少要求采用关系注解,@OneToMany或者@ManyToMany,而一个元素集合是由@ElementCollection注解来标识.
+  ```
+  @Embeddable
+  public class VacationEntry {
+      @Temporal(TemporalType.DATE)
+      private Calendar startDate;</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  @Column(name="DAYS")
+  private int daysTaken;   }
+</code></pre>
+    </div>
+
+    <p>@Entity
+  public class Employee {
+      @Id
+      private int id;
+      private long salary;</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  @ElementCollection(targetClass=VacationEntry.class)
+  private Collection vacationBookings;
+
+  @ElementCollection
+  private Set&lt;String&gt; nickNames;   }   ```   在Employee中没有映射任何额外的元数据,回顾一下,存储在集合中的元素不是实体,所以它们不具有任何映射表.嵌入对象应该与引用它们的实体存储在同一个表中,但是如果有一个嵌入对象的集合,那么如何在单行中存储多个可能映射的对象?类似地,对于基本类型不能把每个呢成String都映射到Employee表中第一列,并期望在单个行中存储多个字符串.为此,元素集合需要一个单独的表,称之为集合表(Collection table). 没个集合表必须有一个引用包含它的实体表的联结列.结合表中的其他列用于映射可嵌入元素的特性,或者如果该元素是一个基本类型,那么映射基本元素的状态.   我们使用@CollectionTable注解来指定集合表,它允许我们指定表的名称和联结列.   使用@AttributeOverride注解来重写列名.   ```   @Entity   public class Employee {
+  @Id
+  private int id;
+  private long salary;
+
+  @ElementCollection(targetClass=VacationEntry.class)
+  @CollectionTable(name="VACATION",joinColumns=@JoinColumn(name="EMP_ID"))
+  @AttributeOverride(name="daysTaken",column=@Column(name="DAYS_ABS"))
+  private Collection vacationBookings;
+
+  @ElementCollection
+  @Column(name="NICKNAME")
+  private Set&lt;String&gt; nickNames;   }   ```   EMPLOYEE实体表和包含重写的映射集合表![enter image description here](https://github.com/githubwjj/resource/blob/master/EMPLOYEE%E6%98%AF%E4%BD%93%E8%A1%A8%E5%92%8C%E5%8C%85%E5%90%AB%E9%87%8D%E5%86%99%E7%9A%84%E6%98%A0%E5%B0%84%E9%9B%86%E5%90%88%E8%A1%A8.png?raw=true)
+</code></pre>
+    </div>
+  </li>
+  <li>5.2 使用不同的集合类型
+  可以使用的集合类型由:Collection,Set,List和Map.下面将一个一个的介绍.
+    <ul>
+      <li>5.2.1 Set或者Collection
+  当不关注底层的实现且普通的Collection方法足够用于访问它所存储的实体时,可以使用Collection.
+  Set可以防止插入重复的元素.</li>
+      <li>5.2.2 List
+        <ul>
+          <li>
+            <p>通过实体或元素的特性排序
+  对List中实体或元素排序的最常见的方法是:根据特定的实体或元素特性的比较,制定一条排序规则,如果List是一个关系,那么特性通常是目标实体的主键.
+  在@OrderBy注解中指示用于排序的特性.如果List是一个关系并且引用实体,其中实体由不带字段或者属性的@OrderBy指定或者根本不指定,那么List将根据List中实体的主键排序.
+  ```
+  @Entity
+  public class Department {</p>
+
+            <p>@OneToMany(mappedBy=”department”)
+  @OrderBy(“name ASC,id DESC”)
+  private List<Employee> employees;
+  }
+  ```
+  其中,@OrderBy注解中包含ASC不是必需的,默认情况下就是升序.</Employee></p>
+          </li>
+        </ul>
+      </li>
+      <li>5.2.3 Map
+        <ul>
+          <li>键和值
+  虽然基本类型,可嵌入类型或实体类型都可以作为Map键,但是,他们必需遵循键的基本规则,他们必须是可比的,并且可适当地相应hashCode()方法,以及在必要时相应equals()方法.他们也应该是唯一的.
+  当键是基本的或可嵌入的类型时,它们直接存储在所引用的表中.根据映射的类型,它可以是目标实体表,联接表或者集合表.</li>
+          <li>
+            <p>以基本类型为键
+  ```
+  @Entity
+  public class Employee {
+      @Id
+      private int id;
+      private long salary;</p>
+
+            <div class="highlighter-rouge"><pre class="highlight"><code>  @ElementCollection
+  @CollectionTable(name="EMP_PHONE")
+  @MapKeyColumn(name="PHONE_TYPE")
+  @Column(name="PHONE_NUM")
+  private Map&lt;String,String&gt; phoneNumbers;   }   ```   @MapKeyColumn用来指示在集合表中存储基本键的列.当未指定直接时,存储键的列名为所映射的集合特性,再附件"_KEY"后缀.   EMPLOYEE_ID和PHONE_TYPE列的主键限制.![enter image description here](https://github.com/githubwjj/resource/blob/master/EMPLOYEE%E6%98%AF%E4%BD%93%E8%A1%A8%E5%92%8CEMP_PHONE%E9%9B%86%E5%90%88%E8%A1%A8.png?raw=true)   使用枚举类型来代替String类型.   ```   public enmu PhoneType {
+  Home,Mobile,Work   }
+</code></pre>
+            </div>
+
+            <p>@Entity
+  public class Employee {
+      @Id
+      private int id;
+      private long salary;</p>
+
+            <div class="highlighter-rouge"><pre class="highlight"><code>  @ElementCollection
+  @CollectionTable(name="EMP_PHONE")
+  @MapKeyEnumerated(EnumType.STRING)
+  @MapKeyColumn(name="PHONE_TYPE")
+  @Column(name="PHONE_NUM")
+  prvate Map&lt;PhoneType,String&gt; phoneNumbers;   }   ```   以String为键的Map的一对多关系   ```   @Entity   public class Department{
+  @Id
+  private int id;
+
+  @OneToMany(mappedBy="department")
+  @MapKeyColumn(name="CUB_ID")
+  private Map&lt;String,Employee&gt; employeesByCubicle;   }   ```   以String为键的Map的多对多关系   ```   @Entity   public class Department {
+  @Id
+  private int id;
+  private String name;
+
+  @ManyToMany
+  @JoinTable(name="DEPT_EMP",
+              joinColumns=@JoinColumn(name="DEPT_ID"),
+              inverseJoinColumns=@JoinColumn(name="EMP_ID"))
+  @MapKeyColumn(name="CUB_ID")
+  private Map&lt;String,Employee&gt; employeesByCubicle;   }   ```   EMPLOYEE和DEPARTMENT实体表以及DEPT_EMP联接表.![enter image description here](https://github.com/githubwjj/resource/blob/master/EMPLOYEE%E5%92%8CDEPARTMENT%E5%AE%9E%E4%BD%93%E8%A1%A8%E4%BB%A5%E5%8F%8ADEPT_EMP%E8%81%94%E6%8E%A5%E8%A1%A8.png?raw=true)
+</code></pre>
+            </div>
+          </li>
+          <li>
+            <p>以实体特性为键
+  当实体的一对多或多对多关系集合表示为一个Map时,它通常以目标实体类型的某些特性为键,以实体特性为键实际上是一个以基本类型为键的特例,其中映射是一个关系,而且键的基本类型是目标实体上特性的类型.我们可以使用@MapKey注解来指定目标实体上作为键的特性.
+  ```
+  @Entity
+  public class Department {</p>
+
+            <div class="highlighter-rouge"><pre class="highlight"><code>  @OneToMany(mappedBy="department")
+  @MapKey(name="id")
+  private Map&lt;Integer,Employee&gt; employees;   }   ```
+</code></pre>
+            </div>
+          </li>
+          <li>以可嵌入的类型为键
+  这个不推荐使用.</li>
+          <li>以实体为键
+  这个不推荐使用.</li>
+          <li>
+            <p>非型化Map
+  如果不想使用Map&lt; KeyType,ValueType &gt;的类型化参数版本,那么将使用无参样式的Map来定义它.
+  <code class="highlighter-rouge">
+  @Entity
+  public class Department {
+  @OneToMany(targetEntity=Employee.class,mappedBy="department")
+  @MapKey
+  private Map employees;
+  }
+ </code>
+  以String为键的非类型化String元素集合.
+  ```
+  @Entity
+  public class Employee {
+      @Id
+      private int id;
+      private long salary;</p>
+
+            <div class="highlighter-rouge"><pre class="highlight"><code>  @ElementCollection(targetClass=String.class)
+  @ColectionTable(name="EMP_PHONE")
+  @MapKeyColumn(name="PHONE_TYPE")
+  @MapKeyClass(String.class)
+  @Column(name="PHONE_NUM")
+  private Map phoneNumbers;
+  }   ```
+</code></pre>
+            </div>
+          </li>
+          <li>映射规则
+  使用Map的一些基本规则:
+            <ul>
+              <li>当使用非类型化Map时,利用关系的@MapKeyClass和targetEntity/targetClass元素,以及元素集合映射来指定类.</li>
+              <li>当Map以目标实体的特性为键时,将@MapKey用于一对多或多对多的关系Map.</li>
+              <li>使用@MapKeyJoinColumn来重写实体键的联结列.</li>
+              <li>当值为基本类型的元素集合时,将@Column重写用于存储值的列.</li>
+              <li>当键为基本类型时,使用@MapKeyColumn来重写存储键的值.</li>
+              <li>如果需要进一步地限定基本的时间或枚举类型的键,那么使用@MapKeyTemporal和@MapKeyEnumerated.</li>
+              <li>
+                <p>使用带”key.”或”value.”前缀的@AttributeOverride,以分别为Map键或值重写其可嵌入特性类型的列.</p>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="text-align: center">Map</th>
+                      <th style="text-align: center">映射</th>
+                      <th style="text-align: left">键注解</th>
+                      <th style="text-align: left">值注解</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Basic,Basic &gt;</td>
+                      <td style="text-align: center">@ElementCollection</td>
+                      <td style="text-align: left">@MapKeyColumn<br /> @MapKeyEnumerated<br /> @MapKeyTemporal</td>
+                      <td style="text-align: left">@Column</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Basic,Embeddable &gt;</td>
+                      <td style="text-align: center">@ElementCollection</td>
+                      <td style="text-align: left">@MapKeyColumn<br />@MapKeyEnumerated<br />@MapKeyTemporal</td>
+                      <td style="text-align: left">由可嵌入对象映射,@AttributeOverride<br />@AssociationOverride</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Basic,Entity &gt;</td>
+                      <td style="text-align: center">@OneToMany<br />@ManyToMany</td>
+                      <td style="text-align: left">@MapKey<br />@MapKeyColumn<br />@MapKeyEnumerated<br />@MapKeyTemporal</td>
+                      <td style="text-align: left">由实体映射</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Embeddable,Basic &gt;</td>
+                      <td style="text-align: center">@ElementCollection</td>
+                      <td style="text-align: left">Mapped by embeddable,@AttributeOverride</td>
+                      <td style="text-align: left">@Column</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Embeddable,Embeddable &gt;</td>
+                      <td style="text-align: center">@ElementCollection</td>
+                      <td style="text-align: left">由可嵌入对象映射,@AttributeOverride</td>
+                      <td style="text-align: left">由可嵌入对象映射,@AttributeOverride<br />@AssociationOverride</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Embeddable,Entity &gt;</td>
+                      <td style="text-align: center">@OneToMany<br />@ManyToMany</td>
+                      <td style="text-align: left">由可嵌入对象映射</td>
+                      <td style="text-align: left">由实体映射</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Entity,Basic &gt;</td>
+                      <td style="text-align: center">@ElementCollection</td>
+                      <td style="text-align: left">@MapKeyJoinColumn</td>
+                      <td style="text-align: left">@Column</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center">Map&lt; Entity,Entity &gt;</td>
+                      <td style="text-align: center">@OneToMany<br />@ManyToMany</td>
+                      <td style="text-align: left">@MapKeyJoinColumn</td>
+                      <td style="text-align: left">由实体映射</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>最佳实践
+    <ul>
+      <li>当使用一个List时,如果没有明确指定任何顺序,不要假设它会自动排序,数据库结果会影响List顺序.</li>
+      <li>一般可以通过它们自身的特性之一给对象排序.使用@OrderBy注解总是最佳方法.</li>
+      <li>Map类型很有帮助,但是它们很复杂.如果达到了一定的层次,使用Map将会非常好.</li>
+      <li>如果List一样,Map的首选和最有效的使用方法是以目标对象的特性为键,因此以基本的特性类型为键的实体Map是最为常见的 和最有用的.</li>
+      <li>避免在Map中使用嵌入对象,尤其是作为键,因为它们的标识通常是没有定义的</li>
+      <li>不能保证在集合中会支持重复或null值,即使可能也是不推荐的.</li>
+    </ul>
+  </li>
+</ul>
+
+            <footer class="article-footer">
+    <div class="authorimage">
+        <img src="/blog/assets/img/avatar.JPG" alt="My Avatar" class="img-circle">
+    </div>
+    <section class="author">
+        <h4><a href="/about.html">王</a></h4>
+        <a href="mailto:work_wjj@163.com">work_wjj@163.com</a>
+    </section>
+</footer>
+
+        </main>
+
+        <div class="footer-copyright">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-md-12">
+                Copyright &copy; 2016 王 - All rights reserved.
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/blog/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/assets/js/bootstrap.min.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74743250-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+    </body>
+
+</html>

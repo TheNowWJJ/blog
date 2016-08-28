@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>基于java getter/setter方法配置apache shiro</title>
+  <meta name="description" content="  说明          谷歌,百度上介绍apache shiro配置的文章并不少,但是缺少我想要的基于java getter/setter方法配置apache shiro的文章.今天整一个.      重点在于 ShiroConfig类中如何配置shiroFilter,securityManager,toke...">
+
+  <link rel="canonical" href="https://liungkejin.github.io/2016/08/28/%E4%BD%BF%E7%94%A8-java-getter.setter%E6%96%B9%E6%B3%95%E9%85%8D%E7%BD%AEapache-shiro.html">
+
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="/assets/css/icard_resume.css"> -->
+  <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/css/blog.css" >
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+
+  <link rel="icon" type="image/png" href="/assets/img/avatar.JPG">
+
+  <!-- Google fonts -->
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Open+Sans:300' type='text/css'>
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro' type='text/css'>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="assets/js/html5shiv.min.js"></script>
+  <script src="assets/js/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+    <body>
+        <header class="bloghead">
+    <dev class="authorheader">
+        <a href="/">
+            <img alt="My Avatar" src="/blog/assets/img/avatar.JPG"/>
+        </a>
+        <dev class="blogtitle">
+            <h1><a href="/">Barton</a></h1>
+            <h5> 怀揣梦想,永不止步! </h5>
+        </dev>
+    </dev>
+
+    <nav class="menu" role="nav">
+        <ul>
+            <li><a href="/">主页</a></li>
+            <li>|</li>
+            <li><a href="/menu.html">文章列表</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="https://github.com/sunshineasbefore">Github</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="/about.html"> 关于我 </a></li>
+        </ul>
+    </nav>
+</header>
+
+
+        <main class="blogmain">
+            <header>
+                <h1 class="article-title">基于java getter/setter方法配置apache shiro</h1>
+                <p class="article-time">
+                    2016年08月28日 星期六,  发表于 <span>济南</span>
+                </p>
+                <p class="article-hint">
+                    如果你对本文有任何的建议或者疑问, 可以在
+                    <a href="https://github.com/sunshineasbefore/blog/issues" target="_blank">这里给我提 Issues</a>, 谢谢! :)
+                </p>
+            </header>
+            <ul>
+  <li>说明
+    <ul>
+      <li>谷歌,百度上介绍apache shiro配置的文章并不少,但是缺少我想要的基于java getter/setter方法配置apache shiro的文章.今天整一个.</li>
+      <li>重点在于 ShiroConfig类中如何配置shiroFilter,securityManager,tokenRealm,sessionListener以及sessionManager.</li>
+      <li><em>@Configuration</em>是spring的一个注解,用来标识该类是一个配置类,并且会注入到spring容器中.可以直接使用@Autowird注入.</li>
+    </ul>
+  </li>
+  <li>
+    <p>代码
+  SessionListener:
+  ```
+  import org.apache.shiro.session.Session;
+  import org.springframework.stereotype.Component;
+  import ss.app.common.util.ContextUtil;</p>
+
+    <p>@Component
+  public class SessionListener implements org.apache.shiro.session.SessionListener {</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>@Override
+public void onStart(Session session) {
+}
+
+@Override
+public void onStop(Session session) {
+}
+
+@Override
+public void onExpiration(Session session) {
+}   }   ```
+</code></pre>
+    </div>
+
+    <p>UserRealm:
+  ```
+  import org.apache.commons.lang3.StringUtils;
+  import org.apache.shiro.authc.*;
+  import org.apache.shiro.authz.AuthorizationInfo;
+  import org.apache.shiro.realm.AuthorizingRealm;
+  import org.apache.shiro.subject.PrincipalCollection;
+  import org.springframework.beans.factory.annotation.Autowired;
+  import ss.app.user.entity.SystemUser;
+  import ss.app.user.service.SystemUserService;</p>
+
+    <p>public class UserRealm extends AuthorizingRealm {</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>@Autowired
+private SystemUserService systemUserService;
+
+@Override
+protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+  return null;
+}
+
+@Override
+protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+  String name = (String) token.getPrincipal();
+  String password = String.valueOf((char[]) token.getCredentials());
+
+  if (StringUtils.isBlank("name") || StringUtils.isBlank("password")) {
+    throw new UnknownAccountException("用户名或者密码为空");
+  }
+
+  SystemUser user = systemUserService.findByName(name);
+
+  if (null == user) {
+    throw new UnknownAccountException("用户不存在");
+  }
+
+  if (!StringUtils.equals(password, user.getPassword())) {
+    throw new UnknownAccountException("密码不正确");
+  }
+
+  //如果身份认证验证成功，返回一个AuthenticationInfo实现
+  return new SimpleAuthenticationInfo(name, password, getName());
+}   }   ```   ShiroConfig:   ```   import org.apache.shiro.realm.Realm;   import org.apache.shiro.session.SessionListener;   import org.apache.shiro.session.mgt.SessionManager;   import org.apache.shiro.spring.web.ShiroFilterFactoryBean;   import org.apache.shiro.web.filter.authc.UserFilter;   import org.apache.shiro.web.mgt.DefaultWebSecurityManager;   import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;   import org.springframework.context.annotation.Bean;   import org.springframework.context.annotation.Configuration;
+</code></pre>
+    </div>
+
+    <p>import javax.servlet.Filter;
+  import java.util.*;</p>
+
+    <p>@Configuration
+  public class ShiroConfig {</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>@Bean(name = "shiroFilter")
+public ShiroFilterFactoryBean shiroFilter() {
+  ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
+  shiroFilter.setLoginUrl("/");
+  shiroFilter.setSuccessUrl("/index");
+  shiroFilter.setUnauthorizedUrl("/forbidden");
+
+  Map&lt;String, Filter&gt; filters = new HashMap&lt;&gt;();
+  filters.put("users", new UserFilter());
+  shiroFilter.setFilters(filters);
+
+  Map&lt;String, String&gt; filterChainMap = new HashMap&lt;&gt;();
+  filterChainMap.put("/index/**", "users");
+  filterChainMap.put("/menu/**", "users");
+  filterChainMap.put("/gzhyy/**", "users");
+  filterChainMap.put("/gzhgl/**", "users");
+  filterChainMap.put("/assert/**", "anon");
+  filterChainMap.put("/css/**", "anon");
+  filterChainMap.put("/js/**", "anon");
+  shiroFilter.setFilterChainDefinitionMap(filterChainMap);
+  shiroFilter.setSecurityManager(securityManager());
+
+  return shiroFilter;
+}
+
+public org.apache.shiro.mgt.SecurityManager securityManager() {
+  DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+  securityManager.setSessionManager(sessionManager());
+  Collection&lt;Realm&gt; realms = new ArrayList&lt;&gt;();
+  realms.add(tokenRealm());
+  securityManager.setRealms(realms);
+  return securityManager;
+}
+
+@Bean
+public UserRealm tokenRealm() {
+  return new UserRealm();
+}
+
+public List&lt;SessionListener&gt; sessionListener() {
+  List&lt;SessionListener&gt; listeners = new ArrayList&lt;&gt;();
+  listeners.add(new ss.app.common.config.session.SessionListener());
+  return listeners;
+}
+
+public SessionManager sessionManager() {
+  DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+  sessionManager.setSessionListeners(sessionListener());
+  sessionManager.setGlobalSessionTimeout(30 * 60　* 1000); // 30分钟
+  return sessionManager;
+}   }
+</code></pre>
+    </div>
+
+    <p>```</p>
+  </li>
+</ul>
+
+
+            <footer class="article-footer">
+    <div class="authorimage">
+        <img src="/blog/assets/img/avatar.JPG" alt="My Avatar" class="img-circle">
+    </div>
+    <section class="author">
+        <h4><a href="/about.html">王</a></h4>
+        <a href="mailto:work_wjj@163.com">work_wjj@163.com</a>
+    </section>
+</footer>
+
+        </main>
+
+        <div class="footer-copyright">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-md-12">
+                Copyright &copy; 2016 王 - All rights reserved.
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/blog/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/assets/js/bootstrap.min.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74743250-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+    </body>
+
+</html>

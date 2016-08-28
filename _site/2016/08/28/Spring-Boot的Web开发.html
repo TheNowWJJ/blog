@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Spring Boot的Web开发</title>
+  <meta name="description" content="Spring Boot的Web开发  Spring Boot的Web开发支持  Spring Boot提供了spring-boot-starter-web为Web开发予以支持.它为我们提供了嵌入的Tomcat以及Spring MVC的依赖.  Thymeleaf模板引擎  Spring Boot 推荐使用Thym...">
+
+  <link rel="canonical" href="https://liungkejin.github.io/2016/08/28/Spring-Boot%E7%9A%84Web%E5%BC%80%E5%8F%91.html">
+
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="/assets/css/icard_resume.css"> -->
+  <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/css/blog.css" >
+  <link rel="stylesheet" href="/assets/css/syntax.css">
+
+  <link rel="icon" type="image/png" href="/assets/img/avatar.JPG">
+
+  <!-- Google fonts -->
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Open+Sans:300' type='text/css'>
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro' type='text/css'>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="assets/js/html5shiv.min.js"></script>
+  <script src="assets/js/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+    <body>
+        <header class="bloghead">
+    <dev class="authorheader">
+        <a href="/">
+            <img alt="My Avatar" src="/blog/assets/img/avatar.JPG"/>
+        </a>
+        <dev class="blogtitle">
+            <h1><a href="/">Barton</a></h1>
+            <h5> 怀揣梦想,永不止步! </h5>
+        </dev>
+    </dev>
+
+    <nav class="menu" role="nav">
+        <ul>
+            <li><a href="/">主页</a></li>
+            <li>|</li>
+            <li><a href="/menu.html">文章列表</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="https://github.com/sunshineasbefore">Github</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="/about.html"> 关于我 </a></li>
+        </ul>
+    </nav>
+</header>
+
+
+        <main class="blogmain">
+            <header>
+                <h1 class="article-title">Spring Boot的Web开发</h1>
+                <p class="article-time">
+                    2016年08月28日 星期六,  发表于 <span>济南</span>
+                </p>
+                <p class="article-hint">
+                    如果你对本文有任何的建议或者疑问, 可以在
+                    <a href="https://github.com/sunshineasbefore/blog/issues" target="_blank">这里给我提 Issues</a>, 谢谢! :)
+                </p>
+            </header>
+            <p><strong>Spring Boot的Web开发</strong></p>
+
+<ul>
+  <li>Spring Boot的Web开发支持
+  Spring Boot提供了spring-boot-starter-web为Web开发予以支持.它为我们提供了嵌入的Tomcat以及Spring MVC的依赖.</li>
+  <li>Thymeleaf模板引擎
+  Spring Boot 推荐使用Thymeleaf作为模板引擎.因为其提供了完整的Spring MVC支持.
+  因为使用嵌入的Servlet容器来运行JSP的话有一些小问题,内嵌Tomcat,Jetty不支持以jar的形式运行JSP,而且Undertow不支持JSP.
+    <ul>
+      <li>Thymeleaf基础知识
+  Thymeleaf是一个java类库,它是一个xml/xhtml/html5的模板引擎,可以作为MVC的Web应用的View层.
+  <a href="http://www.cnblogs.com/dreamfree/p/4158557.html?utm_source=tuicool">Thymeleaf基础知识</a></li>
+      <li>
+        <p>补充:
+  在javascript中访问model</p>
+
+        <p><code class="highlighter-rouge">
+  &lt;script th:inline="javascript"&gt;
+  var single=[[${singlePerson}]];
+  console.log(single.name + "/" + single.age);
+  &lt;/script&gt;
+ </code></p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Spring Boot的Thymeleaf支持
+  Spring Boot通过自动配置功能对Thymeleaf进行了自动配置,因此可以直接使用.</p>
+
+    <p>```
+  &lt;!DOCTYPE html&gt;</p>
+    <html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Thymeleaf</title>
+      <link th:src="@{bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+      <link th:src="@{bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet" />
+      <script th:src="@{js/jquery-2.2.3.js}" type="text/javascript">
+      <script th:src="@{bootstrap/js/bootstrap.min.js}"/>
+      <script>
+          $(function () {
+              console.log(123);
+          });
+      </script>
+  </head>
+  <body>
+  <div class="panel panel-primary">
+      <div class="panel-heading">
+          <h3 class="panel-title"> 访问model</h3>
+      </div>
+      <div class="panel-body">
+          <span th:text="${singlePerson.name}"></span>
+      </div>
+  </div>
+
+  <div th:if="${not #lists.isEmpty(people)}">
+      <div class="panel panel-primary">
+          <div class="panel-heading">
+              <h3 class="panel-title">列表</h3>
+          </div>
+          <div class="panel-body">
+              <ul class="list-group">
+                  <li class="list-group-item" th:each="person:${people}">
+                      <span th:text="${person.name}"></span>
+                      <span th:text="${person.age}"></span>
+                      <button class="btn" th:onclick="'getName(\''+${person.name}+'\');'">获得名字
+                      </button>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <script th:inline="javascript">
+      var single = [[${singlePerson}]];
+      console.log(single.name + "/" + single.age);
+      function getName(name) {
+          console.log(name);
+      }
+  </script>
+  </body>
+  </html>
+    <p>```</p>
+
+    <p>```
+  package person.learn.thymeleaf;</p>
+
+    <p>import org.springframework.stereotype.Controller;
+  import org.springframework.ui.Model;
+  import org.springframework.web.bind.annotation.RequestMapping;</p>
+
+    <p>import java.util.ArrayList;
+  import java.util.List;</p>
+
+    <p>/**
+   * 1.使用Thymeleaf作为模板引擎,要在application.yml里设置spring.thymeleaf.caching设置为false
+   * 2.用了模板引擎之后,原先对于jsp的设置无效
+   * 3.(idea编辑器需要手动点击CTRL+F9,手动编译,因为IDEA文件不需要手动保存)修改Thymeleaf模板的内容后,要不重启项目就生效的话,需要make一下,
+   * 或者使用热部署:http://mamicode.com/info-detail-1346413.html
+   * 4.要使用Thymeleaf模板 请将pom.xml中相应的jar依赖注释去掉
+   * Created by barton on 16-5-19.
+   */
+  @Controller
+  public class ThymeleafController {</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  @RequestMapping("/thymeleaf")
+  public String index(Model model) {
+      Person single = new Person("aa", 11);
+
+      List&lt;Person&gt; people = new ArrayList&lt;&gt;();
+
+      Person p1 = new Person("xx", 11);
+      Person p2 = new Person("yy", 22);
+      Person p3 = new Person("zz", 33);
+
+      people.add(p1);
+      people.add(p2);
+      people.add(p3);
+
+      model.addAttribute("singlePerson", single);
+      model.addAttribute("people", people);
+
+      return "thymeleaf/thymeleaf";
+  }   }
+</code></pre>
+    </div>
+
+    <p>```</p>
+
+    <p>```
+  package person.learn.thymeleaf;</p>
+
+    <p>/**
+   * Created by barton on 16-5-19.
+   */
+  public class Person {</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  public Person(String name, Integer age) {
+      this.name = name;
+      this.age = age;
+  }
+
+  private String name;
+  private Integer age;
+
+  public String getName() {
+      return name;
+  }
+
+  public void setName(String name) {
+      this.name = name;
+  }
+
+  public Integer getAge() {
+      return age;
+  }
+
+  public void setAge(Integer age) {
+      this.age = age;
+  }   }
+</code></pre>
+    </div>
+
+    <p>```</p>
+  </li>
+  <li>Spring Boot自动配置的静态资源
+    <ul>
+      <li>类路径文件
+  把类路径下的/static,/public,/resources和/META-INF/resources文件夹下的静态文件直接映射为/<strong>,可以通过http://localhost:8080/</strong>来访问.</li>
+      <li>webjar
+  webjar就是将我们常用的脚本框架封装在jar包中的jar包.
+  把webjar的/META-INF/resources/webjars/下的静态文件映射为/webjar/<strong>,可以通过http://localhost:8080/webjar/</strong> 来访问</li>
+    </ul>
+  </li>
+  <li>Spring Boot 对静态首页的支持
+    <ul>
+      <li>classpath:/META-INF/resources/index.html</li>
+      <li>classpath:/resources/index.html</li>
+      <li>classpath:/static/index.html</li>
+      <li>classpath:/public/index.html</li>
+    </ul>
+  </li>
+  <li>将Tomcat替换为Jetty
+  ```
+    <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.springframework.boot</groupId>
+                  <artifactId>spring-boot-starter-tomcat</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  &lt;!-- 使用jetty替代tomcat,如果是使用jsp作为模板，则不能使用内嵌的jetty容器。 --&gt;
+  &lt;!-- 内嵌的jetty容器不支持jsp模板 --&gt;
+  &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-jetty&lt;/artifactId&gt;
+  &lt;/dependency&gt;   ```
+</code></pre>
+    </div>
+  </li>
+  <li>将Tomcat替换为Undertow
+  ```
+    <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-web</artifactId>
+           <exclusions>
+               <exclusion>
+                   <groupId>org.springframework.boot</groupId>
+                   <artifactId>spring-boot-starter-tomcat</artifactId>
+               </exclusion>
+           </exclusions>
+       </dependency>
+    <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-undertow</artifactId>
+  </dependency>
+    <p>```</p>
+  </li>
+  <li>设置Favicon
+  只需将自己的favicon.ico 防止在类路径根目录,类路径META-INF/resources/下,类路径resources/下,类路径static/下或者类路径public/下.</li>
+</ul>
+
+
+            <footer class="article-footer">
+    <div class="authorimage">
+        <img src="/blog/assets/img/avatar.JPG" alt="My Avatar" class="img-circle">
+    </div>
+    <section class="author">
+        <h4><a href="/about.html">王</a></h4>
+        <a href="mailto:work_wjj@163.com">work_wjj@163.com</a>
+    </section>
+</footer>
+
+        </main>
+
+        <div class="footer-copyright">
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-md-12">
+                Copyright &copy; 2016 王 - All rights reserved.
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/blog/assets/js/jquery.min.js"></script>
+<script type="text/javascript" src="/blog/assets/js/bootstrap.min.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74743250-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+    </body>
+
+</html>
