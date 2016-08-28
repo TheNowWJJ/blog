@@ -1,9 +1,9 @@
 # Site settings
 title: 阳光如初. 
-description: sunshineasbefore.
+description: sunshineasbefore.github.io/blog
 favicon: /assets/img/avatar.JPG
 baseurl:
-url: http://www.veryjava.cn
+url: sunshineasbefore.github.io/blog
 rss_url:
 
 # Build settings
