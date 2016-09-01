@@ -1,15 +1,15 @@
 # Site settings
 title: 阳光如初.
-description: sunshineasbefore.github.io/blog
-favicon: /blog/assets/img/avatar.JPG
-baseurl: /blog
-url: sunshineasbefore.github.io/blog
+description: http://veryjava.cn/ 
+favicon: /assets/img/avatar.JPG
+baseurl: 
+url: http://veryjava.cn/
 rss_url:
 
 # Build settings
 
 highlight: true
-highlighter: rouge
+#highlighter: rouge
 
 timezone: Asia/Shanghai
 
@@ -20,7 +20,8 @@ kramdown:
   entity_output: as_char
   toc_levels: 1..6
   smart_quotes: lsquo,rsquo,ldquo,rdquo
-  enable_coderay: false
+  enable_coderay: true
+  syntax_highlighter: rouge
 
   coderay:
     coderay_wrap: div
