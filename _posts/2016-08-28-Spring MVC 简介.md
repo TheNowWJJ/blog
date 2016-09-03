@@ -7,8 +7,6 @@ pulished: true
 excerpt_separator: "#"
 ---
 
-# Spring MVC 简介
-
 ## MVC概述
 
 * MVC 是 Model-View-Control 的简称，即模型-视图-控制器。它是一个存在于服务器表达层的模型，它将应用分开，改变应用之间的高度耦合。
@@ -73,7 +71,8 @@ excerpt_separator: "#"
 * @RequestBody 允许request的参数在request体中,而不是直接链接在地址后面.此注解放置在参数前.
 * @PathVariable 用来接收路径参数,此注解放置在参数前.
 * @RestController 这是一个组合注解,组合了@Controller和@ResponseBody
-* **延伸阅读: [什么是request,response](http://blog.csdn.net/jcx5083761/article/details/9340209)**
+* **延伸阅读:
+  > [什么是request,response](http://blog.csdn.net/jcx5083761/article/details/9340209)**
 
 ## Spring MVC 基本配置
   Spring MVC的定制配置需要我们的配置类集成一个WebMvcConfigurerAdapter类,并在此类使用@EnableWebMvc注解,来开启Spring MVC的配置支持.

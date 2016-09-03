@@ -7,8 +7,6 @@ pulished: true
 excerpt_separator: "#"
 ---
 
-# Spring Boot的Web开发
-
 ## Spring Boot的Web开发支持
   Spring Boot提供了spring-boot-starter-web为Web开发予以支持.它为我们提供了嵌入的Tomcat以及Spring MVC的依赖.
 

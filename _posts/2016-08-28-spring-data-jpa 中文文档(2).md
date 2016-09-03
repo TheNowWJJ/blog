@@ -7,8 +7,6 @@ pulished: true
 excerpt_separator: "#"
 ---
 
-# spring-data-jpa 中文文档(2)
-
 * **JPA Repositories**
   * 简介
     * Spring命名空间
