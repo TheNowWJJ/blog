@@ -19,7 +19,8 @@ excerpt_separator: "#"
 
 * Thymeleaf基础知识
   Thymeleaf是一个java类库,它是一个xml/xhtml/html5的模板引擎,可以作为MVC的Web应用的View层.
-  [Thymeleaf基础知识](http://www.cnblogs.com/dreamfree/p/4158557.html?utm_source=tuicool)
+
+  > [Thymeleaf基础知识](http://www.cnblogs.com/dreamfree/p/4158557.html?utm_source=tuicool)
 * 补充:
   在javascript中访问model
 
@@ -182,47 +183,48 @@ public class Person {
 * classpath:/resources/index.html
 * classpath:/static/index.html
 * classpath:/public/index.html
-* 将Tomcat替换为Jetty
 
-  ```xml
-  <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+## 将Tomcat替换为Jetty
 
-        <!-- 使用jetty替代tomcat,如果是使用jsp作为模板，则不能使用内嵌的jetty容器。 -->
-        <!-- 内嵌的jetty容器不支持jsp模板 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jetty</artifactId>
-        </dependency>
-  ```
+```xml
+<dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.springframework.boot</groupId>
+                  <artifactId>spring-boot-starter-tomcat</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
 
-* 将Tomcat替换为Undertow
+      <!-- 使用jetty替代tomcat,如果是使用jsp作为模板，则不能使用内嵌的jetty容器。 -->
+      <!-- 内嵌的jetty容器不支持jsp模板 -->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-jetty</artifactId>
+      </dependency>
+```
 
-  ```xml
-  <dependency>
-           <groupId>org.springframework.boot</groupId>
-           <artifactId>spring-boot-starter-web</artifactId>
-           <exclusions>
-               <exclusion>
-                   <groupId>org.springframework.boot</groupId>
-                   <artifactId>spring-boot-starter-tomcat</artifactId>
-               </exclusion>
-           </exclusions>
-       </dependency>
-  <dependency>
-           <groupId>org.springframework.boot</groupId>
-           <artifactId>spring-boot-starter-undertow</artifactId>
-    </dependency>
-  ```
-* 设置Favicon
+## 将Tomcat替换为Undertow
+
+```xml
+<dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-web</artifactId>
+         <exclusions>
+             <exclusion>
+                 <groupId>org.springframework.boot</groupId>
+                 <artifactId>spring-boot-starter-tomcat</artifactId>
+             </exclusion>
+         </exclusions>
+     </dependency>
+<dependency>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-undertow</artifactId>
+  </dependency>
+```
+## 设置Favicon
 	只需将自己的favicon.ico 防止在类路径根目录,类路径META-INF/resources/下,类路径resources/下,类路径static/下或者类路径public/下.
 
 
