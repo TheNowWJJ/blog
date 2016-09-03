@@ -7,6 +7,8 @@ pulished: true
 excerpt_separator: "#"
 ---
 
+本文主要介绍使用javaconfig的模式配置Shiro web.
+
 ## 说明
 
 * 谷歌,百度上介绍apache shiro配置的文章并不少,但是缺少我想要的基于java getter/setter方法配置apache shiro的文章.今天整一个.

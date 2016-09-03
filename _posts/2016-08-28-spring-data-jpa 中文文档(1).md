@@ -4,10 +4,10 @@ title: spring-data-jpa 中文文档(1)
 time: 2016年08月28日 星期六
 location: 济南
 pulished: true
-excerpt_separator: "```"
+excerpt_separator: "#"
 ---
 
-**spring-data-jpa 中文文档(1)**
+spring data jpa 中文文档 1
 
 ## 简介
 
