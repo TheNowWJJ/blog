@@ -8,7 +8,6 @@ rss_url:
 
 # Build settings
 
-#highlight: true
 highlighter: pygments
 
 timezone: Asia/Shanghai
