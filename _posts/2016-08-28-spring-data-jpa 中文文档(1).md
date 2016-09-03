@@ -7,6 +7,8 @@ pulished: true
 excerpt_separator: "#"
 ---
 
+spring data jpa 中文文档 1
+
 ## 简介
 
 * 为了让Spring Data的版本保持一致,可以使用maven提供的`dependencyManagement`

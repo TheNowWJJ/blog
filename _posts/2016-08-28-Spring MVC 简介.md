@@ -7,6 +7,8 @@ pulished: true
 excerpt_separator: "#"
 ---
 
+本文主要介绍Spring MVC.
+
 ## MVC概述
 
 * MVC 是 Model-View-Control 的简称，即模型-视图-控制器。它是一个存在于服务器表达层的模型，它将应用分开，改变应用之间的高度耦合。
