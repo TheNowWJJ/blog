@@ -212,6 +212,7 @@ jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和W
   title: 阳光如初.
   description: 怀揣梦想,永不止步!
   ```
+
 ## 书写博客
 * 格式
   在_posts文件夹下新建文档,格式如下:`yyyy-mm-dd-文件名称.md` (文件名称可以带空格)
