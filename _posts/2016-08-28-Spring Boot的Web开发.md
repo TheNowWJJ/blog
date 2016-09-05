@@ -224,6 +224,7 @@ public class Person {
          <artifactId>spring-boot-starter-undertow</artifactId>
   </dependency>
 ```
+
 ## 设置Favicon
 	只需将自己的favicon.ico 防止在类路径根目录,类路径META-INF/resources/下,类路径resources/下,类路径static/下或者类路径public/下.
 
