@@ -83,6 +83,16 @@ jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和W
     cp -R liungkejin.github.io/* ./blog
   ```
 
+* 本地调试
+
+  ```bash
+    cd /home/barton/develop/code/git/blog
+    jekyll serve #不是jekyll server
+  ```
+
+  等待运行完成后,在控制台也会打印出URL,复制此URL用浏览器打开即可访问,比如输入localhost:4000.
+  **注意此处可能也会输入localhost:4000/blog 这个要根据_config.yml文件中是否配置baseurl来决定**
+
 ## push本地blog文件夹到github仓库
 
 * 首先需要在github上创建blog仓库
