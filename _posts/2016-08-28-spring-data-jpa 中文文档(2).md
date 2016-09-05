@@ -9,7 +9,7 @@ excerpt_separator: "#"
 
 spring data jpa 中文文档 2
 
-* **JPA Repositories**
+## **JPA Repositories**
   * 简介
     * Spring命名空间
       SpringData使用了自定义的命名空间去定义repository。通常我们会使用repositories元素:

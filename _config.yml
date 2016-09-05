@@ -7,6 +7,9 @@ url: http://veryjava.cn/
 rss_url:
 
 # Build settings
+gems: [jekyll-paginate]
+paginate: 5
+paginate_path: "/blog/page:num"
 
 highlighter: pygments
 
