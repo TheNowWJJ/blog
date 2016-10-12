@@ -18,11 +18,11 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 * 下载[Redis3.2.3版本](http://www.redis.cn/download.html)并解压
 
     ```bash
-    wget http://download.redis.io/releases/redis-3.2.3.tar.gz
+        wget http://download.redis.io/releases/redis-3.2.3.tar.gz
     ```
     
     ```bash
-    tar -zxf redis-3.2.3.tar.gz ./
+        tar -zxf redis-3.2.3.tar.gz ./
     ```
 
 ## 编译并安装Redis
@@ -30,11 +30,11 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 * 编译Redis
 
     ```bash
-    cd xx/redis-3.2.3
+        cd xx/redis-3.2.3
     ```
     
     ```bash
-    make
+        make
     ```
 * 启动Redis
 
@@ -167,7 +167,7 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 ## Spring Boot 连接Redis
 
 * pom.xml
-
+  
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <project xmlns="http://maven.apache.org/POM/4.0.0"
