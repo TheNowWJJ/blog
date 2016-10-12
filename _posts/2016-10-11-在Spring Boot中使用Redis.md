@@ -140,9 +140,9 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
   
   * 关于vm开头的配置的说明
   
-  redis从2.4版本之后取消了以vm开头的配置.
-  
-  > The use of Virtual Memory is strongly discouraged.
+      redis从2.4版本之后取消了以vm开头的配置.
+      
+      > The use of Virtual Memory is strongly discouraged.
   
   * 启动Redis服务端
   
