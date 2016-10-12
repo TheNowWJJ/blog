@@ -17,13 +17,13 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 
 * 下载[Redis3.2.3版本](http://www.redis.cn/download.html)并解压
 
-    ```bash
-        wget http://download.redis.io/releases/redis-3.2.3.tar.gz
-    ```
+  ```bash
+  wget http://download.redis.io/releases/redis-3.2.3.tar.gz
+  ```
     
-    ```bash
-        tar -zxf redis-3.2.3.tar.gz ./
-    ```
+  ```bash
+  tar -zxf redis-3.2.3.tar.gz ./
+  ```
 
 ## 编译并安装Redis
 
