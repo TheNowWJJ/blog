@@ -17,10 +17,11 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 
 * 下载[Redis3.2.3版本](http://www.redis.cn/download.html)并解压
 
-    ```
+    ```bash
     wget http://download.redis.io/releases/redis-3.2.3.tar.gz
     ```
-    ```
+    
+    ```bash
     tar -zxf redis-3.2.3.tar.gz ./
     ```
 
@@ -28,17 +29,18 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 
 * 编译Redis
 
-    ```
+    ```bash
     cd xx/redis-3.2.3
     ```
-    ```
+    
+    ```bash
     make
     ```
 * 启动Redis
 
   * Redis配置文件redis.conf在根目录下,其中有很多默认配置和详细说明.在此就不全贴出来了.
     
-    ```
+    ```bash
     #修改redis是否已守护进程的方式运行 yes则启动守护进程
     daemonize no
     
@@ -144,18 +146,20 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
     
   * 启动Redis服务端
     
-    ```
+    ```bash
     cd xx/redis-3.2.3/src
     ```
-    ```
+    
+    ```bash
     ./redis-server
     ```
     
   * 启动Redis客户端
-    ```
+    ```bash
     cd xx/redis-3.2.3/src
     ```
-    ```
+    
+    ```bash
     ./redis-cli
     ```
 
@@ -163,34 +167,29 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 
 * pom.xml
 
-    ```
+    ```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <project xmlns="http://maven.apache.org/POM/4.0.0"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
       <modelVersion>4.0.0</modelVersion>
-    
       <groupId>sunshineasbefore</groupId>
       <artifactId>redis</artifactId>
       <version>0.0.1-SNAPSHOT</version>
       <packaging>jar</packaging>
-    
       <name>redis</name>
       <description>redis</description>
-    
       <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.4.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
       </parent>
-    
       <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
       </properties>
-    
       <dependencies>
         <dependency>
           <groupId>org.springframework.boot</groupId>
@@ -200,13 +199,11 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-    
         <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-test</artifactId>
           <scope>test</scope>
         </dependency>
-    
         <dependency>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -217,9 +214,7 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
           <artifactId>fastjson</artifactId>
           <version>1.2.17</version>
         </dependency>
-    
       </dependencies>
-    
       <build>
         <plugins>
           <plugin>
@@ -228,10 +223,9 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
           </plugin>
         </plugins>
       </build>
-    
-    
     </project>
     ```
+    
 * application.properties
 
     ```
@@ -260,7 +254,7 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
 
 * redis config
 
-    ```
+    ```java
     package redis;
     
     import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -363,7 +357,7 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
     
 * POJO对象
 
-    ```
+    ```java
     public class Student {
       public Student() {
       }
@@ -384,7 +378,7 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
     
 * 创建一个RedisService来获取数据
 
-    ```
+    ```java
     package redis;
     
     import org.springframework.beans.factory.annotation.Autowired;
@@ -417,7 +411,8 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
     ```
     
 * 使用JUnit Test测试getStudent方法
-    ```
+
+    ```java
     import org.junit.Test;
     import org.junit.runner.RunWith;
     import org.springframework.beans.factory.annotation.Autowired;
