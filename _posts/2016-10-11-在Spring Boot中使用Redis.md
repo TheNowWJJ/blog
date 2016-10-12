@@ -146,23 +146,23 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
   
   * 启动Redis服务端
   
-  ```bash
-  cd xx/redis-3.2.3/src
-  ```
+    ```bash
+    cd xx/redis-3.2.3/src
+    ```
   
-  ```bash
-  ./redis-server
-  ```
+    ```bash
+    ./redis-server
+    ```
   
   * 启动Redis客户端
 
-  ```bash
-  cd xx/redis-3.2.3/src
-  ```
+    ```bash
+    cd xx/redis-3.2.3/src
+    ```
   
-  ```bash
-  ./redis-cli
-  ```
+    ```bash
+    ./redis-cli
+    ```
 
 ## Spring Boot 连接Redis
 
