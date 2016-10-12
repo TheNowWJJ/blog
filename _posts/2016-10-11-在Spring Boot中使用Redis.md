@@ -224,7 +224,7 @@ Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统�
          </plugin>
        </plugins>
      </build>
-   </project>
+  </project>
   ```
    
 * application.properties
