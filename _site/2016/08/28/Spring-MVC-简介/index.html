@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Spring MVC 简介</title>
+
+	<link rel="shortcut icon" href="/styles/images/favicon.jpg">
+	<link rel="icon" href="/styles/images/favicon.jpg">
+
+	<link rel="stylesheet" href="/styles/css/index.css">
+	<link rel="stylesheet" href="/styles/css/fontawesome/css/font-awesome.min.css">
+	<link rel="canonical" href="/2016/08/28/Spring-MVC-%E7%AE%80%E4%BB%8B/">
+	<link rel="alternate" type="application/rss+xml" title="非常咖啡" href="/feed.xml">
+	
+	<meta name="description" content="阳光如初;sunshineasbefore;个人博客;学而不思则罔;怀揣梦想,永不止步;">
+
+	<script src="/styles/js/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+    	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  	<![endif]-->
+  	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "//hm.baidu.com/hm.js?94be4b0f9fc5d94cc0d0415ea6761ae9";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+  	<style type="text/css">
+	  	.docs-content{
+	  		margin-bottom: 10px;
+	  	}
+  	</style>
+</head>
+
+  <body class="index">
+
+    <header class="navbar navbar-inverse navbar-fixed-top docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" class="navbar-brand">
+        <img src="/styles/images/logo.jpg">
+      </a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/">主页</a>
+        </li>
+        <li>
+          <a href="/categories/">分类</a>
+        </li>
+        <li>
+          <a href="/tag">标签</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <!--<a href="/donate/"><strong>打赏</strong></a>-->
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">关于<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a rel="nofollow" target="_blank" href="https://github.com/sunshineasbefore">Github</a></li>
+            <li><a rel="nofollow" target="_blank" href="">关于作者</a></li>
+            <li><a rel="nofollow" href="/books">我的书单</a></li>
+            <li><a rel="nofollow" href="/reference">推荐博客</a></li>
+            <li><a href="/feed.xml">RSS订阅</a></li>
+            <li class="divider"></li>
+            <li><a rel="nofollow" target="_blank" href="https://github.com/luoyan35714/LessOrMore.git">本项目</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="docs-header" id="content">
+  <div class="container">
+  	
+  		<!--
+		    <h1>Spring MVC 简介</h1>
+		    <p>Post on Aug 28, 2016 by <a href="/about">sunshineasbefore</a></p>
+		-->
+		    <h3>怀揣梦想,永不止步!</h3>
+    
+  </div>
+</div>
+
+    
+      
+<div class="banner">
+  <div class="container">
+  	
+    	<a href="/categories/#Spring-MVC-ref">Spring-MVC</a>	/
+    	<a href="/tag/#Spring MVC-ref">Spring MVC</a>
+    
+  </div>
+</div>
+
+    
+
+    <div class="container docs-container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sidebar hidden-print" role="complementary">
+        <div id="navigation">
+  <h1>目录</h1>
+  <ul class="nav sidenav">
+<!--
+    
+      
+      
+      
+      
+
+      
+        <li><a href="#year_2016">2016</a>
+          <ul class="nav">
+            <li><a href="#month_2016_October">October</a></li>
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+              <li><a href="#month_2016_September">September</a></li>
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+              <li><a href="#month_2016_August">August</a></li>
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            </ul>
+          </li>
+      
+    
+-->
+  </ul>
+</div> 
+      </div>
+    </div>
+    <div class="col-md-9" role="main">
+      <div class="panel docs-content">
+        <div class="wrapper">
+            <header class="post-header">
+              <h1 class="post-title">Spring MVC 简介</h1>
+              <!--
+                <p class="post-meta">Aug 28, 2016</p>
+              -->
+              <div class="meta">Posted on <span class="postdate">Aug 28, 2016</span> By <a target="_blank" href="http://www.veryjava.cn">sunshineasbefore</a></div>
+              <br />
+            </header>
+            <article class="post-content">
+              <p>本文主要介绍Spring MVC.</p>
+
+<h2 id="mvc">MVC概述</h2>
+
+<ul>
+  <li>MVC 是 Model-View-Control 的简称，即模型-视图-控制器。它是一个存在于服务器表达层的模型，它将应用分开，改变应用之间的高度耦合。</li>
+  <li>视图
+    <ul>
+      <li>数据的展现。视图是用户看到并与之交互的界面。视图向用户显示相关的数据，并能接收用户的输入数据，但是它并不进行任何实际的业务处理。视图可以向模型查询业务状态，但不能改变模型。视图还能接受模型发出的数据更新事件，从而对用户界面进行同步更新。</li>
+    </ul>
+  </li>
+  <li>模型
+    <ul>
+      <li>应用对象。模型是应用程序的主体部分。 模型代表了业务数据和业务逻辑； 当数据发生改变时，它要负责通知视图部分；一个模型能为多个视图提供数据。由于同一个模型可以被多个视图重用，所以提高了应用的可重用性。</li>
+    </ul>
+  </li>
+  <li>控制器
+    <ul>
+      <li>逻辑处理、控制实体数据在视图上展示、调用模型处理业务请求。当 Web 用户单击 Web 页面中的提交按钮来发送 HTML 表单时，控制器接收请求并调用相应的模型组件去处理请求，然后调用相应的视图来显示模型返回的数据。</li>
+    </ul>
+  </li>
+  <li>MVC 模型运行机制
+在 MVC 模式中，Web 用户向服务器提交的所有请求都由控制器接管。接受到请求之后，控制器负责决定应该调用哪个模型来进行处理；然后模型根据用户请求进行相应的业务逻辑处理，并返回数据；最后控制器调用相应的视图来格式化模型返回的数据，并通过视图呈现给用户。</li>
+</ul>
+
+<p><img src="http://dl.iteye.com/upload/attachment/576353/d3d769c0-5df9-3c31-9984-42f1fcbd00bb.jpg" alt="MVC 模型运行机制" /></p>
+
+<h2 id="section">三层架构概述</h2>
+
+<ul>
+  <li>Presentation tier + Application tier + Data tier (展现层 + 应用层 + 数据访问层)</li>
+  <li>实际上MVC只存在三层架构的展现层,M实际商是数据模型,是包含数据的对象.</li>
+  <li>Service和Dao层反馈在应用层和数据访问层</li>
+</ul>
+
+<h2 id="spring-mvc-">Spring MVC 介绍</h2>
+
+<ul>
+  <li>Spring Web MVC处理请求的流程
+具体执行步骤如下：
+    <ul>
+      <li>
+        <p>首先用户发送请求—–&gt;前端控制器，前端控制器根据请求信息（如URL）来决定选择哪一个页面控制器进行处理并把请求委托给它，即以前的控制器的控制逻辑部分；图2-1中的1、2步骤；</p>
+      </li>
+      <li>
+        <p>页面控制器接收到请求后，进行功能处理，首先需要收集和绑定请求参数到一个对象，这个对象在Spring Web MVC中叫命令对象，并进行验证，然后将命令对象委托给业务对象进行处理；处理完毕后返回一个ModelAndView（模型数据和逻辑视图名）；图2-1中的3、4、5步骤；</p>
+      </li>
+      <li>
+        <p>前端控制器收回控制权，然后根据返回的逻辑视图名，选择相应的视图进行渲染，并把模型数据传入以便视图渲染；图2-1中的步骤6、7；</p>
+      </li>
+      <li>
+        <p>前端控制器再次收回控制权，将响应返回给用户，图2-1中的步骤8；至此整个结束
+<img src="http://sishuok.com/forum/upload/2012/7/14/529024df9d2b0d1e62d8054a86d866c9__1.JPG" alt="Spring Web MVC处理请求的流程" /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="spring-mvc">Spring MVC的优势</h2>
+<ul>
+  <li>
+    <p>清晰的角色划分：前端控制器（DispatcherServlet）、请求到处理器映射（HandlerMapping）、处理器适配器（HandlerAdapter）、视图解析器（ViewResolver）、处理器或页面控制器（Controller）、验证器（   Validator）、命令对象（Command  请求参数绑定到的对象就叫命令对象）、表单对象（Form Object 提供给表单展示和提交到的对象就叫表单对象）。</p>
+  </li>
+  <li>
+    <p>分工明确，而且扩展点相当灵活，可以很容易扩展，虽然几乎不需要；</p>
+  </li>
+  <li>
+    <p>由于命令对象就是一个POJO，无需继承框架特定API，可以使用命令对象直接作为业务对象；</p>
+  </li>
+  <li>
+    <p>和Spring 其他框架无缝集成，是其它Web框架所不具备的；</p>
+  </li>
+  <li>
+    <p>可适配，通过HandlerAdapter可以支持任意的类作为处理器；</p>
+  </li>
+  <li>
+    <p>可定制性，HandlerMapping、ViewResolver等能够非常简单的定制；</p>
+  </li>
+  <li>
+    <p>功能强大的数据验证、格式化、绑定机制；</p>
+  </li>
+  <li>
+    <p>利用Spring提供的Mock对象能够非常简单的进行Web层单元测试；</p>
+  </li>
+  <li>
+    <p>本地化、主题的解析的支持，使我们更容易进行国际化和主题的切换。</p>
+  </li>
+  <li>
+    <p>强大的JSP标签库，使JSP编写更容易。</p>
+  </li>
+  <li>
+    <p>………………还有比如RESTful风格的支持、简单的文件上传、约定大于配置的契约式编程支持、基于注解的零配置支持等等。</p>
+  </li>
+</ul>
+
+<h2 id="spring-mvc-1">Spring MVC的常用注解</h2>
+
+<ul>
+  <li>@ Controller 表明这个类是Spring MVC里的Controller.Dispatcher Servlet 会自动扫描注解了此注解的类.在声明普通Bean的时候,使用@Component,@Service,@Repository和@Controller是等同的,因为@Service,@Repository,@Controller都组合了@Component元注解.但在Spring MVC声明控制器Bean的时候,只能使用@Controller.</li>
+  <li>@RequestMapping 用来映射Web请求(访问路径和参数),处理类和方法.其支持Servlet的request和response作为参数.</li>
+  <li>@ResponseBody 支持将返回值放在response体内,而不是返回一个页面,此注解可放置在返回值前或者方法上.</li>
+  <li>@RequestBody 允许request的参数在request体中,而不是直接链接在地址后面.此注解放置在参数前.</li>
+  <li>@PathVariable 用来接收路径参数,此注解放置在参数前.</li>
+  <li>@RestController 这是一个组合注解,组合了@Controller和@ResponseBody</li>
+  <li><strong>延伸阅读:
+&gt; <a href="http://blog.csdn.net/jcx5083761/article/details/9340209">什么是request,response</a></strong></li>
+</ul>
+
+<h2 id="spring-mvc--1">Spring MVC 基本配置</h2>
+<p>Spring MVC的定制配置需要我们的配置类集成一个WebMvcConfigurerAdapter类,并在此类使用@EnableWebMvc注解,来开启Spring MVC的配置支持.</p>
+
+<h2 id="spring-mvc--2">Spring MVC 静态资源配置</h2>
+<p><a href="http://blog.csdn.net/isea533/article/details/50412212">Spring Boot默认的静态资源配置</a>
+  如果需要直接访问静态资源,可以在我们的配置类中重写 addResourceHandlers方法</p>
+
+<ul>
+  <li>
+    <p>快捷的ViewController
+无需做任何业务处理,只是简单的页面转向,可以使用addViewControllers方法来实现.</p>
+
+    <p>```java
+package com.wangge.buzmgt.config;</p>
+
+    <p>import com.wangge.json.JSONFormatMethodProcessor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.http.converter.xml.SourceHttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;</p>
+
+    <p>import java.util.ArrayList;
+import java.util.List;</p>
+
+    <p>@Configuration
+@EnableWebMvc
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
+  @Override
+  public void addViewControllers (ViewControllerRegistry registry) {
+    registry.addViewController (“/”).setViewName (“index”);
+    registry.addViewController (“/left”).setViewName (“left”);
+  }</p>
+
+    <p>@Override
+  public void addReturnValueHandlers (List<handlermethodreturnvaluehandler> returnValueHandlers) {
+    returnValueHandlers.add (new JSONFormatMethodProcessor (messageConverter ()));
+  }</handlermethodreturnvaluehandler></p>
+
+    <p>private List&lt;HttpMessageConverter<?>> messageConverter () {
+    List<HttpMessageConverter<?>&gt; converters = new ArrayList&lt;&gt; ();
+    converters.add (new ByteArrayHttpMessageConverter ());
+    converters.add (new StringHttpMessageConverter ());
+    converters.add (new ResourceHttpMessageConverter ());
+    converters.add (new SourceHttpMessageConverter&lt;&gt; ());
+    converters.add (new AllEncompassingFormHttpMessageConverter ());
+    converters.add (new Jaxb2RootElementHttpMessageConverter ());
+    converters.add (new MappingJackson2HttpMessageConverter ());
+    return converters;
+  }</p>
+
+    <p>@Override
+  public void addResourceHandlers (ResourceHandlerRegistry registry) {
+    registry.addResourceHandler (“/static/**”).addResourceLocations (“classpath:/static/”);
+  }
+}</p>
+
+    <p>```</p>
+
+    <p>其中 addResourceLocations 指的是文件放置的目录,addResourceHandler指的是对外暴露的访问路径.</p>
+  </li>
+</ul>
+
+            </article>
+        </div>
+      </div>
+      <div class="panel docs-content">
+        <article class="post-content">
+          <div class="wrapper">
+            
+
+
+  <div class="ds-thread" data-thread-key="/2016/08/28/Spring-MVC-%E7%AE%80%E4%BB%8B/" data-title="Spring MVC 简介" data-url="http://www.veryjava.cn/2016/08/28/Spring-MVC-%E7%AE%80%E4%BB%8B/"></div>
+
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"ssab"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+ 
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+    <footer class="footer" role="contentinfo">
+	<div class="container">
+		<p class="copyright">Copyright &copy; 2014-2016 <a href=""><code>sunshineasbefore</code></a>.</p>
+		<p>Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme from <a href="http://lesscss.cn/">Less</a></p>
+	</div>
+</footer>
+
+<script src="/styles/js/jquery.min.js"></script>
+<script src="/styles/js/bootstrap.min.js"></script>
+<script src="/styles/js/holder.min.js"></script>
+<script src="/styles/js/application.js"></script>
+<script src="/styles/js/lessismore.js"></script>
+
+  </body>
+</html>

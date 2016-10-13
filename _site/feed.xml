@@ -1,0 +1,4091 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <description>怀揣梦想,永不止步!</description>
+    <link>http://www.veryjava.cn/</link>
+    <atom:link href="http://www.veryjava.cn/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 13 Oct 2016 18:44:07 +0800</pubDate>
+    <lastBuildDate>Thu, 13 Oct 2016 18:44:07 +0800</lastBuildDate>
+    <generator>Jekyll v3.0.1</generator>
+    
+      <item>
+        <title>Spring Boot 起手式</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;起手&lt;/h2&gt;
+</description>
+        <pubDate>Thu, 13 Oct 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/10/13/Spring-Boot%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%80-%E8%B5%B7%E6%89%8B%E5%BC%8F/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/10/13/Spring-Boot%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%80-%E8%B5%B7%E6%89%8B%E5%BC%8F/</guid>
+        
+        <category>Spring Boot</category>
+        
+        
+        <category>Spring-Boot</category>
+        
+      </item>
+    
+      <item>
+        <title>在Spring Boot中使用Redis</title>
+        <description>&lt;h2 id=&quot;redis&quot;&gt;Redis简介&lt;/h2&gt;
+
+&lt;p&gt;Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 它支持多种类型的数据结构，如 字符串（strings）， 散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） 与范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询。 Redis 内置了 复制（replication），LUA脚本（Lua scripting）， LRU驱动事件（LRU eviction），事务（transactions） 和不同级别的 磁盘持久化（persistence）， 并通过 Redis哨兵（Sentinel）和自动 分区（Cluster）提供高可用性（high availability）。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.redis.cn/&quot;&gt;Redis中国用户组&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;linuxredis&quot;&gt;Linux下Redis安装(单机)&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;下载&lt;a href=&quot;http://www.redis.cn/download.html&quot;&gt;Redis3.2.3版本&lt;/a&gt;并解压&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+wget http://download.redis.io/releases/redis-3.2.3.tar.gz
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+tar -zxf redis-3.2.3.tar.gz ./
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;redis-1&quot;&gt;编译并安装Redis&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;编译Redis&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+cd xx/redis-3.2.3
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+make
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动Redis&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Redis配置文件redis.conf在根目录下,其中有很多默认配置和详细说明.在此就不全贴出来了.&lt;/p&gt;
+
+        &lt;p&gt;```bash
+#修改redis是否已守护进程的方式运行 yes则启动守护进程
+daemonize no&lt;/p&gt;
+
+        &lt;h1 id=&quot;redis-pidfile&quot;&gt;redis以守护进程运行时 制定其pidfile文件&lt;/h1&gt;
+        &lt;p&gt;pidfile /var/run/redis.pid&lt;/p&gt;
+
+        &lt;h1 id=&quot;redis6379&quot;&gt;Redis端口号,默认6379&lt;/h1&gt;
+        &lt;p&gt;port 6379&lt;/p&gt;
+
+        &lt;h1 id=&quot;section&quot;&gt;客户端闲置超时时间,0则表示关闭该功能&lt;/h1&gt;
+        &lt;p&gt;timeout 300&lt;/p&gt;
+
+        &lt;h1 id=&quot;redisdebugverbosenoticewarningverbose&quot;&gt;日志记录级别，Redis共支持四个级别：debug、verbose、notice、warning，默认为verbose&lt;/h1&gt;
+        &lt;p&gt;loglevel verbose&lt;/p&gt;
+
+        &lt;h1 id=&quot;redisdevnull&quot;&gt;日志输出方式,默认为标准输出,即输出到控制台;如果redis以守护进程的方式运行,在这个地方配置标准输出的话,则会将日志发送给/dev/null,即什么都看不到&lt;/h1&gt;
+        &lt;p&gt;logfile stdout&lt;/p&gt;
+
+        &lt;h1 id=&quot;select-dbidredis-cli&quot;&gt;数据库的数量,默认为0,可以使用SELECT &lt;dbid&gt;命令在redis-cli客户端切换数据库&lt;/dbid&gt;&lt;/h1&gt;
+        &lt;p&gt;databases 0&lt;/p&gt;
+
+        &lt;h1 id=&quot;redis-2&quot;&gt;指定在多长时间内，有多少次更新操作，就将数据同步到数据文件，可以多个条件配合(redis是有机制将内存数据保存到硬盘的)&lt;/h1&gt;
+        &lt;p&gt;#Redis默认配置文件中提供了三个条件：
+#save 900 1
+#save 300 10
+#save 60 10000
+#分别表示900秒（15分钟）内有1个更改，300秒（5分钟）内有10个更改以及60秒内有10000个更改。
+save &lt;seconds&gt; &lt;changes&gt;&lt;/changes&gt;&lt;/seconds&gt;&lt;/p&gt;
+
+        &lt;h1 id=&quot;redisyes&quot;&gt;制定Redis存储本地数据库时是否压缩数据,默认yes.不启用的话会导致数据库文件很大&lt;/h1&gt;
+        &lt;p&gt;rdbcompression yes&lt;/p&gt;
+
+        &lt;h1 id=&quot;dumprdb&quot;&gt;本地数据库文件名,默认dump.rdb&lt;/h1&gt;
+        &lt;p&gt;dbfilename dump.rdb&lt;/p&gt;
+
+        &lt;h1 id=&quot;section-1&quot;&gt;本地数据库存放目录&lt;/h1&gt;
+        &lt;p&gt;dir ./&lt;/p&gt;
+
+        &lt;h1 id=&quot;slavmasteripredismastermaster-slave&quot;&gt;设置当本机为slav服务时，设置master服务的IP地址及端口，在Redis启动时，它会自动从master进行数据同步(在master-slave模式时启用)&lt;/h1&gt;
+        &lt;p&gt;slaveof &lt;masterip&gt; &lt;masterport&gt;&lt;/masterport&gt;&lt;/masterip&gt;&lt;/p&gt;
+
+        &lt;h1 id=&quot;master&quot;&gt;master服务密码&lt;/h1&gt;
+        &lt;p&gt;masterauth &lt;master-password&gt;&lt;/master-password&gt;&lt;/p&gt;
+
+        &lt;h1 id=&quot;redisreidsauth-password&quot;&gt;设置redis链接密码.客户端链接Reids时需要通过AUTH &lt;password&gt;指定,默认关闭&lt;/password&gt;&lt;/h1&gt;
+        &lt;p&gt;requirepass foobared&lt;/p&gt;
+
+        &lt;h1 id=&quot;ulimit&quot;&gt;设置同一时间内最大客户端连接数,默认没有限制.是否跟ulimit命令有关系&lt;/h1&gt;
+        &lt;p&gt;maxclients 128&lt;/p&gt;
+
+        &lt;h1 id=&quot;rediskeylinuxswap&quot;&gt;为Redis指定最大内存限制.达到最大内存后,开始清理已到期或即将到期的key.注意linux的swap分区.&lt;/h1&gt;
+        &lt;p&gt;maxmemory &lt;bytes&gt;&lt;/bytes&gt;&lt;/p&gt;
+
+        &lt;h1 id=&quot;redis-redissaveno&quot;&gt;是否在每次更新操作后进行日志记录,Redis在默认情况下是异步的把数据写入磁盘,如果不开启,可能会在断电时导致一段时间内的数据丢失.因为 redis本身同步数据文件是按上面save条件来同步的,所以有的数据会在一段时间内只存在于内存中.默认为no&lt;/h1&gt;
+        &lt;p&gt;appendonly no&lt;/p&gt;
+
+        &lt;h1 id=&quot;appendonlyaof&quot;&gt;更新日志文件名，默认为appendonly.aof&lt;/h1&gt;
+        &lt;p&gt;appendfilename appendonly.aof&lt;/p&gt;
+
+        &lt;h1 id=&quot;section-2&quot;&gt;日志更新条件&lt;/h1&gt;
+        &lt;p&gt;#no:等操作系统进行数据缓存同步到磁盘(快)
+#always:每次更新操作后手动调用fsync()将数据写到磁盘(慢,安全)
+#everysec:表示每秒同步一次(折中,默认值)
+appendfsync everysec&lt;/p&gt;
+
+        &lt;h1 id=&quot;no&quot;&gt;是否启用虚拟内存机制,默认值为no&lt;/h1&gt;
+        &lt;p&gt;vm-enabled no&lt;/p&gt;
+
+        &lt;h1 id=&quot;tmpredisswapredis&quot;&gt;虚拟内存文件路径,默认值为/tmp/redis.swap,不可多个Redis实例共享&lt;/h1&gt;
+        &lt;p&gt;vm-swap-file /tmp/redis.swap&lt;/p&gt;
+
+        &lt;h1 id=&quot;vm-max-memoryvm-max-memoryredis-keysvm-max-memory0value0&quot;&gt;将所有大于vm-max-memory的数据存入虚拟内存,无论vm-max-memory设置多小,所有索引数据都是内存存储的(Redis的索引数据 就是keys),也就是说,当vm-max-memory设置为0的时候,其实是所有value都存在于磁盘。默认值为0&lt;/h1&gt;
+        &lt;p&gt;vm-max-memory 0&lt;/p&gt;
+
+        &lt;h1 id=&quot;redis-swappagepagepagevm-page-size-page3264bytespage-&quot;&gt;Redis swap文件分成了很多的page，一个对象可以保存在多个page上面，但一个page上不能被多个对象共享，vm-page-size是要根据存储的 数据大小来设定的，作者建议如果存储很多小对象，page大小最好设置为32或者64bytes；如果存储很大大对象，则可以使用更大的page，如果不 确定，就使用默认值&lt;/h1&gt;
+        &lt;p&gt;vm-page-size 32&lt;/p&gt;
+
+        &lt;h1 id=&quot;swappagebitmap8pages1byte&quot;&gt;设置swap文件中的page数量，由于页表（一种表示页面空闲或使用的bitmap）是在放在内存中的，，在磁盘上每8个pages将消耗1byte的内存。&lt;/h1&gt;
+        &lt;p&gt;vm-pages 134217728&lt;/p&gt;
+
+        &lt;h1 id=&quot;swap0swap4&quot;&gt;设置访问swap文件的线程数,最好不要超过机器的核数,如果设置为0,那么所有对swap文件的操作都是串行的，可能会造成比较长时间的延迟。默认值为4&lt;/h1&gt;
+        &lt;p&gt;vm-max-threads 4&lt;/p&gt;
+
+        &lt;h1 id=&quot;section-3&quot;&gt;设置在向客户端应答时，是否把较小的包合并为一个包发送，默认为开启&lt;/h1&gt;
+        &lt;p&gt;glueoutputbuf yes&lt;/p&gt;
+
+        &lt;h1 id=&quot;section-4&quot;&gt;指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法&lt;/h1&gt;
+        &lt;p&gt;hash-max-zipmap-entries 64
+hash-max-zipmap-value 512&lt;/p&gt;
+
+        &lt;h1 id=&quot;redis-3&quot;&gt;指定是否激活重置哈希，默认为开启（后面在介绍Redis的哈希算法时具体介绍）&lt;/h1&gt;
+        &lt;p&gt;activerehashing yes&lt;/p&gt;
+
+        &lt;h1 id=&quot;redis-4&quot;&gt;指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件&lt;/h1&gt;
+        &lt;p&gt;include /path/to/local.conf
+```&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;关于vm开头的配置的说明&lt;/p&gt;
+
+        &lt;p&gt;redis从2.4版本之后取消了以vm开头的配置.&lt;/p&gt;
+
+        &lt;blockquote&gt;
+          &lt;p&gt;The use of Virtual Memory is strongly discouraged.&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;启动Redis服务端&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+cd xx/redis-3.2.3/src
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+./redis-server
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;启动Redis客户端&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+cd xx/redis-3.2.3/src
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+./redis-cli
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-boot-redis&quot;&gt;Spring Boot 连接Redis&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;pom.xml&lt;/p&gt;
+
+    &lt;p&gt;```xml
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;/p&gt;
+    &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemalocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+  &lt;modelversion&gt;4.0.0&lt;/modelversion&gt;
+  &lt;groupid&gt;sunshineasbefore&lt;/groupid&gt;
+  &lt;artifactid&gt;redis&lt;/artifactid&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;name&gt;redis&lt;/name&gt;
+  &lt;description&gt;redis&lt;/description&gt;
+  &lt;parent&gt;
+    &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+    &lt;artifactid&gt;spring-boot-starter-parent&lt;/artifactid&gt;
+    &lt;version&gt;1.4.1.RELEASE&lt;/version&gt;
+    &lt;relativepath /&gt; &lt;!-- lookup parent from repository --&gt;
+  &lt;/parent&gt;
+  &lt;properties&gt;
+    &lt;project.build.sourceencoding&gt;UTF-8&lt;/project.build.sourceencoding&gt;
+    &lt;project.reporting.outputencoding&gt;UTF-8&lt;/project.reporting.outputencoding&gt;
+    &lt;java.version&gt;1.8&lt;/java.version&gt;
+  &lt;/properties&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+      &lt;artifactid&gt;spring-boot-devtools&lt;/artifactid&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+       &lt;artifactid&gt;spring-boot-starter-web&lt;/artifactid&gt;
+     &lt;/dependency&gt;
+     &lt;dependency&gt;
+       &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+       &lt;artifactid&gt;spring-boot-starter-test&lt;/artifactid&gt;
+       &lt;scope&gt;test&lt;/scope&gt;
+     &lt;/dependency&gt;
+     &lt;dependency&gt;
+       &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+       &lt;artifactid&gt;spring-boot-starter-data-redis&lt;/artifactid&gt;
+     &lt;/dependency&gt;
+     &lt;!-- https://mvnrepository.com/artifact/com.alibaba/fastjson --&gt;
+     &lt;dependency&gt;
+       &lt;groupid&gt;com.alibaba&lt;/groupid&gt;
+       &lt;artifactid&gt;fastjson&lt;/artifactid&gt;
+       &lt;version&gt;1.2.17&lt;/version&gt;
+     &lt;/dependency&gt;
+   &lt;/dependencies&gt;
+   &lt;build&gt;
+     &lt;plugins&gt;
+       &lt;plugin&gt;
+         &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+         &lt;artifactid&gt;spring-boot-maven-plugin&lt;/artifactid&gt;
+       &lt;/plugin&gt;
+     &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;/project&gt;
+    &lt;p&gt;```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;application.properties&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+spring.cache.type=redis
+spring.cache.cache-names=redis-test
+# REDIS (RedisProperties)
+# Database index used by the connection factory.
+spring.redis.database=0
+# server host
+spring.redis.host=localhost
+# server password
+spring.redis.password=
+# connection port
+spring.redis.port=6379
+# pool settings ...
+spring.redis.pool.max-idle=8
+spring.redis.pool.min-idle=0
+spring.redis.pool.max-active=8
+spring.redis.pool.max-wait=-1
+spring.redis.timeout=10
+# name of Redis server
+#spring.redis.sentinel.master=
+# comma-separated list of host:port pairs
+#spring.redis.sentinel.nodes=
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;redis config&lt;/p&gt;
+
+    &lt;p&gt;```java
+package redis;&lt;/p&gt;
+
+    &lt;p&gt;import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import redis.clients.jedis.JedisPoolConfig;&lt;/p&gt;
+
+    &lt;p&gt;/**
+ * 描述: TODO:
+ * 包名: redis.
+ * 作者: barton.
+ * 日期: 16-9-24.
+ * 项目名称: redis
+ * 版本: 1.0
+ * JDK: since 1.8
+ */
+@Configuration
+@EnableCaching
+public class RedisConfig extends CachingConfigurerSupport {&lt;/p&gt;
+
+    &lt;p&gt;@Value(“${spring.redis.host}”)
+  private String host;
+  @Value(“${spring.redis.port}”)
+  private int port;
+  @Value(“${spring.redis.timeout}”)
+  private int timeout;&lt;/p&gt;
+
+    &lt;p&gt;/**
+   * 对于key的生成,不能使用随机生成.
+   * 第一次访问时会生成一个key值,如果redis中不存在,则将此key值和对应的value值放置在redis中,
+   * 第二次访问时会再次根据一定条件生成key值,如果此key值在redis中存在,则直接取.
+   * 也就是说对于一个特定的对象,它生成的key值一定是要唯一的.
+   */
+  @Bean
+  public KeyGenerator keyGenerator() {
+    return (target, method, params) -&amp;gt; {
+      StringBuilder sb = new StringBuilder();
+      sb.append(target.getClass().getName());
+      sb.append(method.getName());
+      for (Object obj : params) {
+        sb.append(obj.toString());
+      }
+      return sb.toString();
+    };
+  }&lt;/p&gt;
+
+    &lt;p&gt;@Bean
+  public CacheManager cacheManager(RedisTemplate redisTemplate) {
+    RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+    // Number of seconds before expiration. Defaults to unlimited (0)
+    cacheManager.setDefaultExpiration(10); //设置key-value超时时间
+    return cacheManager;
+  }&lt;/p&gt;
+
+    &lt;p&gt;@Bean
+  public JedisConnectionFactory redisConnectionFactory() {
+    JedisConnectionFactory factory = new JedisConnectionFactory();
+    factory.setHostName(host);
+    factory.setPort(port);
+    factory.setTimeout(timeout); //设置连接超时时间
+    factory.setUsePool(true);
+    factory.setPoolConfig(jedisPoolConfig());
+    return factory;
+  }&lt;/p&gt;
+
+    &lt;p&gt;@Bean
+  public RedisTemplate&amp;lt;String, String&amp;gt; redisTemplate(RedisConnectionFactory factory) {
+    StringRedisTemplate template = new StringRedisTemplate(factory);
+    Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+    ObjectMapper om = new ObjectMapper();
+    om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+    om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    jackson2JsonRedisSerializer.setObjectMapper(om);
+    template.setValueSerializer(jackson2JsonRedisSerializer);
+    template.afterPropertiesSet();
+    return template;
+  }&lt;/p&gt;
+
+    &lt;p&gt;@Bean
+  public JedisPoolConfig jedisPoolConfig() {
+    JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+    //    jedisPoolConfig.set …
+    return jedisPoolConfig;
+  }
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;POJO对象&lt;/p&gt;
+
+    &lt;p&gt;```java
+public class Student {
+  public Student() {
+  }&lt;/p&gt;
+
+    &lt;p&gt;public Student(String id, String name, int age) {
+    this.id = id;
+    this.name = name;
+    this.age = age;
+  }&lt;/p&gt;
+
+    &lt;p&gt;private String id;
+  private String name;
+  private int age;&lt;/p&gt;
+
+    &lt;p&gt;// 省略getter setter…
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建一个RedisService来获取数据&lt;/p&gt;
+
+    &lt;p&gt;```java
+package redis;&lt;/p&gt;
+
+    &lt;p&gt;import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;&lt;/p&gt;
+
+    &lt;p&gt;/**
+ * 描述: TODO:
+ * 包名: redis.
+ * 作者: barton.
+ * 日期: 16-9-24.
+ * 项目名称: redis
+ * 版本: 1.0
+ * JDK: since 1.8
+ */
+@Service
+public class RedisService {&lt;/p&gt;
+
+    &lt;p&gt;@Autowired
+  private RedisTemplate&amp;lt;String, String&amp;gt; redisTemplate;&lt;/p&gt;
+
+    &lt;p&gt;// keyGenerator = “keyGenerator”注意结合Spring IOC/DI的概念.
+  @Cacheable(value = “studentcache”, keyGenerator = “keyGenerator”)
+  public Student getStudent(String id, String name, int age) {
+    System.out.println(“如果没有缓存,则会输出这一行内容!”);
+    return new Student(id, name, age);
+  }
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用JUnit Test测试getStudent方法&lt;/p&gt;
+
+    &lt;p&gt;```java
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;&lt;/p&gt;
+
+    &lt;p&gt;/**
+ * 描述: TODO:
+ * 包名: redis.
+ * 作者: barton.
+ * 日期: 16-9-24.
+ * 项目名称: redis
+ * 版本: 1.0
+ * JDK: since 1.8
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes = {RedisApplication.class})
+public class RedisServiceTest {&lt;/p&gt;
+
+    &lt;p&gt;@Autowired
+  private RedisService service;&lt;/p&gt;
+
+    &lt;p&gt;@Test
+  public void testGetStudent() {
+    System.out.println(“第一次:”);
+    System.out.println(service.getStudent(“1”, “barton”, 22));
+    System.out.println(“第二次:”);
+    System.out.println(service.getStudent(“1”, “barton”, 22));
+  }
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;输出结果&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;在首次运行时会输出:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+第一次:
+如果没有缓存,则会输出这一行内容!
+redis.Student@6c5747db
+第二次:
+redis.Student@ba4f370
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;再次运行时会输出:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+第一次:
+redis.Student@1ffd0114
+第二次:
+redis.Student@b3857e2
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;解释:
+再次运行时,redis中已经存在该对象的key了.所以两次都是从缓存中取得value值.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;如果将redis停止后,再启动,其运行结果同再次运行时输出的结果.原因,redis会根据配置文件的相关配置将value值进行持久化,而不仅仅是存放在内存中,断电后就没有了.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 12 Oct 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/10/12/%E5%9C%A8Spring-Boot%E4%B8%AD%E4%BD%BF%E7%94%A8Redis/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/10/12/%E5%9C%A8Spring-Boot%E4%B8%AD%E4%BD%BF%E7%94%A8Redis/</guid>
+        
+        <category>Spring Boot</category>
+        
+        
+        <category>Spring-Boot</category>
+        
+      </item>
+    
+      <item>
+        <title>修改无法启动的docker容器的配置</title>
+        <description>&lt;h2 id=&quot;section&quot;&gt;问题描述&lt;/h2&gt;
+
+&lt;p&gt;mysql在运行过程中报错,进入mysql容器修改配置文件时,单词拼错,导致mysql容器无法重新启动.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;解决思路&lt;/h2&gt;
+
+&lt;p&gt;由于docker无法进入已经停止的容器,所以只能曲线救国.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;先提交无法进入的docker容器&lt;/li&gt;
+  &lt;li&gt;使用临时终端启动新的镜像并修改相应文件,再次提交改容器&lt;/li&gt;
+  &lt;li&gt;将无法启动的docker容器中的内容复制出来&lt;/li&gt;
+  &lt;li&gt;使用新的镜像启动容器并挂载文件内容&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;解决步骤&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;提交已经死亡的mysql容器&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  docker commit mysql-old sunshineasbefore/mysql
+ &lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;启动临时终端并修改出错的配置文件&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  docker run -it --name mysql-modify sunshineasbefore/mysql /bin/bash
+ &lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  vim /etc/mysql/my.cnf
+ &lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;复制原有mysql数据库&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  cp -r /data/docker/volumes/925bca0a69b6bffc06933db5578dcadda2efa3d7cee7c5642d7734e001293353
+  /_data /xxx/xxx
+ &lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;提交修改后的mysql容器&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  docker commit mysql-modify sunshineasbefore/mysql
+ &lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;重新启动新的mysql容器并挂载原有mysql数据库&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  docker run -d -p 3306:3306 --name mysql-new -v
+  /xxx/xxx/_data/:/var/lib/mysql sunshineasbefore/mysql mysqld
+ &lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;strong&gt;这个地方需要注意:&lt;/strong&gt;
+  因为在第二个步骤启动临时终端时使用了&lt;code class=&quot;highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;命令覆盖了mysql镜像中的&lt;code class=&quot;highlighter-rouge&quot;&gt;mysqld&lt;/code&gt;命令,如果这一步不使用&lt;code class=&quot;highlighter-rouge&quot;&gt;mysqld&lt;/code&gt; 命令覆盖回来的话,则不会启动成功.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;总结&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;话说在使用docker的过程中,直接进入容器修改配置文件,出错了好像真没有什么办法能够回复.只能在使用过程中注意了…&lt;/li&gt;
+  &lt;li&gt;话说在使用docker的过程中,还是要把配置文件挂载出来的好…&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 11 Oct 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/10/11/%E4%BF%AE%E6%94%B9%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E7%9A%84docker%E5%AE%B9%E5%99%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/10/11/%E4%BF%AE%E6%94%B9%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E7%9A%84docker%E5%AE%B9%E5%99%A8%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</guid>
+        
+        <category>docker</category>
+        
+        
+        <category>docker</category>
+        
+      </item>
+    
+      <item>
+        <title>使用 GitHub Markdown Jekyll 开发个人博客</title>
+        <description>&lt;h2 id=&quot;github&quot;&gt;GitHub简介&lt;/h2&gt;
+
+&lt;p&gt;Git是一个分布式的版本控制系统，最初由Linus Torvalds编写，用作Linux内核代码的管理。在推出后，Git在其它项目中也取得了很大成功，尤其是在Ruby社区中。目前，包括Rubinius、Merb和Bitcoin在内的很多知名项目都使用了Git。Git同样可以被诸如Capistrano和Vlad the Deployer这样的部署工具所使用。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://baike.baidu
+.com/link?url=sjR5Bsqi5H4FkplgzTJWtdreJ86zA1pyx4Mp_0JdbrvBrMn6u_9618irNxNpzq-Tnp4LE4l31QdvijxdKZZu7a&quot;&gt;百度百科:GitHub简介&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.yangzhiping.com/tech/github.html&quot;&gt;如何高效利用GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://rogerdudler.github.io/git-guide/index.zh.html&quot;&gt;git - 简明指南&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;markdown&quot;&gt;Markdown简介&lt;/h2&gt;
+
+&lt;p&gt;Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。
+Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格、脚注、内嵌HTML等等），这些功能原初的Markdown尚不具备，它们能让Markdown转换成更多的格式，例如LaTeX，Docbook。Markdown增强版中比较有名的有Markdown Extra、MultiMarkdown、 Maruku等。这些衍生版本要么基于工具，如Pandoc；要么基于网站，如GitHub和Wikipedia，在语法上基本兼容，但在一些语法和渲染效果上有改动。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://baike.baidu.com/link?url=_2GpTyKb0kBrVlGDOcGvmBjTDSPhazbeHDGeBghfVYbndvW94rERblhCJfazQZ9-VCL7iINFDbpMZWbL1Y956a&quot;&gt;百度百科:Markdown简介&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.jianshu.com/p/1e402922ee32/&quot;&gt;Markdown——入门指南&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.appinn.com/markdown/&quot;&gt;Markdown 语法说明 (简体中文版)&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;jekyll&quot;&gt;Jekyll简介&lt;/h2&gt;
+
+&lt;p&gt;jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和WordPress又有很大的不同，原因是jekyll只是一个生成静态网页的工具，不需要数据库支持。但是可以配合第三方服务,例如Disqus。最关键的是jekyll可以免费部署在Github上，而且可以绑定自己的域名。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://baike.baidu.com/link?url=frJ6Wu9gTPEIDJ8V-YvX94eUfcHRc_H2mNAPzr2CHviW1dBRpN-EivNxFdRCA6vzyhFm5y50miqiQPDnCCAFFK&quot;&gt;百度百科:Jekyll简介&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://jekyllcn.com/&quot;&gt;Jekyll中文文档&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;好处&lt;/h2&gt;
+
+&lt;p&gt;我们可以像提交代码一样来管理我们的博客,简单方便快捷,而且还免费. 在此感谢&lt;a href=&quot;www.github.com&quot;&gt;GitHub&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;搭建本地开发环境&lt;/h2&gt;
+&lt;p&gt;本文开发环境基于Ubuntu Kylin 16.04 LTS&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装Ruby&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  sudo apt-get install ruby
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;安装gem&lt;/p&gt;
+
+    &lt;p&gt;这个按照官网的教程安装上就可以了&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;a href=&quot;https://rubygems.org/pages/download&quot;&gt;gem官网&lt;/a&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用gem安装jekyll&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+ sudo gem install jekyll
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;jekyll-themesclone&quot;&gt;选择Jekyll themes并clone到本地&lt;/h2&gt;
+&lt;p&gt;我选择的是 &amp;gt; &lt;a href=&quot;https://github.com/liungkejin/liungkejin.github.io&quot;&gt;Jekyll theme链接:&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;点击github 的 fork功能 将代码fork到自己的仓库&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;git clone 刚刚fork的仓库到本地&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  cd /home/barton/develop/code/git/
+  git clone https://github.com/sunshineasbefore/liungkejin.github.io.git
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建自己的博客文件夹&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  mkdir blog
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;复制&lt;code class=&quot;highlighter-rouge&quot;&gt;liungkejin.github.io&lt;/code&gt;到&lt;code class=&quot;highlighter-rouge&quot;&gt;blog&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  cp -R liungkejin.github.io/* ./blog
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;本地调试&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  cd /home/barton/develop/code/git/blog
+  jekyll serve #不是jekyll server
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;等待运行完成后,在控制台也会打印出URL,复制此URL用浏览器打开即可访问,比如输入localhost:4000.
+&lt;strong&gt;注意此处可能也会输入localhost:4000/blog 这个要根据_config.yml文件中是否配置baseurl来决定&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;pushbloggithub&quot;&gt;push本地blog文件夹到github仓库&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;首先需要在github上创建blog仓库&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;然后在&lt;code class=&quot;highlighter-rouge&quot;&gt;/home/barton/develop/code/git/blog&lt;/code&gt;文件夹下执行一下命令:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+  git init #初始化git 本地仓库
+  git remote set-url origin https://github.com/sunshineasbefore/blog.git #更改本地仓库的远程仓库地址
+  git add ./* #添加文件到git版本管理中
+  git commit -m &quot;init&quot; #将变更提交到本地仓库
+  git branch gh-pages #创建新的gh-pages分支(如果要在github中使用pages功能需要这么一个分支)
+  git push -u origin gh-pages #推送本地gh-pages分支到远程仓库,此步骤需要输入github用户名(邮箱)和密码
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;blogpages&quot;&gt;在blog仓库中设置开启pages功能&lt;/h2&gt;
+&lt;p&gt;网上介绍这个功能的文章有很多,咱就不再重复一便了…
+  进行到此步骤,在设置中就可以看到github分配给你的域名,比如说:sunshineasbefore.github.io/blog
+  点击此域名即可访问使用github pages功能搭建的静态博客.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;博客配置&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Jekyll的语法以及目录结构请参考Jekyll的中文文档.(文章开头有)&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;更改_config.yml&lt;/p&gt;
+
+    &lt;p&gt;更改后内容如下:&lt;/p&gt;
+
+    &lt;p&gt;```yml
+# Site settings
+title: 阳光如初.
+description: http://veryjava.cn/
+favicon: /assets/img/avatar.JPG
+baseurl: #此处写 &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;仓库名称&lt;/code&gt;,如果使用个人名,则不用写
+url: http://veryjava.cn/ # 如果没有个人域名(稍后介绍),此处写 github分配给你的域名,比如说:sunshineasbefore.github.io/blog
+rss_url:&lt;/p&gt;
+
+    &lt;h1 id=&quot;build-settings&quot;&gt;Build settings&lt;/h1&gt;
+
+    &lt;p&gt;highlighter: pygments # 语法高亮&lt;/p&gt;
+
+    &lt;p&gt;timezone: Asia/Shanghai&lt;/p&gt;
+
+    &lt;p&gt;markdown: kramdown # 此处使用kramdown编辑器
+kramdown:
+  input: GFM # 扩展语法.这个很重要,如果不写,则语法高亮不起作用
+  auto_ids: true
+  auto_id_prefix: ‘id-‘
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;更改作者设置和博客设置
+这两个文件主要是个人简介功能和博客头部个人签名设置
+这两个文件在_data目录下.
+更改后author.yml和blog.yml内容如下:
+author.yml:&lt;/p&gt;
+
+    &lt;p&gt;```yml
+# Author settings
+name: 王
+title: Java 开发工程师
+address: 山东, 济南
+email: work_wjj@163.com
+github: sunshineasbefore
+gavatar: /assets/img/avatar.JPG
+workHistory:
+- work3:
+  company: 济南三际电子商务有限公司
+  location: 山东, 济南
+  title: Java 高级开发工程师
+  started: 2015
+  duration: (2015.8 - 至今)
+  description: Linux服务器维护,项目开发,参与系统架构设计&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;work2:
+company: 上海某科技公司
+location: 中国，上海
+title: Java 开发工程师
+started: 2014
+duration: (2014.4 - 2015.8)
+description: 在平安好车做新车购,C2C项目&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;work1:
+company: 济南某对日外包企业
+location: 山东, 济南
+title: Java 程序员
+started: 2013
+duration: (2012.6 - 2014.4)
+description: 对日项目外包&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;educationHistory:
+- education1:
+  organization: 烟台某大学
+  degree: 学士
+  major: 软件技术
+  started: 2008
+  duration: (2008.9 - 2012.7)
+  description: C/C++, Java, C#, 等
+languages:
+- language1:
+  name: 中文
+  proficiency: 母语
+- language2:
+  name: 英语
+  proficiency: 有限
+programmingSkills:
+- Java:
+  name: Java
+  percentage: 90%
+- Bash:
+  name: Bash Shell
+  percentage: 60%
+- JS:
+  name: JavaScript
+  percentage: 70%
+- Docker:
+  name: Docker
+  percentage: 50%
+- git:
+  name: Git
+  percentage: 70%
+- MySQL:
+  name: MySQL
+  percentage: 70%&lt;/p&gt;
+
+    &lt;p&gt;```&lt;/p&gt;
+
+    &lt;p&gt;blog.yml:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;yml
+title: 阳光如初.
+description: 怀揣梦想,永不止步!
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;书写博客&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;格式
+在_posts文件夹下新建文档,格式如下:&lt;code class=&quot;highlighter-rouge&quot;&gt;yyyy-mm-dd-文件名称.md&lt;/code&gt; (文件名称可以带空格)
+jekyll以日期+名称的格式命名文章,否则将不识别.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;文档头部&lt;/p&gt;
+
+    &lt;h2 id=&quot;section-4&quot;&gt;```&lt;/h2&gt;
+    &lt;p&gt;layout: post
+title:  “Welcome to Jekyll!”
+date:   2014-01-27 21:57:11
+categories: jekyll update
+—
+```&lt;/p&gt;
+
+    &lt;p&gt;其中:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;title：文章的标题&lt;/li&gt;
+      &lt;li&gt;date：文章的日期&lt;/li&gt;
+      &lt;li&gt;categories：定义了文章所属的目录，一个list，将会根据这个目录的list来创建目录并将文章html放在生成的目录下，文章分类时候用，这里就不使用了&lt;/li&gt;
+      &lt;li&gt;layout：文章所使用的模板名称，也就是_layouts中定义的模板的文件名去掉.html&lt;/li&gt;
+      &lt;li&gt;tags：例子中没有，定义了文章的标签，也是一个list，文章分类时候用，这里就不使用了&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;kramdown
+kramdown遵循大多数markdown的语法,但是有一些细节的地方不太一致.比如说代码块和之前的文字描述之间必须有空行;Tab键和空格的表现形式差距很大等,&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;push文章到仓库&lt;/p&gt;
+
+    &lt;p&gt;将写好的文章push到远程仓库的gh-pages分支后,点击github分配给你的域名便可访问了.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-5&quot;&gt;个性域名设置.&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;申请域名:
+我是从&lt;a href=&quot;https://wanwang.aliyun.com/&quot;&gt;万网&lt;/a&gt; 申请的域名veryjava.cn. (已经归属于阿里云旗下)
+具体申请步骤不再介绍.&lt;/li&gt;
+  &lt;li&gt;两种方式绑定个性域名:
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;使用CNAME文件.
+在博客文件夹的根目录创建CNAME文件.&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+touch CNAME
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;编辑CNAME文件放置自己的个性域名:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;bash
+ vim CNAME
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;编辑后的内容:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;
+veryjava.cn
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;是的,仅仅就只有一行,并且不要带www&lt;/p&gt;
+
+        &lt;p&gt;然后将CNAME文件push到远程仓库就可以了.当然不要忘记设置&lt;a href=&quot;http://jingyan.baidu
+.com/article/3c343ff70fb6e60d3779632f.html&quot;&gt;域名的DNS解析&lt;/a&gt;.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;直接在仓库的设置选项中设置
+打开仓库设置选项 找到&lt;code class=&quot;highlighter-rouge&quot;&gt;Custom domain&lt;/code&gt;功能,添加自己的域名即可.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;需要注意的地方
+DNS解析到国外需要24小时的时间,所以设置好后,不要在看到仓库设置中的黄色警告时着急.等等明天就好了.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 03 Sep 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/09/03/%E4%BD%BF%E7%94%A8-GitHub-Markdown-Jekyll-%E5%BC%80%E5%8F%91%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/09/03/%E4%BD%BF%E7%94%A8-GitHub-Markdown-Jekyll-%E5%BC%80%E5%8F%91%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</guid>
+        
+        <category>jekyll markdown github</category>
+        
+        
+        <category>其他</category>
+        
+      </item>
+    
+      <item>
+        <title>Spring MVC 简介</title>
+        <description>&lt;p&gt;本文主要介绍Spring MVC.&lt;/p&gt;
+
+&lt;h2 id=&quot;mvc&quot;&gt;MVC概述&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MVC 是 Model-View-Control 的简称，即模型-视图-控制器。它是一个存在于服务器表达层的模型，它将应用分开，改变应用之间的高度耦合。&lt;/li&gt;
+  &lt;li&gt;视图
+    &lt;ul&gt;
+      &lt;li&gt;数据的展现。视图是用户看到并与之交互的界面。视图向用户显示相关的数据，并能接收用户的输入数据，但是它并不进行任何实际的业务处理。视图可以向模型查询业务状态，但不能改变模型。视图还能接受模型发出的数据更新事件，从而对用户界面进行同步更新。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;模型
+    &lt;ul&gt;
+      &lt;li&gt;应用对象。模型是应用程序的主体部分。 模型代表了业务数据和业务逻辑； 当数据发生改变时，它要负责通知视图部分；一个模型能为多个视图提供数据。由于同一个模型可以被多个视图重用，所以提高了应用的可重用性。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;控制器
+    &lt;ul&gt;
+      &lt;li&gt;逻辑处理、控制实体数据在视图上展示、调用模型处理业务请求。当 Web 用户单击 Web 页面中的提交按钮来发送 HTML 表单时，控制器接收请求并调用相应的模型组件去处理请求，然后调用相应的视图来显示模型返回的数据。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;MVC 模型运行机制
+在 MVC 模式中，Web 用户向服务器提交的所有请求都由控制器接管。接受到请求之后，控制器负责决定应该调用哪个模型来进行处理；然后模型根据用户请求进行相应的业务逻辑处理，并返回数据；最后控制器调用相应的视图来格式化模型返回的数据，并通过视图呈现给用户。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://dl.iteye.com/upload/attachment/576353/d3d769c0-5df9-3c31-9984-42f1fcbd00bb.jpg&quot; alt=&quot;MVC 模型运行机制&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;三层架构概述&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Presentation tier + Application tier + Data tier (展现层 + 应用层 + 数据访问层)&lt;/li&gt;
+  &lt;li&gt;实际上MVC只存在三层架构的展现层,M实际商是数据模型,是包含数据的对象.&lt;/li&gt;
+  &lt;li&gt;Service和Dao层反馈在应用层和数据访问层&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-mvc-&quot;&gt;Spring MVC 介绍&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Spring Web MVC处理请求的流程
+具体执行步骤如下：
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;首先用户发送请求—–&amp;gt;前端控制器，前端控制器根据请求信息（如URL）来决定选择哪一个页面控制器进行处理并把请求委托给它，即以前的控制器的控制逻辑部分；图2-1中的1、2步骤；&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;页面控制器接收到请求后，进行功能处理，首先需要收集和绑定请求参数到一个对象，这个对象在Spring Web MVC中叫命令对象，并进行验证，然后将命令对象委托给业务对象进行处理；处理完毕后返回一个ModelAndView（模型数据和逻辑视图名）；图2-1中的3、4、5步骤；&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;前端控制器收回控制权，然后根据返回的逻辑视图名，选择相应的视图进行渲染，并把模型数据传入以便视图渲染；图2-1中的步骤6、7；&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;前端控制器再次收回控制权，将响应返回给用户，图2-1中的步骤8；至此整个结束
+&lt;img src=&quot;http://sishuok.com/forum/upload/2012/7/14/529024df9d2b0d1e62d8054a86d866c9__1.JPG&quot; alt=&quot;Spring Web MVC处理请求的流程&quot; /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-mvc&quot;&gt;Spring MVC的优势&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;清晰的角色划分：前端控制器（DispatcherServlet）、请求到处理器映射（HandlerMapping）、处理器适配器（HandlerAdapter）、视图解析器（ViewResolver）、处理器或页面控制器（Controller）、验证器（   Validator）、命令对象（Command  请求参数绑定到的对象就叫命令对象）、表单对象（Form Object 提供给表单展示和提交到的对象就叫表单对象）。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;分工明确，而且扩展点相当灵活，可以很容易扩展，虽然几乎不需要；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;由于命令对象就是一个POJO，无需继承框架特定API，可以使用命令对象直接作为业务对象；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;和Spring 其他框架无缝集成，是其它Web框架所不具备的；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可适配，通过HandlerAdapter可以支持任意的类作为处理器；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;可定制性，HandlerMapping、ViewResolver等能够非常简单的定制；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;功能强大的数据验证、格式化、绑定机制；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;利用Spring提供的Mock对象能够非常简单的进行Web层单元测试；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;本地化、主题的解析的支持，使我们更容易进行国际化和主题的切换。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;强大的JSP标签库，使JSP编写更容易。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;………………还有比如RESTful风格的支持、简单的文件上传、约定大于配置的契约式编程支持、基于注解的零配置支持等等。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-mvc-1&quot;&gt;Spring MVC的常用注解&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;@ Controller 表明这个类是Spring MVC里的Controller.Dispatcher Servlet 会自动扫描注解了此注解的类.在声明普通Bean的时候,使用@Component,@Service,@Repository和@Controller是等同的,因为@Service,@Repository,@Controller都组合了@Component元注解.但在Spring MVC声明控制器Bean的时候,只能使用@Controller.&lt;/li&gt;
+  &lt;li&gt;@RequestMapping 用来映射Web请求(访问路径和参数),处理类和方法.其支持Servlet的request和response作为参数.&lt;/li&gt;
+  &lt;li&gt;@ResponseBody 支持将返回值放在response体内,而不是返回一个页面,此注解可放置在返回值前或者方法上.&lt;/li&gt;
+  &lt;li&gt;@RequestBody 允许request的参数在request体中,而不是直接链接在地址后面.此注解放置在参数前.&lt;/li&gt;
+  &lt;li&gt;@PathVariable 用来接收路径参数,此注解放置在参数前.&lt;/li&gt;
+  &lt;li&gt;@RestController 这是一个组合注解,组合了@Controller和@ResponseBody&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;延伸阅读:
+&amp;gt; &lt;a href=&quot;http://blog.csdn.net/jcx5083761/article/details/9340209&quot;&gt;什么是request,response&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-mvc--1&quot;&gt;Spring MVC 基本配置&lt;/h2&gt;
+&lt;p&gt;Spring MVC的定制配置需要我们的配置类集成一个WebMvcConfigurerAdapter类,并在此类使用@EnableWebMvc注解,来开启Spring MVC的配置支持.&lt;/p&gt;
+
+&lt;h2 id=&quot;spring-mvc--2&quot;&gt;Spring MVC 静态资源配置&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://blog.csdn.net/isea533/article/details/50412212&quot;&gt;Spring Boot默认的静态资源配置&lt;/a&gt;
+  如果需要直接访问静态资源,可以在我们的配置类中重写 addResourceHandlers方法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;快捷的ViewController
+无需做任何业务处理,只是简单的页面转向,可以使用addViewControllers方法来实现.&lt;/p&gt;
+
+    &lt;p&gt;```java
+package com.wangge.buzmgt.config;&lt;/p&gt;
+
+    &lt;p&gt;import com.wangge.json.JSONFormatMethodProcessor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+import org.springframework.http.converter.xml.SourceHttpMessageConverter;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;&lt;/p&gt;
+
+    &lt;p&gt;import java.util.ArrayList;
+import java.util.List;&lt;/p&gt;
+
+    &lt;p&gt;@Configuration
+@EnableWebMvc
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
+  @Override
+  public void addViewControllers (ViewControllerRegistry registry) {
+    registry.addViewController (“/”).setViewName (“index”);
+    registry.addViewController (“/left”).setViewName (“left”);
+  }&lt;/p&gt;
+
+    &lt;p&gt;@Override
+  public void addReturnValueHandlers (List&lt;handlermethodreturnvaluehandler&gt; returnValueHandlers) {
+    returnValueHandlers.add (new JSONFormatMethodProcessor (messageConverter ()));
+  }&lt;/handlermethodreturnvaluehandler&gt;&lt;/p&gt;
+
+    &lt;p&gt;private List&amp;lt;HttpMessageConverter&lt;?&gt;&gt; messageConverter () {
+    List&lt;HttpMessageConverter&lt;?&gt;&amp;gt; converters = new ArrayList&amp;lt;&amp;gt; ();
+    converters.add (new ByteArrayHttpMessageConverter ());
+    converters.add (new StringHttpMessageConverter ());
+    converters.add (new ResourceHttpMessageConverter ());
+    converters.add (new SourceHttpMessageConverter&amp;lt;&amp;gt; ());
+    converters.add (new AllEncompassingFormHttpMessageConverter ());
+    converters.add (new Jaxb2RootElementHttpMessageConverter ());
+    converters.add (new MappingJackson2HttpMessageConverter ());
+    return converters;
+  }&lt;/p&gt;
+
+    &lt;p&gt;@Override
+  public void addResourceHandlers (ResourceHandlerRegistry registry) {
+    registry.addResourceHandler (“/static/**”).addResourceLocations (“classpath:/static/”);
+  }
+}&lt;/p&gt;
+
+    &lt;p&gt;```&lt;/p&gt;
+
+    &lt;p&gt;其中 addResourceLocations 指的是文件放置的目录,addResourceHandler指的是对外暴露的访问路径.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 28 Aug 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/08/28/Spring-MVC-%E7%AE%80%E4%BB%8B/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/08/28/Spring-MVC-%E7%AE%80%E4%BB%8B/</guid>
+        
+        <category>Spring MVC</category>
+        
+        
+        <category>Spring-MVC</category>
+        
+      </item>
+    
+      <item>
+        <title>基于java getter/setter方法配置apache shiro</title>
+        <description>&lt;p&gt;本文主要介绍使用javaconfig的模式配置Shiro web.&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;说明&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;谷歌,百度上介绍apache shiro配置的文章并不少,但是缺少我想要的基于java getter/setter方法配置apache shiro的文章.今天整一个.&lt;/li&gt;
+  &lt;li&gt;重点在于 ShiroConfig类中如何配置shiroFilter,securityManager,tokenRealm,sessionListener以及sessionManager.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;@Configuration&lt;/em&gt;是spring的一个注解,用来标识该类是一个配置类,并且会注入到spring容器中.可以直接使用@Autowird注入.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;代码&lt;/h2&gt;
+&lt;p&gt;SessionListener:&lt;/p&gt;
+
+&lt;p&gt;```java
+import org.apache.shiro.session.Session;
+import org.springframework.stereotype.Component;
+import ss.app.common.util.ContextUtil;&lt;/p&gt;
+
+&lt;p&gt;@Component
+public class SessionListener implements org.apache.shiro.session.SessionListener {&lt;/p&gt;
+
+&lt;p&gt;@Override
+  public void onStart(Session session) {
+  }&lt;/p&gt;
+
+&lt;p&gt;@Override
+  public void onStop(Session session) {
+  }&lt;/p&gt;
+
+&lt;p&gt;@Override
+  public void onExpiration(Session session) {
+  }
+}
+```&lt;/p&gt;
+
+&lt;p&gt;UserRealm:&lt;/p&gt;
+
+&lt;p&gt;```java
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+import ss.app.user.entity.SystemUser;
+import ss.app.user.service.SystemUserService;&lt;/p&gt;
+
+&lt;p&gt;public class UserRealm extends AuthorizingRealm {&lt;/p&gt;
+
+&lt;p&gt;@Autowired
+  private SystemUserService systemUserService;&lt;/p&gt;
+
+&lt;p&gt;@Override
+  protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+    return null;
+  }&lt;/p&gt;
+
+&lt;p&gt;@Override
+  protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    String name = (String) token.getPrincipal();
+    String password = String.valueOf((char[]) token.getCredentials());&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;if (StringUtils.isBlank(&quot;name&quot;) || StringUtils.isBlank(&quot;password&quot;)) {
+  throw new UnknownAccountException(&quot;用户名或者密码为空&quot;);
+}
+
+SystemUser user = systemUserService.findByName(name);
+
+if (null == user) {
+  throw new UnknownAccountException(&quot;用户不存在&quot;);
+}
+
+if (!StringUtils.equals(password, user.getPassword())) {
+  throw new UnknownAccountException(&quot;密码不正确&quot;);
+}
+
+//如果身份认证验证成功，返回一个AuthenticationInfo实现
+return new SimpleAuthenticationInfo(name, password, getName());   } } ``` ShiroConfig:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;```java
+import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.SessionListener;
+import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.UserFilter;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;&lt;/p&gt;
+
+&lt;p&gt;import javax.servlet.Filter;
+import java.util.*;&lt;/p&gt;
+
+&lt;p&gt;@Configuration
+public class ShiroConfig {&lt;/p&gt;
+
+&lt;p&gt;@Bean(name = “shiroFilter”)
+  public ShiroFilterFactoryBean shiroFilter() {
+    ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
+    shiroFilter.setLoginUrl(“/”);
+    shiroFilter.setSuccessUrl(“/index”);
+    shiroFilter.setUnauthorizedUrl(“/forbidden”);&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Map&amp;lt;String, Filter&amp;gt; filters = new HashMap&amp;lt;&amp;gt;();
+filters.put(&quot;users&quot;, new UserFilter());
+shiroFilter.setFilters(filters);
+
+Map&amp;lt;String, String&amp;gt; filterChainMap = new HashMap&amp;lt;&amp;gt;();
+filterChainMap.put(&quot;/index/**&quot;, &quot;users&quot;);
+filterChainMap.put(&quot;/menu/**&quot;, &quot;users&quot;);
+filterChainMap.put(&quot;/gzhyy/**&quot;, &quot;users&quot;);
+filterChainMap.put(&quot;/gzhgl/**&quot;, &quot;users&quot;);
+filterChainMap.put(&quot;/assert/**&quot;, &quot;anon&quot;);
+filterChainMap.put(&quot;/css/**&quot;, &quot;anon&quot;);
+filterChainMap.put(&quot;/js/**&quot;, &quot;anon&quot;);
+shiroFilter.setFilterChainDefinitionMap(filterChainMap);
+shiroFilter.setSecurityManager(securityManager());
+
+return shiroFilter;   }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;public org.apache.shiro.mgt.SecurityManager securityManager() {
+    DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+    securityManager.setSessionManager(sessionManager());
+    Collection&lt;realm&gt; realms = new ArrayList&amp;lt;&amp;gt;();
+    realms.add(tokenRealm());
+    securityManager.setRealms(realms);
+    return securityManager;
+  }&lt;/realm&gt;&lt;/p&gt;
+
+&lt;p&gt;@Bean
+  public UserRealm tokenRealm() {
+    return new UserRealm();
+  }&lt;/p&gt;
+
+&lt;p&gt;public List&lt;sessionlistener&gt; sessionListener() {
+    List&lt;sessionlistener&gt; listeners = new ArrayList&amp;lt;&amp;gt;();
+    listeners.add(new ss.app.common.config.session.SessionListener());
+    return listeners;
+  }&lt;/sessionlistener&gt;&lt;/sessionlistener&gt;&lt;/p&gt;
+
+&lt;p&gt;public SessionManager sessionManager() {
+    DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+    sessionManager.setSessionListeners(sessionListener());
+    sessionManager.setGlobalSessionTimeout(30 * 60　* 1000); // 30分钟
+    return sessionManager;
+  }
+}&lt;/p&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+</description>
+        <pubDate>Sun, 28 Aug 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/08/28/%E4%BD%BF%E7%94%A8-java-getter.setter%E6%96%B9%E6%B3%95%E9%85%8D%E7%BD%AEapache-shiro/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/08/28/%E4%BD%BF%E7%94%A8-java-getter.setter%E6%96%B9%E6%B3%95%E9%85%8D%E7%BD%AEapache-shiro/</guid>
+        
+        <category>shiro</category>
+        
+        
+        <category>Apache-Shiro</category>
+        
+      </item>
+    
+      <item>
+        <title>Spring Boot的Web开发</title>
+        <description>&lt;p&gt;本文主要介绍Spring Boot 对Spring MVC的支持.&lt;/p&gt;
+
+&lt;h2 id=&quot;spring-bootweb&quot;&gt;Spring Boot的Web开发支持&lt;/h2&gt;
+&lt;p&gt;Spring Boot提供了spring-boot-starter-web为Web开发予以支持.它为我们提供了嵌入的Tomcat以及Spring MVC的依赖.&lt;/p&gt;
+
+&lt;h2 id=&quot;thymeleaf&quot;&gt;Thymeleaf模板引擎&lt;/h2&gt;
+
+&lt;p&gt;Spring Boot 推荐使用Thymeleaf作为模板引擎.因为其提供了完整的Spring MVC支持.
+  因为使用嵌入的Servlet容器来运行JSP的话有一些小问题,内嵌Tomcat,Jetty不支持以jar的形式运行JSP,而且Undertow不支持JSP.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Thymeleaf基础知识
+Thymeleaf是一个java类库,它是一个xml/xhtml/html5的模板引擎,可以作为MVC的Web应用的View层.&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/dreamfree/p/4158557.html?utm_source=tuicool&quot;&gt;Thymeleaf基础知识&lt;/a&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;补充:
+在javascript中访问model&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;javascript
+&amp;lt;script th:inline=&quot;javascript&quot;&amp;gt;
+var single=[[${singlePerson}]];
+console.log(single.name + &quot;/&quot; + single.age);
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-bootthymeleaf&quot;&gt;Spring Boot的Thymeleaf支持&lt;/h2&gt;
+&lt;p&gt;Spring Boot通过自动配置功能对Thymeleaf进行了自动配置,因此可以直接使用.&lt;/p&gt;
+
+&lt;p&gt;```html
+&amp;lt;!DOCTYPE html&amp;gt;&lt;/p&gt;
+&lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot; lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta http-equiv=&quot;X-UA-COMPATIBLE&quot; content=&quot;IE=edge&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+    &lt;title&gt;Thymeleaf&lt;/title&gt;
+    &lt;link th:src=&quot;@{bootstrap/css/bootstrap.min.css}&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link th:src=&quot;@{bootstrap/css/bootstrap-theme.min.css}&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;script th:src=&quot;@{js/jquery-2.2.3.js}&quot; type=&quot;text/javascript&quot;&gt;
+    &lt;script th:src=&quot;@{bootstrap/js/bootstrap.min.js}&quot;/&gt;
+    &lt;script&gt;
+        $(function () {
+            console.log(123);
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;panel panel-primary&quot;&gt;
+    &lt;div class=&quot;panel-heading&quot;&gt;
+        &lt;h3 class=&quot;panel-title&quot;&gt; 访问model&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;panel-body&quot;&gt;
+        &lt;span th:text=&quot;${singlePerson.name}&quot;&gt;&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div th:if=&quot;${not #lists.isEmpty(people)}&quot;&gt;
+    &lt;div class=&quot;panel panel-primary&quot;&gt;
+        &lt;div class=&quot;panel-heading&quot;&gt;
+            &lt;h3 class=&quot;panel-title&quot;&gt;列表&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;panel-body&quot;&gt;
+            &lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li class=&quot;list-group-item&quot; th:each=&quot;person:${people}&quot;&gt;
+                    &lt;span th:text=&quot;${person.name}&quot;&gt;&lt;/span&gt;
+                    &lt;span th:text=&quot;${person.age}&quot;&gt;&lt;/span&gt;
+                    &lt;button class=&quot;btn&quot; th:onclick=&quot;&#39;getName(\&#39;&#39;+${person.name}+&#39;\&#39;);&#39;&quot;&gt;获得名字
+                    &lt;/button&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script th:inline=&quot;javascript&quot;&gt;
+    var single = [[${singlePerson}]];
+    console.log(single.name + &quot;/&quot; + single.age);
+    function getName(name) {
+        console.log(name);
+    }
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;```java
+package person.learn.thymeleaf;&lt;/p&gt;
+
+&lt;p&gt;import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;&lt;/p&gt;
+
+&lt;p&gt;import java.util.ArrayList;
+import java.util.List;&lt;/p&gt;
+
+&lt;p&gt;/**
+ * 1.使用Thymeleaf作为模板引擎,要在application.yml里设置spring.thymeleaf.caching设置为false
+ * 2.用了模板引擎之后,原先对于jsp的设置无效
+ * 3.(idea编辑器需要手动点击CTRL+F9,手动编译,因为IDEA文件不需要手动保存)修改Thymeleaf模板的内容后,要不重启项目就生效的话,需要make一下,
+ * 或者使用热部署:http://mamicode.com/info-detail-1346413.html
+ * 4.要使用Thymeleaf模板 请将pom.xml中相应的jar依赖注释去掉
+ * Created by barton on 16-5-19.
+ */
+@Controller
+public class ThymeleafController {&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@RequestMapping(&quot;/thymeleaf&quot;)
+public String index(Model model) {
+    Person single = new Person(&quot;aa&quot;, 11);
+
+    List&amp;lt;Person&amp;gt; people = new ArrayList&amp;lt;&amp;gt;();
+
+    Person p1 = new Person(&quot;xx&quot;, 11);
+    Person p2 = new Person(&quot;yy&quot;, 22);
+    Person p3 = new Person(&quot;zz&quot;, 33);
+
+    people.add(p1);
+    people.add(p2);
+    people.add(p3);
+
+    model.addAttribute(&quot;singlePerson&quot;, single);
+    model.addAttribute(&quot;people&quot;, people);
+
+    return &quot;thymeleaf/thymeleaf&quot;;
+} }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;p&gt;```java
+package person.learn.thymeleaf;&lt;/p&gt;
+
+&lt;p&gt;/**
+ * Created by barton on 16-5-19.
+ */
+public class Person {&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public Person(String name, Integer age) {
+    this.name = name;
+    this.age = age;
+}
+
+private String name;
+private Integer age;
+
+public String getName() {
+    return name;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
+
+public Integer getAge() {
+    return age;
+}
+
+public void setAge(Integer age) {
+    this.age = age;
+} }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h2 id=&quot;spring-boot&quot;&gt;Spring Boot自动配置的静态资源&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;类路径文件
+把类路径下的/static,/public,/resources和/META-INF/resources文件夹下的静态文件直接映射为/&lt;strong&gt;,可以通过http://localhost:8080/&lt;/strong&gt;来访问.&lt;/li&gt;
+  &lt;li&gt;webjar
+webjar就是将我们常用的脚本框架封装在jar包中的jar包.
+把webjar的/META-INF/resources/webjars/下的静态文件映射为/webjar/&lt;strong&gt;,可以通过http://localhost:8080/webjar/&lt;/strong&gt; 来访问&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-boot-&quot;&gt;Spring Boot 对静态首页的支持&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;classpath:/META-INF/resources/index.html&lt;/li&gt;
+  &lt;li&gt;classpath:/resources/index.html&lt;/li&gt;
+  &lt;li&gt;classpath:/static/index.html&lt;/li&gt;
+  &lt;li&gt;classpath:/public/index.html&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tomcatjetty&quot;&gt;将Tomcat替换为Jetty&lt;/h2&gt;
+
+&lt;p&gt;```xml&lt;/p&gt;
+&lt;dependency&gt;
+          &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+          &lt;artifactid&gt;spring-boot-starter-web&lt;/artifactid&gt;
+          &lt;exclusions&gt;
+              &lt;exclusion&gt;
+                  &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+                  &lt;artifactid&gt;spring-boot-starter-tomcat&lt;/artifactid&gt;
+              &lt;/exclusion&gt;
+          &lt;/exclusions&gt;
+      &lt;/dependency&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;!-- 使用jetty替代tomcat,如果是使用jsp作为模板，则不能使用内嵌的jetty容器。 --&amp;gt;
+  &amp;lt;!-- 内嵌的jetty容器不支持jsp模板 --&amp;gt;
+  &amp;lt;dependency&amp;gt;
+      &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+      &amp;lt;artifactId&amp;gt;spring-boot-starter-jetty&amp;lt;/artifactId&amp;gt;
+  &amp;lt;/dependency&amp;gt; ```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;tomcatundertow&quot;&gt;将Tomcat替换为Undertow&lt;/h2&gt;
+
+&lt;p&gt;```xml&lt;/p&gt;
+&lt;dependency&gt;
+         &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+         &lt;artifactid&gt;spring-boot-starter-web&lt;/artifactid&gt;
+         &lt;exclusions&gt;
+             &lt;exclusion&gt;
+                 &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+                 &lt;artifactid&gt;spring-boot-starter-tomcat&lt;/artifactid&gt;
+             &lt;/exclusion&gt;
+         &lt;/exclusions&gt;
+     &lt;/dependency&gt;
+&lt;dependency&gt;
+         &lt;groupid&gt;org.springframework.boot&lt;/groupid&gt;
+         &lt;artifactid&gt;spring-boot-starter-undertow&lt;/artifactid&gt;
+  &lt;/dependency&gt;
+&lt;p&gt;```&lt;/p&gt;
+
+&lt;h2 id=&quot;favicon&quot;&gt;设置Favicon&lt;/h2&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;只需将自己的favicon.ico 防止在类路径根目录,类路径META-INF/resources/下,类路径resources/下,类路径static/下或者类路径public/下.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Sun, 28 Aug 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/08/28/Spring-Boot%E7%9A%84Web%E5%BC%80%E5%8F%91/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/08/28/Spring-Boot%E7%9A%84Web%E5%BC%80%E5%8F%91/</guid>
+        
+        <category>Spring Boot</category>
+        
+        
+        <category>Spring-Boot</category>
+        
+      </item>
+    
+      <item>
+        <title>对JPA实体关系管理双向关联的一些思考</title>
+        <description>&lt;p&gt;本文主要解决JPA中实体关联关系在进行json序列化的过程中,产生的循环问题.&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;现象&lt;/h2&gt;
+
+&lt;p&gt;在使用JPA进行实体关系管理的时候,会产生无限循环的情况,如果使用&lt;code class=&quot;highlighter-rouge&quot;&gt;fastjson&lt;/code&gt;来进行序列化,则表现形式如下:&lt;/p&gt;
+
+&lt;p&gt;```json&lt;/p&gt;
+
+&lt;p&gt;{
+  “address”:{
+    “id”:63,
+    “name”:”1address name”,
+    “person”:{“$ref”:”..”},
+    “zipCode”:”ZipCode01”
+  },
+  “firstName”:”0firstName”,
+  “id”:69,
+  “lastName”:”0lastName”
+},
+{
+  “address”:{
+    “id”:64,
+    “name”:”2address name”,
+    “person”:{“$ref”:”..”},
+    “zipCode”:”ZipCode11”
+  },
+  “firstName”:”1firstName”,
+  “id”:70,
+  “lastName”:”1lastName”
+}
+```&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;重点是&lt;code class=&quot;highlighter-rouge&quot;&gt;address.person&lt;/code&gt;的值:&lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;$ref&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;..&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/em&gt;
+如果你用的不是fastjson(它默认会检查该对象是否已经存在在json文本中)而是其他一些json类库,比如jackson,则会抛出&lt;code class=&quot;highlighter-rouge&quot;&gt;java.lang.StackOverflowError&lt;/code&gt;异常(无限循环产生的栈溢出所导致).
+但是,哪怕你用的是fastjson,你也无法用js来解析&lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;$ref&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;..&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;解决思路&lt;/h3&gt;
+
+&lt;h4 id=&quot;fastjsonjsontojsonstringpageserializerfeaturedisablecircularreferencedetect&quot;&gt;使用fastjson自带的&lt;code class=&quot;highlighter-rouge&quot;&gt;JSON.toJSONString(page,SerializerFeature.DisableCircularReferenceDetect)&lt;/code&gt;&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;优点:解决快速&lt;/li&gt;
+  &lt;li&gt;缺点:
+    &lt;ul&gt;
+      &lt;li&gt;序列化后的json文本包含太多不需要的信息,冗杂程度太高&lt;/li&gt;
+      &lt;li&gt;方式太死板,没有相应的注解来实现(jackson有一个),接口只能返回String类型了.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;restful&quot;&gt;重新设计实体关系,&lt;em&gt;尽量避免双向关联&lt;/em&gt;,使用RESTful进行接口的暴露.(举个例子来说)&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;优点:逻辑清晰,结构更合理&lt;/li&gt;
+  &lt;li&gt;缺点:
+    &lt;ul&gt;
+      &lt;li&gt;对老代码改动较大.&lt;/li&gt;
+      &lt;li&gt;实现较复杂,要对整体业务逻辑有清晰的认识.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;实体类Person:&lt;/p&gt;
+
+&lt;p&gt;```java
+public class Person {
+  private String name;&lt;/p&gt;
+
+&lt;p&gt;@Id
+  @GeneratedValue
+  private Long id;&lt;/p&gt;
+
+&lt;p&gt;@ManyToMany
+  @JoinColumn(name = “address_id”)
+  private List&amp;lt;Address&amp;gt; addresses;&lt;/p&gt;
+
+&lt;p&gt;// …… getter and setter
+}
+```&lt;/p&gt;
+
+&lt;p&gt;实体类Address:&lt;/p&gt;
+
+&lt;p&gt;```java
+public class Address {
+  @Id
+  @GeneratedValue
+  private Long id;&lt;/p&gt;
+
+&lt;p&gt;private String name;&lt;/p&gt;
+
+&lt;p&gt;private String zipCode;&lt;/p&gt;
+
+&lt;p&gt;// …… getter and setter
+}
+```&lt;/p&gt;
+
+&lt;p&gt;两个实体类之间的关系为Many Person To Many Address,只在Person实体类中进行关系的配置,避免双向关联.&lt;/p&gt;
+
+&lt;p&gt;下面举例说明使用RESTful来对资源进行访问的情况.&lt;/p&gt;
+
+&lt;p&gt;对于Person:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;1 查询所有Person: &lt;code class=&quot;highlighter-rouge&quot;&gt;/persons&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;2 查询某一个Person: &lt;code class=&quot;highlighter-rouge&quot;&gt;/persons/{person_id}&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;3 &lt;strong&gt;查询某一个Person的所有Address: &lt;code class=&quot;highlighter-rouge&quot;&gt;/persons/{person_id}/addresses&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;4 &lt;strong&gt;查询某一个Person的某一个Address: &lt;code class=&quot;highlighter-rouge&quot;&gt;/persons/{person_id}/addresses/{address_id}&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果要查询一个Address有几个Person:  &lt;code class=&quot;highlighter-rouge&quot;&gt;/persons?address.id=xxx&lt;/code&gt; (带分页,自己设置pageSize)&lt;/p&gt;
+
+&lt;p&gt;对于Address:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;1 查询所有Address: &lt;code class=&quot;highlighter-rouge&quot;&gt;/addresses&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;2 查询某一个Address: &lt;code class=&quot;highlighter-rouge&quot;&gt;/addresses/{address_id}&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上是Person和Address的一些简单接口.其中&lt;strong&gt;粗体&lt;/strong&gt;部分为关联查询.
+设计的思路就是要尽量避免双向关联,然后把Person作为一个资源,把Address作为Person的一个子资源或者属性.
+上述Person中的1 2 将Address作为了属性,查询时可以通过参数传递进去.而上述Person中的3 4 两个接口则将Address作为一个子资源进行管理.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;如果要用Address来作为一个资源反查Person怎么办?&lt;/strong&gt;
+在一个Address管理页面,需求要求列出某一个住址下的Person:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;点击某一项:
+  Address发起&lt;code class=&quot;highlighter-rouge&quot;&gt;/persons?address.id=xxx&lt;/code&gt;请求,取得&lt;code class=&quot;highlighter-rouge&quot;&gt;List&amp;lt;Person&amp;gt;&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;默认显示:
+  在controller层对&lt;code class=&quot;highlighter-rouge&quot;&gt;/persons?address.id_in=xxx1,xxx2,xxx3&lt;/code&gt;接口的返回值进行处理,取得&lt;code class=&quot;highlighter-rouge&quot;&gt;List&amp;lt;Address&amp;gt;&lt;/code&gt;和其对应的&lt;code class=&quot;highlighter-rouge&quot;&gt;List&amp;lt;Person&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;尽量避免双向关联,使用更合理的API设计方式,合理区分子资源和属性.
+大大减少数据库压力!&lt;/p&gt;
+</description>
+        <pubDate>Sun, 28 Aug 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/08/28/%E5%AF%B9JPA%E5%AE%9E%E4%BD%93%E5%85%B3%E7%B3%BB%E7%AE%A1%E7%90%86%E5%8F%8C%E5%90%91%E5%85%B3%E8%81%94%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/08/28/%E5%AF%B9JPA%E5%AE%9E%E4%BD%93%E5%85%B3%E7%B3%BB%E7%AE%A1%E7%90%86%E5%8F%8C%E5%90%91%E5%85%B3%E8%81%94%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/</guid>
+        
+        <category>JPA</category>
+        
+        
+        <category>JPA</category>
+        
+      </item>
+    
+      <item>
+        <title>spring-data-jpa 中文文档(2)</title>
+        <description>&lt;p&gt;spring data jpa 中文文档 2&lt;/p&gt;
+
+&lt;h2 id=&quot;jpa-repositories&quot;&gt;&lt;strong&gt;JPA Repositories&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;简介
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;Spring命名空间
+SpringData使用了自定义的命名空间去定义repository。通常我们会使用repositories元素:&lt;/p&gt;
+
+        &lt;p&gt;```xml
+  &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;/p&gt;
+        &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:jpa=&quot;http://www.springframework.org/schema/data/jpa&quot; xsi:schemalocation=&quot;http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/data/jpa
+      http://www.springframework.org/schema/data/jpa/spring-jpa.xsd&quot;&gt;
+
+    &lt;jpa:repositories base-package=&quot;com.acme.repositories&quot; /&gt;
+  &lt;/beans&gt;
+        &lt;p&gt;```&lt;/p&gt;
+
+        &lt;p&gt;这个配置中启用了持久化异常处理,所有标志了&lt;code class=&quot;highlighter-rouge&quot;&gt;@Repository&lt;/code&gt;的Bean将会被转换成为Spring的&lt;code class=&quot;highlighter-rouge&quot;&gt;DataAccessException&lt;/code&gt;。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;自定义命名空间属性
+除了repositories,JPA命名空间还提供了其他的属性去控制:&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;属性名&lt;/th&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;属性值&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;entity-manager-factory-ref&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;默认的话,是使用&lt;code class=&quot;highlighter-rouge&quot;&gt;ApplicationContext&lt;/code&gt;中找到的&lt;code class=&quot;highlighter-rouge&quot;&gt;EntityManagerFactory&lt;/code&gt;,如果有多个的时候,则需要特别指明这个属性,他将会对repositories路径中找到的类进行处理&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;transaction-manager-ref&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;默认使用系统定义的&lt;code class=&quot;highlighter-rouge&quot;&gt;PlatformTransactionManager&lt;/code&gt;,如果有多个事务管理器的话,则需特别指定。&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;基于注解的配置
+SpringData JPA支持JavaConfig方式的配置:&lt;/p&gt;
+
+        &lt;p&gt;```java
+@Configuration
+@EnableJpaRepositories
+@EnableTransactionManagement
+class ApplicationConfig {&lt;/p&gt;
+
+        &lt;p&gt;@Bean
+  public DataSource dataSource() {&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+return builder.setType(EmbeddedDatabaseType.HSQL).build();   }
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;@Bean
+  public EntityManagerFactory entityManagerFactory() {&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+vendorAdapter.setGenerateDdl(true);
+
+LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+factory.setJpaVendorAdapter(vendorAdapter);
+factory.setPackagesToScan(&quot;com.acme.domain&quot;);
+factory.setDataSource(dataSource());
+factory.afterPropertiesSet();
+
+return factory.getObject();   }
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;@Bean
+  public PlatformTransactionManager transactionManager() {&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;JpaTransactionManager txManager = new JpaTransactionManager();
+txManager.setEntityManagerFactory(entityManagerFactory());
+return txManager;   } } ``` 上面的配置中,我们设置了一个内嵌的HSQL数据库,我们也配置了`EntityManagerFactory`,并且使用Hibernate作为持久层。最后也定义了`JPATransactionManager`。最上面我们还使用了`@EnableJpaRepositories`注解。
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;持久化实体
+    &lt;ul&gt;
+      &lt;li&gt;保存实体
+保存实体,我们之前使用了CrudRepository.save(…)方法。他会使用相关的JPA EntityManager来调用persist或者merge,如果数据没存在于数据库中,则调用entityManager.persist(..),否
+则调用entityManager.merge(…)。
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;实体状态监测策略
+SpringData JPA提供三种策略去监测实体是否存在:&lt;/p&gt;
+
+            &lt;table&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;属性名&lt;/th&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;属性值&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Id-Property inspection (default)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;默认的会通过ID来监测是否新数据,如果ID属性是空的,则认为是新数据,反则认为旧数据&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Implementing Persistable&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;如果实体实现了Persistable接口,那么就会通过isNew的方法来监测。&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Implementing EntityInformation&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;这个是很少用的&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;查询方法
+    &lt;ul&gt;
+      &lt;li&gt;查询策略
+你可以写一个语句或者从方法名中查询。
+        &lt;ul&gt;
+          &lt;li&gt;声明查询方法
+  虽然说方法名查询的方式很方便,可是你可能会遇到方法名查询规则不支持你所要查询的关键字或者方法名写的很长,不方便,或者很丑陋。那么你就需要通过命名查询或者在方法上使用
+&lt;code class=&quot;highlighter-rouge&quot;&gt;@Query&lt;/code&gt;来解决。&lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;查询创建
+通常我们可以使用方法名来解析查询语句,例如:&lt;/p&gt;
+
+            &lt;p&gt;```java
+public interface UserRepository extends Repository&amp;lt;User, Long&amp;gt; {&lt;/p&gt;
+
+            &lt;p&gt;List&lt;user&gt; findByEmailAddressAndLastname(String emailAddress, String lastname);
+}
+```
+其所支持的在方法名中可以使用的关键字:&lt;/user&gt;&lt;/p&gt;
+
+            &lt;table&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;关键字&lt;/th&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;例子&lt;/th&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;JPQL片段&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;And&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByLastnameAndFirstname&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.lastname = ?1 and x.firstname = ?2&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Or&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByLastnameOrFirstname&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.lastname = ?1 or x.firstname = ?2&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Is,Equals&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByFirstname,findByFirstnameIs,findByFirstnameEquals&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.firstname = ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Between&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByStartDateBetween&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.startDate between ?1 and ?2&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;LessThan&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeLessThan&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age &amp;lt; ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;LessThanEqual&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeLessThanEqual&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age ⇐ ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;GreaterThan&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeGreaterThan&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age &amp;gt; ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;GreaterThanEqual&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeGreaterThanEqual&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age &amp;gt;= ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;After&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByStartDateAfter&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.startDate &amp;gt; ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Before&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByStartDateBefore&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.startDate &amp;lt; ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;IsNull&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeIsNull&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age is null&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;IsNotNull,NotNull&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAge(Is)NotNull&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age not null&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Like&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByFirstnameLike&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.firstname like ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;NotLike&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByFirstnameNotLike&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.firstname not like ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;StartingWith&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByFirstnameStartingWith&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.firstname like ?1 (parameter bound with appended %)&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;EndingWith&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByFirstnameEndingWith&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.firstname like ?1 (parameter bound with prepended %)&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Containing&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByFirstnameContaining&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.firstname like ?1 (parameter bound wrapped in %)&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;OrderBy&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeOrderByLastnameDesc&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age = ?1 order by x.lastname desc&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Not&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByLastnameNot&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.lastname &amp;lt;&amp;gt; ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;In&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeIn(Collection&lt;age&gt; ages)&lt;/age&gt;&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age in ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;NotIn&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByAgeNotIn(Collection&lt;age&gt; age)&lt;/age&gt;&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.age not in ?1&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;True&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByActiveTrue()&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.active = true&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;False&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByActiveFalse()&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where x.active = false&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;IgnoreCase&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;findByFirstnameIgnoreCase&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;… where UPPER(x.firstame) = UPPER(?1)&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+
+            &lt;p&gt;&lt;em&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;In&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;NotIn&lt;/code&gt;也可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;Collection&lt;/code&gt;的子类.&lt;/em&gt;&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;使用JPA命名查询
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;注解方式&lt;/p&gt;
+
+        &lt;p&gt;```java
+@Entity
+@NamedQuery(name = “User.findByEmailAddress”,
+  query = “select u from User u where u.emailAddress = ?1”)
+public class User {&lt;/p&gt;
+
+        &lt;p&gt;}
+```&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;XML方式 略.&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;声明接口
+要使用上面的命名查询,我们的接口需要这么声明&lt;/p&gt;
+
+        &lt;p&gt;```java
+public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {&lt;/p&gt;
+
+        &lt;p&gt;List&lt;user&gt; findByLastname(String lastname);&lt;/user&gt;&lt;/p&gt;
+
+        &lt;p&gt;User findByEmailAddress(String emailAddress);
+}
+```
+SpringData会先从域类中查询配置,根据”.(原点)“区分方法名,而不会使用自动方法名解析的方式去创建查询。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;@Query&lt;/code&gt;
+命名查询适合用于小数量的查询,我们可以使用@Query来替代:&lt;/p&gt;
+
+    &lt;p&gt;```java
+public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;@Query(“select u from User u where u.emailAddress = ?1”)
+  User findByEmailAddress(String emailAddress);
+}
+```
+在表达式中使用Like查询,例子如下:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {
+  @Query(&quot;select u from User u where u.firstname like %?1&quot;)
+  List&amp;lt;User&amp;gt; findByFirstnameEndsWith(String firstname);
+}
+&lt;/code&gt;
+这个例子中,我们使用了%,当然,你的参数就没必要加入这个符号了。&lt;/p&gt;
+
+    &lt;p&gt;使用原生sql查询
+我们可以在&lt;code class=&quot;highlighter-rouge&quot;&gt;@Query&lt;/code&gt;中使用本地查询,当然,你需要设置&lt;code class=&quot;highlighter-rouge&quot;&gt;nativeQuery=true&lt;/code&gt;,必须说明的是,这样的话,&lt;em&gt;就不再支持分页以及排序。&lt;/em&gt;&lt;/p&gt;
+
+    &lt;p&gt;```java
+public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;@Query(value = “SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1”, nativeQuery = true)
+  User findByEmailAddress(String emailAddress);
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用命名参数
+使用命名查询,我们需要用到@Param来注释到指定的参数上,如下:&lt;/p&gt;
+
+    &lt;p&gt;```java
+public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;@Query(“select u from User u where u.firstname = :firstname or u.lastname = :lastname”)
+  User findByLastnameOrFirstname(@Param(“lastname”) String lastname,
+                                 @Param(“firstname”) String firstname);
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用SpEL表达式
+在Spring Data JPA 1.4以后,我们支持在&lt;code class=&quot;highlighter-rouge&quot;&gt;@Query&lt;/code&gt;中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;SpEL表达式&lt;/code&gt;(&lt;a href=&quot;http://sishuok.com/forum/blogPost/list/2463.html&quot;&gt;简介&lt;/a&gt;)来接收变量。
+SpEL支持的变量:&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th style=&quot;text-align: left&quot;&gt;变量名&lt;/th&gt;
+          &lt;th style=&quot;text-align: left&quot;&gt;使用方式&lt;/th&gt;
+          &lt;th style=&quot;text-align: left&quot;&gt;描述&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td style=&quot;text-align: left&quot;&gt;entityName&lt;/td&gt;
+          &lt;td style=&quot;text-align: left&quot;&gt;select x from #{#entityName} x&lt;/td&gt;
+          &lt;td style=&quot;text-align: left&quot;&gt;根据给定的Repository自动插入相关的entityName。有两种方式能被解析出来:如果域类型定义了@Entity属性名称。或者直接使用类名称。&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+
+    &lt;p&gt;以下的例子中,我们在查询语句中插入表达式(你也可以用@Entity(name = “MyUser”)。&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+@Entity
+public class User {
+  @Id
+  @GeneratedValue
+  Long id;
+  String lastname;
+}
+public interface UserRepository extends JpaRepository&amp;lt;User,Long&amp;gt; {
+  @Query(&quot;select u from #{#entityName} u where u.lastname = ?1&quot;)
+  List&amp;lt;User&amp;gt; findByLastname(String lastname);
+}
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;如果你想写一个通用的Repository接口,那么你也可以用这个表达式来处理:&lt;/p&gt;
+
+    &lt;p&gt;```java&lt;/p&gt;
+
+    &lt;p&gt;@MappedSuperclass
+  public abstract class AbstractMappedType {
+    …
+    String attribute
+  }&lt;/p&gt;
+
+    &lt;p&gt;@Entity
+  public class ConcreteType extends AbstractMappedType { … }&lt;/p&gt;
+
+    &lt;p&gt;@NoRepositoryBean
+  public interface MappedTypeRepository&lt;t extends=&quot;&quot; abstractmappedtype=&quot;&quot;&gt;
+    extends Repository&amp;lt;T, Long&amp;gt; {&lt;/t&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@Query(&quot;select t from #{#entityName} t where t.attribute = ?1&quot;)
+List&amp;lt;T&amp;gt; findAllByAttribute(String attribute);   }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;public interface ConcreteRepository
+    extends MappedTypeRepository&lt;concretetype&gt; { … }
+```&lt;/concretetype&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;修改语句
+之前我们演示了如何去声明查询语句,当然我们还有修改语句。修改语句的实现,我们只需要在加多一个注解&lt;code class=&quot;highlighter-rouge&quot;&gt;@Modifying&lt;/code&gt;:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+@Modifying
+@Query(&quot;update User u set u.firstname = ?1 where u.lastname = ?2&quot;)
+int setFixedFirstnameFor(String firstname, String lastname);
+&lt;/code&gt;
+这样一来,我们就使用了update操作来代替select操作。当我们发起update操作后,可能会有一些过期的数据产生,我们不需要自动去清除它们,因为EntityManager会有效的丢掉那些未提
+  交的变更,如果你想EntityManager自动清除,那么你可以在@Modify上添加clearAutomatically属性(true);&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;QueryHints&lt;/code&gt;(查询提示  &lt;a href=&quot;http://www.eclipse.org/eclipselink/documentation/2.5/jpa/extensions/queryhints.htm&quot;&gt;QueryHits简介&lt;/a&gt;)&lt;/p&gt;
+
+    &lt;p&gt;```java
+public interface UserRepository extends Repository&amp;lt;User, Long&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;@QueryHints(value = { @QueryHint(name = “name”, value = “value”)},
+              forCounting = false)
+  Page&lt;user&gt; findByLastname(String lastname, Pageable pageable);
+}
+```&lt;/user&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置获取和负载图(loadgraph) &lt;a href=&quot;https://yq.aliyun.com/articles/2378&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@NamedEntityGraph&lt;/code&gt;简介&lt;/a&gt;
+JPA2.1 支持 通过&lt;code class=&quot;highlighter-rouge&quot;&gt;@EntityGraph&lt;/code&gt;及其子类型&lt;code class=&quot;highlighter-rouge&quot;&gt;@NamedEntityGraph&lt;/code&gt;来定义获取和负载.它们可以被直接在实体类上,用来配置查询结果的获取计划.获取的方式(获取/负载)可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;@EntityGraph&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;type&lt;/code&gt;属性来进行配置.
+在一个实体类上定义 &lt;code class=&quot;highlighter-rouge&quot;&gt;named entity graph&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Entity
+@NamedEntityGraph(name = “GroupInfo.detail”,
+  attributeNodes = @NamedAttributeNode(“members”))
+public class GroupInfo {&lt;/p&gt;
+
+    &lt;p&gt;// default fetch mode is lazy.
+  @ManyToMany
+  List&lt;groupmember&gt; members = new ArrayList&lt;groupmember&gt;();&lt;/groupmember&gt;&lt;/groupmember&gt;&lt;/p&gt;
+
+    &lt;p&gt;…
+}
+```
+在repository接口中引用在实体类上定义的&lt;code class=&quot;highlighter-rouge&quot;&gt;named entity graph&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Repository
+public interface GroupRepository extends CrudRepository&amp;lt;GroupInfo, String&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;@EntityGraph(value = “GroupInfo.detail”, type = EntityGraphType.LOAD)
+  GroupInfo getByGroupName(String name);
+```
+它也可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;@EntityGraph&lt;/code&gt;注解来直接点对点的指定&lt;code class=&quot;highlighter-rouge&quot;&gt;entity graphs&lt;/code&gt;.假如依照&lt;code class=&quot;highlighter-rouge&quot;&gt;EntityGraph&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;attributePaths&lt;/code&gt;可以被正确的找到,就可以不用在实体类上写&lt;code class=&quot;highlighter-rouge&quot;&gt;@NamedEntityGraph&lt;/code&gt;注解了:&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Repository
+public interface GroupRepository extends CrudRepository&amp;lt;GroupInfo, String&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;@EntityGraph(attributePaths = { “members” })
+  GroupInfo getByGroupName(String name);&lt;/p&gt;
+
+    &lt;p&gt;}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;投影(Projections)
+通常情况下 Spring Data Repositories 会返回整个domain 类.有时候,你需要因为不同的原因,修改domain类的返回结果.
+看下面的例子:&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Entity
+public class Person {&lt;/p&gt;
+
+    &lt;p&gt;@Id @GeneratedValue
+  private Long id;
+  private String firstName, lastName;&lt;/p&gt;
+
+    &lt;p&gt;@OneToOne
+  private Address address;
+  …
+}&lt;/p&gt;
+
+    &lt;p&gt;@Entity
+public class Address {&lt;/p&gt;
+
+    &lt;p&gt;@Id @GeneratedValue
+  private Long id;
+  private String street, state, country;&lt;/p&gt;
+
+    &lt;p&gt;…
+}
+```&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt;的几个属性:&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;是主键&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;fristName&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;lastName&lt;/code&gt;是数据属性.&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;address&lt;/code&gt;链接到其他的domain类型.
+现在假设我们创建了一个像下边这样的repository:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface PersonRepository extends CrudRepository&amp;lt;Person, Long&amp;gt; {
+  Person findPersonByFirstName(String firstName);
+}
+&lt;/code&gt;
+Spring Data将会返回domain类的所有属性.现在有两种选择去仅仅返回&lt;code class=&quot;highlighter-rouge&quot;&gt;address&lt;/code&gt;属性:&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;Address&lt;/code&gt;定义一个repository:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface AddressRepository extends CrudRepository&amp;lt;Address, Long&amp;gt; {}
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;在这种情况下 用&lt;code class=&quot;highlighter-rouge&quot;&gt;PersonRepository&lt;/code&gt;将会返回整个&lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt;对象.使用&lt;code class=&quot;highlighter-rouge&quot;&gt;AddressRepository&lt;/code&gt;仅仅会返回&lt;code class=&quot;highlighter-rouge&quot;&gt;Address&lt;/code&gt;对象.
+但是,如果你真的不想暴露address的信息怎么办?你可以提供一个像下边这样的repository,仅仅提供你想暴露的属性:&lt;/p&gt;
+
+        &lt;p&gt;```java
+interface NoAddresses {&lt;/p&gt;
+
+        &lt;p&gt;String getFirstName();&lt;/p&gt;
+
+        &lt;p&gt;String getLastName();
+}
+```
+其中&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;interface NoAddresses&lt;/code&gt;定义一个接口&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;String getFirstName();&lt;/code&gt;导出&lt;code class=&quot;highlighter-rouge&quot;&gt;firstName&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;String getLastName();&lt;/code&gt;导出&lt;code class=&quot;highlighter-rouge&quot;&gt;lastName&lt;/code&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;这个&lt;code class=&quot;highlighter-rouge&quot;&gt;NoAddress&lt;/code&gt; 只有&lt;code class=&quot;highlighter-rouge&quot;&gt;firstName&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;lastName&lt;/code&gt;的getter方法.它意味着它将不会提供任何的address信息.在定义查询方法的时候,应该用&lt;code class=&quot;highlighter-rouge&quot;&gt;NoAddress&lt;/code&gt;代替&lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;```java
+interface PersonRepository extends CrudRepository&amp;lt;Person, Long&amp;gt; {&lt;/p&gt;
+
+        &lt;p&gt;NoAddresses findByFirstName(String firstName);
+}
+```&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;改变属性的值
+现在你已经知道了怎么样对结果进行投影,已达到不暴露不必要的部分给用户.投影也可以调整要暴露的数据模型.你可以添加一个虚拟的属性:&lt;/p&gt;
+
+        &lt;p&gt;```java
+interface RenamedProperty {&lt;/p&gt;
+
+        &lt;p&gt;String getFirstName();&lt;/p&gt;
+
+        &lt;p&gt;@Value(“#{target.lastName}”)
+  String getName();
+}
+```
+其中:&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;interface RenamedProperty&lt;/code&gt; 定义一个接口.&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;String getFirstName();&lt;/code&gt;导出&lt;code class=&quot;highlighter-rouge&quot;&gt;firstName&lt;/code&gt;属性.&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@Value(&quot;#{target.lastName}&quot;) String getName();&lt;/code&gt;导出&lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt;属性,由于此属性是虚拟的,因此他需要用``@Value(“#{target.lastName}”)`来指定数据的来源.&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;如果你想获得一个人的全称.你可能要用&lt;code class=&quot;highlighter-rouge&quot;&gt;String.format(&quot;%s %s&quot;, person.getFirstName(), person.getLastName())&lt;/code&gt;来拼接.用虚拟的属性可以这样来实现:&lt;/p&gt;
+
+        &lt;p&gt;```java
+interface FullNameAndCountry {&lt;/p&gt;
+
+        &lt;p&gt;@Value(“#{target.firstName} #{target.lastName}”)
+  String getFullName();&lt;/p&gt;
+
+        &lt;p&gt;@Value(“#{target.address.country}”)
+  String getCountry();
+}
+```
+实际上&lt;code class=&quot;highlighter-rouge&quot;&gt;@Value&lt;/code&gt;可以完全访问对象及其内嵌的属性.&lt;code class=&quot;highlighter-rouge&quot;&gt;SpEL&lt;/code&gt;表达式对于施加在投影方法上的定义来说也是非常强大的:
+想想你有一个如下的domain模型:&lt;/p&gt;
+
+        &lt;p&gt;```java
+@Entity
+public class User {&lt;/p&gt;
+
+        &lt;p&gt;@Id @GeneratedValue
+  private Long id;
+  private String name;&lt;/p&gt;
+
+        &lt;p&gt;private String password;
+  …
+}
+```
+在某些情况下,你想让密码在可能的情况下不让其明文出现.这种情况下你可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;@Value&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;SpEL表达式&lt;/code&gt;来创建一个投影:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface PasswordProjection {
+  @Value(&quot;#{(target.password == null || target.password.empty) ? null : &#39;******&#39;}&quot;)
+  String getPassword();
+}
+&lt;/code&gt;
+这个表达式判断当password是null或者empty的时候返回null,否则返回’******’&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;存储过程
+JPA2.1 规格介绍了JPA标准查询API对存储过程调用的支持.下面介绍下&lt;code class=&quot;highlighter-rouge&quot;&gt;@Procedure&lt;/code&gt;注解的使用.&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sql
+DROP procedure IF EXISTS plus1inout
+CREATE procedure plus1inout (IN arg int, OUT res int)
+BEGIN ATOMIC
+ set res = arg + 1;
+END
+&lt;/code&gt;
+存储过程的元数据可以在实体类上通过@NamedStoredProcedureQuery进行配置.&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+@Entity
+@NamedStoredProcedureQuery(name = &quot;User.plus1&quot;, procedureName = &quot;plus1inout&quot;, parameters = {
+  @StoredProcedureParameter(mode = ParameterMode.IN, name = &quot;arg&quot;, type = Integer.class),
+  @StoredProcedureParameter(mode = ParameterMode.OUT, name = &quot;res&quot;, type = Integer.class) })
+public class User {}
+&lt;/code&gt;
+在repository 方法上可以通过多种方式引用存储过程.存储过程可以直接通过&lt;code class=&quot;highlighter-rouge&quot;&gt;@Procedure&lt;/code&gt;注解的&lt;code class=&quot;highlighter-rouge&quot;&gt;value&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;procedureName&lt;/code&gt;属性调用或者通过&lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt;属性.如果repository方法没有名字,则将其作为后备.&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Procedure(“plus1inout”)
+Integer explicitlyNamedPlus1inout(Integer arg);&lt;/p&gt;
+
+    &lt;p&gt;@Procedure(procedureName = “plus1inout”)
+Integer plus1inout(Integer arg);&lt;/p&gt;
+
+    &lt;p&gt;@Procedure(name = “User.plus1IO”)
+Integer entityAnnotatedCustomNamedProcedurePlus1IO(@Param(“arg”) Integer arg);&lt;/p&gt;
+
+    &lt;p&gt;@Procedure
+Integer plus1(@Param(“arg”) Integer arg);
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JPA2 引入了criteria API 去建立查询,Spring Data JPA使用Specifications来实现这个API。在Repository中,你需要继承JpaSpecificationExecutor:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+public interface CustomerRepository extends CrudRepository&amp;lt;Customer, Long&amp;gt;, JpaSpecificationExecutor {
+ …
+}
+&lt;/code&gt;
+下面先给个例子,演示如何利用findAll方法返回所有符合条件的对象:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+List&amp;lt;T&amp;gt; findAll(Specification&amp;lt;T&amp;gt; spec);
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;Specification 接口定义如下:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+public interface Specification&amp;lt;T&amp;gt; {
+  Predicate toPredicate(Root&amp;lt;T&amp;gt; root, CriteriaQuery&amp;lt;?&amp;gt; query,
+            CriteriaBuilder builder);
+}
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;好了,那么我们如何去实现这个接口呢?代码如下:&lt;/p&gt;
+
+    &lt;p&gt;```java
+public class CustomerSpecs {&lt;/p&gt;
+
+    &lt;p&gt;public static Specification&lt;customer&gt; isLongTermCustomer() {
+    return new Specification&lt;customer&gt;() {
+      public Predicate toPredicate(Root&lt;customer&gt; root, CriteriaQuery&amp;lt;?&amp;gt; query,
+            CriteriaBuilder builder) {&lt;/customer&gt;&lt;/customer&gt;&lt;/customer&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     LocalDate date = new LocalDate().minusYears(2);
+     return builder.lessThan(root.get(_Customer.createdAt), date);
+  }
+};   }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;public static Specification&lt;customer&gt; hasSalesOfMoreThan(MontaryAmount value) {
+    return new Specification&lt;customer&gt;() {
+      public Predicate toPredicate(Root&lt;t&gt; root, CriteriaQuery&amp;lt;?&amp;gt; query,
+            CriteriaBuilder builder) {&lt;/t&gt;&lt;/customer&gt;&lt;/customer&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;     // build query here
+  }
+};   } } ```
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;好了,那如果有多个需要结合的话,我们可以这么做:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+MonetaryAmount amount = new MonetaryAmount(200.0, Currencies.DOLLAR);
+List&amp;lt;Customer&amp;gt; customers = customerRepository.findAll(
+  where(isLongTermCustomer()).or(hasSalesOfMoreThan(amount)));
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Query by Example
+    &lt;ul&gt;
+      &lt;li&gt;介绍
+这一部分介绍Query by Example和解释怎么去使用Examples.&lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;使用
+Query by Example由三部分组成.&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Probe&lt;/code&gt; 这是填充字段的domain对象的实际范例.&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher&lt;/code&gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher&lt;/code&gt; 描述怎么去匹配特定字段的细节.他可以通过多个Examples进行重复利用.&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Example&lt;/code&gt; 它由&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;Probe&lt;/code&gt;组成.用来创建一个查询.&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;Query by Example使用与多种情况,但是它也有一些限制.
+适用于:&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;用静态或者静态的约束来查询数据&lt;/li&gt;
+          &lt;li&gt;domain对象的频繁重构,而不用担心破坏现有的查询&lt;/li&gt;
+          &lt;li&gt;根据底层数据存储API进行独立工作
+限制:&lt;/li&gt;
+          &lt;li&gt;用&lt;code class=&quot;highlighter-rouge&quot;&gt;AND&lt;/code&gt;关键字进行条件查询的时候.&lt;/li&gt;
+          &lt;li&gt;不支持内嵌的/组合的属性约束,像&lt;code class=&quot;highlighter-rouge&quot;&gt;firstname = ?0 or (firstname = ?1 and lastname = ?2)&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;仅仅支持starts/contains/ends/regex匹配strings或者精确匹配其他属性类型.
+在使用Query by Example之前,你需要有一个domain对象:&lt;/p&gt;
+
+            &lt;p&gt;```java
+public class Person {&lt;/p&gt;
+
+            &lt;p&gt;@Id
+  private String id;
+  private String firstname;
+  private String lastname;
+  private Address address;&lt;/p&gt;
+
+            &lt;p&gt;// … getters and setters omitted
+}
+```
+这是一个简单的domain对象.你可以使用它去创建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;Example&lt;/code&gt;默认情况下,字段为&lt;code class=&quot;highlighter-rouge&quot;&gt;null&lt;/code&gt;值时会被忽略.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Examples&lt;/code&gt;通过使用&lt;code class=&quot;highlighter-rouge&quot;&gt;of&lt;/code&gt;工厂方法或者&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher&lt;/code&gt;来创建.&lt;code class=&quot;highlighter-rouge&quot;&gt;Example&lt;/code&gt;是不可改变的.&lt;/p&gt;
+
+            &lt;p&gt;```java
+Person person = new Person();
+person.setFirstname(“Dave”);&lt;/p&gt;
+
+            &lt;p&gt;Example&lt;person&gt; example = Example.of(person);
+```
+其中:&lt;/person&gt;&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Person person = new Person(); &lt;/code&gt;创建一个domain对象实例&lt;/li&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;person.setFirstname(&quot;Dave&quot;); &lt;/code&gt;设置firstName属性去查询&lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Example&amp;lt;Person&amp;gt; example = Example.of(person);&lt;/code&gt; 创建&lt;code class=&quot;highlighter-rouge&quot;&gt;Example&lt;/code&gt;
+Examples用repositories来执行是非常理想的.要使用它需要让你的repository接口继承&lt;code class=&quot;highlighter-rouge&quot;&gt;QueryByExampleExecutor&amp;lt;T&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+                &lt;p&gt;```java
+public interface QueryByExampleExecutor&lt;t&gt; {&lt;/t&gt;&lt;/p&gt;
+
+                &lt;s extends=&quot;&quot; t=&quot;&quot;&gt; S findOne(Example&lt;s&gt; example);
+
+  &lt;s extends=&quot;&quot; t=&quot;&quot;&gt; Iterable&lt;s&gt; findAll(Example&lt;s&gt; example);
+
+  // … more functionality omitted.
+}
+```
+&lt;/s&gt;&lt;/s&gt;&lt;/s&gt;&lt;/s&gt;&lt;/s&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;Example matchers
+Example不仅仅局限于默认的设置.你可以给strings定义自己的默认值然后去匹配.使用&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher&lt;/code&gt;绑定null和特定属性的设置.&lt;/p&gt;
+
+            &lt;p&gt;```java
+Person person = new Person();
+person.setFirstname(“Dave”);&lt;/p&gt;
+
+            &lt;p&gt;ExampleMatcher matcher = ExampleMatcher.matching()
+  .withIgnorePaths(“lastname”)
+  .withIncludeNullValues()
+  .withStringMatcherEnding();&lt;/p&gt;
+
+            &lt;p&gt;Example&lt;person&gt; example = Example.of(person, matcher);
+```
+其中:&lt;/person&gt;&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Person person = new Person();&lt;/code&gt;  创建一个domain对象实例.&lt;/li&gt;
+              &lt;li&gt;设置属性值去查询.&lt;/li&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher matcher = ExampleMatcher.matching()&lt;/code&gt;创建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher &lt;/code&gt;让其可以使用,但没有多余的配置项.&lt;/li&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.withIgnorePaths(&quot;lastname&quot;)&lt;/code&gt; Construct a new ExampleMatcher to ignore the property path lastname.&lt;/li&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.withIncludeNullValues()&lt;/code&gt; Construct a new ExampleMatcher to ignore the property path lastname and to include null values.&lt;/li&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;.withStringMatcherEnding();&lt;/code&gt; Construct a new ExampleMatcher to ignore the property path lastname, to include null values, and use perform suffix string matching.&lt;/li&gt;
+              &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Example&amp;lt;Person&amp;gt; example = Example.of(person, matcher);&lt;/code&gt;根据domain对象和配置的&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher&lt;/code&gt;对象来创建一个&lt;code class=&quot;highlighter-rouge&quot;&gt;Example&lt;/code&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;p&gt;你可以给个别的属性指定行为.(比如.&lt;code class=&quot;highlighter-rouge&quot;&gt;firstname&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;lastname&lt;/code&gt;以及domain对象的嵌套属性&lt;code class=&quot;highlighter-rouge&quot;&gt;address.city&lt;/code&gt;)
+你可以调整他让他匹配大小写敏感的选项.&lt;/p&gt;
+
+            &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+ExampleMatcher matcher = ExampleMatcher.matching()
+  .withMatcher(&quot;firstname&quot;, endsWith())
+  .withMatcher(&quot;lastname&quot;, startsWith().ignoreCase());
+}
+&lt;/code&gt;
+另一种配置matcher选项的方式是通过使用Java 8 lambdas表达式.这种方式是一种可以通过询问实现者修改matcher的回调方法.你不需要去返回matcher,因为他已经保留了matcher的实例.(引用)&lt;/p&gt;
+
+            &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+ExampleMatcher matcher = ExampleMatcher.matching()
+  .withMatcher(&quot;firstname&quot;, match -&amp;gt; match.endsWith())
+  .withMatcher(&quot;firstname&quot;, match -&amp;gt; match.startsWith());
+}
+&lt;/code&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher&lt;/code&gt;&lt;/p&gt;
+
+            &lt;table&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;设置&lt;/th&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;范围&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Null-handling&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;ExampleMatcher&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;String matching&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;ExampleMatcher and property path&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Ignoring properties&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Property path&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Case sensitivity&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;ExampleMatcher and property path&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Value transformation&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;Property path&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+
+            &lt;p&gt;&lt;em&gt;Property path指 这个设置项要跟在需要设置的属性后边,而不是在ExampleMatcher对象上进行设置.&lt;/em&gt;&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;对比&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher matcher = ExampleMatcher.matching().withMatcher(&quot;firstname&quot;, endsWith()).withMatcher(&quot;lastname&quot;, startsWith().ignoreCase());&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths(&quot;lastname&quot;).withIncludeNullValues().withStringMatcherEnding();&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;执行一个Example&lt;/p&gt;
+
+            &lt;p&gt;```java
+public interface PersonRepository extends JpaRepository&amp;lt;Person, String&amp;gt; { … }&lt;/p&gt;
+
+            &lt;p&gt;public class PersonService {&lt;/p&gt;
+
+            &lt;p&gt;@Autowired PersonRepository personRepository;&lt;/p&gt;
+
+            &lt;p&gt;public List&lt;person&gt; findPeople(Person probe) {
+    return personRepository.findAll(Example.of(probe));
+  }
+}
+```
+仅仅只有`SingularAttribute`(单数属性)可以被属性匹配正确使用.
+`StringMatcher`选项:&lt;/person&gt;&lt;/p&gt;
+
+            &lt;table&gt;
+              &lt;thead&gt;
+                &lt;tr&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;匹配&lt;/th&gt;
+                  &lt;th style=&quot;text-align: left&quot;&gt;逻辑结果&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;DEFAULT (case-sensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;firstname = ?0&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;DEFAULT (case-insensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;LOWER(firstname) = LOWER(?0)&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;EXACT (case-sensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;firstname = ?0&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;STARTING (case-sensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;firstname like ?0 + ‘%’&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;STARTING (case-insensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;LOWER(firstname) like LOWER(?0) + ‘%’&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;ENDING (case-sensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;firstname like ‘%’ + ?0&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;ENDING (case-insensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;LOWER(firstname) like ‘%’ + LOWER(?0)&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;CONTAINING (case-sensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;firstname like ‘%’ + ?0 + ‘%’&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;CONTAINING (case-insensitive)&lt;/td&gt;
+                  &lt;td style=&quot;text-align: left&quot;&gt;LOWER(firstname) like ‘%’ + LOWER(?0) + ‘%’&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;事务
+默认的CRUD操作在Repository里面都是事务性的。如果是只读操作,只需要设置事务readOnly为true,其他的操作则配置为@Transaction。如果你想修改一个Repository的事务性,你只需要在子接口中重写并且修改他的事务:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+public interface UserRepository extends CrudRepository&amp;lt;User, Long&amp;gt; {
+    @Override
+    @Transactional(timeout = 10)
+    public List\&amp;lt;\User\&amp;gt;\ findAll();
+    // Further query method declarations
+}
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;这样会让findAll方法在10秒内执行否则会超时的非只读事务中。
+另一种修改事务行为的方式在于使用门面或者服务层中,他们包含了多个repository。&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+@Service
+class UserManagementImpl implements UserManagement {
+private final UserRepository userRepository;
+private final RoleRepository roleRepository;
+@Autowired
+public UserManagementImpl(UserRepository userRepository,
+  RoleRepository roleRepository) {
+  this.userRepository = userRepository;
+  this.roleRepository = roleRepository;
+}
+@Transactional
+public void addRoleToAllUsers(String roleName) {
+  Role role = roleRepository.findByName(roleName);
+  for (User user : userRepository.findAll()) {
+    user.addRole(role);
+    userRepository.save(user);
+  }
+}
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;这将会导致在调用addRoleToAllUsers方法的时候,创建一个或者加入一个事务中去。实际在Repository里面定义的事务将会被忽略,而外部定义的事务将会被应用。当然,要使用事务,你需要声明&lt;tx:annotation-driven&gt;&lt;/tx:annotation-driven&gt;(这个例子中,假设你已经使用了component-scan)
+  要让方法在事务中,最简单的方式就是使用@Transactional注解:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+@Transactional(readOnly = true)
+public interface UserRepository extends JpaRepository&amp;lt;User, Long&amp;gt; {
+List &amp;lt;User&amp;gt; findByLastname(String lastname);
+@Modifying
+@Transactional
+@Query(&quot;delete from User u where u.active = false&quot;)
+void deleteInactiveUsers();
+}
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;一般的查询操作,你需要设置readOnly=true。在deleteInactiveUsers方法中,我们添加了Modifying注解以及覆盖了Transactional,这样这个方法执行的时候readOnly=false了.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;锁
+想要为方法指定锁的类型,你只需要使用&lt;code class=&quot;highlighter-rouge&quot;&gt;@Lock&lt;/code&gt;:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface UserRepository extends Repository&amp;lt;User, Long&amp;gt; {
+// Plain query method
+@Lock(LockModeType.READ)
+List&amp;lt;User&amp;gt; findByLastname(String lastname);
+}
+&lt;/code&gt;
+当然你也可以覆盖原有的方法:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface UserRepository extends Repository&amp;lt;User, Long&amp;gt; {
+  // Redeclaration of a CRUD method
+  @Lock(LockModeType.READ);
+  List&amp;lt;User&amp;gt; findAll();
+}
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;审计
+    &lt;ul&gt;
+      &lt;li&gt;基础知识
+SpringData为您跟踪谁创建或者修改数据,以及相应的时间提供了复杂的支持。你现在想要这些支持的话,仅仅需要使用几个注解或者实现接口即可。
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;注解方式: 我们提供了&lt;code class=&quot;highlighter-rouge&quot;&gt;@CreatedBy&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;@LastModifiedBy&lt;/code&gt;去捕获谁操作的实体,当然还有相应的时间&lt;code class=&quot;highlighter-rouge&quot;&gt;@CreatedDate&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;@LastModifiedDate&lt;/code&gt;。&lt;/p&gt;
+
+            &lt;p&gt;```java
+class Customer {&lt;/p&gt;
+
+            &lt;p&gt;@CreatedBy
+  private User user;&lt;/p&gt;
+
+            &lt;p&gt;@CreatedDate
+  private DateTime createdDate;&lt;/p&gt;
+
+            &lt;p&gt;// … further properties omitted
+}
+```
+正如你看到的,你可以选择性的使用这些注解。操作时间方面,你可以使用org.joda.time.DateTime 或者java.util.Date或者long/Long表示。&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;基于接口的审计:
+如果你不想用注解来做审计的话,那么你可以实现&lt;code class=&quot;highlighter-rouge&quot;&gt;Auditable&lt;/code&gt;接口。他暴露了审计属性的get/set方法。
+如果你不想实现接口,那么你可以继承AbstractAuditable,通常来说,注解方式时更加方便的。&lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;审计织入:
+如果你在用@CreatedBy或者@LastModifiedBy的时候,想织入当前的业务操作者,那你可以使用我们提供的AuditorAware&lt;t&gt;接口。T表示你想织入在这两个字段上的类型。&lt;/t&gt;&lt;/p&gt;
+
+            &lt;p&gt;```java
+class SpringSecurityAuditorAware implements AuditorAware&lt;user&gt; {&lt;/user&gt;&lt;/p&gt;
+
+            &lt;p&gt;public User getCurrentAuditor() {&lt;/p&gt;
+
+            &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+if (authentication == null || !authentication.isAuthenticated()) {
+  return null;
+}
+
+return ((MyUserDetails) authentication.getPrincipal()).getUser();   } } ```   在这个实现类中,我们使用SpringSecurity内置的Authentication来查找用户的UserDetails。
+&lt;/code&gt;&lt;/pre&gt;
+            &lt;/div&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;通用审计配置:
+SpringData JPA有一个实体监听器,他可以用于触发捕获审计信息。要用之前,你需要在orm.xml里面注册AuditingEntityListener.当然你得引入&lt;code class=&quot;highlighter-rouge&quot;&gt;spring-aspects.jar&lt;/code&gt;
+审计配置:&lt;/p&gt;
+
+            &lt;p&gt;```xml&lt;/p&gt;
+            &lt;persistence-unit-metadata&gt;
+&lt;persistence-unit-defaults&gt;
+  &lt;entity-listeners&gt;
+    &lt;entity-listener class=&quot;….data.jpa.domain.support.AuditingEntityListener&quot; /&gt;
+  &lt;/entity-listeners&gt;
+&lt;/persistence-unit-defaults&gt;
+&lt;/persistence-unit-metadata&gt;
+            &lt;p&gt;```&lt;/p&gt;
+
+            &lt;p&gt;你也可以再每个实体类上使用&lt;code class=&quot;highlighter-rouge&quot;&gt;@EntityListeners&lt;/code&gt;注解来激活&lt;code class=&quot;highlighter-rouge&quot;&gt;AuditingEntityListener&lt;/code&gt;监听.&lt;/p&gt;
+
+            &lt;p&gt;```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class MyEntity {&lt;/p&gt;
+
+            &lt;p&gt;}
+```
+要启用这个审计,我们还需要在配置文件里面配置多一条:&lt;/p&gt;
+
+            &lt;p&gt;```xml&lt;/p&gt;
+            &lt;jpa:auditing auditor-aware-ref=&quot;yourAuditorAwareBean&quot; /&gt;
+
+            &lt;p&gt;```
+Spring Data JPA 1.5之后,你也可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;@EnableJpaAuditing &lt;/code&gt;注解来激活.&lt;/p&gt;
+
+            &lt;p&gt;```java
+@Configuration
+@EnableJpaAuditing
+class Config {&lt;/p&gt;
+
+            &lt;p&gt;@Bean
+  public AuditorAware&lt;auditableuser&gt; auditorProvider() {
+    return new AuditorAwareImpl();
+  }
+}
+```&lt;/auditableuser&gt;&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;其他: 略. &lt;a href=&quot;http://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#jpa.misc&quot;&gt;点击查看&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;附录
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;附录A: 命名空间引用
+&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;repositories /&amp;gt;&lt;/code&gt;的元素:&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;属性名称&lt;/th&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;描述&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;base-package&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;定义去扫描哪些继承了*Repository接口的用户自定义Repository接口.&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;repository-impl-postfix&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;定义用户自定义实现sql语句的实现类以什么结尾,以用来自动发现.默认是&lt;code class=&quot;highlighter-rouge&quot;&gt;Impl&lt;/code&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;query-lookup-strategy&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;定义查询的策略.默认的是&lt;code class=&quot;highlighter-rouge&quot;&gt;create-if-not-found&lt;/code&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;named-queries-location&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;定义去哪里寻找已经写好了named-query查询的配置文件&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;consider-nested-repositories&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;考虑是否要控制内嵌的Repository接口.默认是&lt;code class=&quot;highlighter-rouge&quot;&gt;false&lt;/code&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;附录B:Populators 命名空间引用
+&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;populator /&amp;gt;&lt;/code&gt;的元素:&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;属性名称&lt;/th&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;描述&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;locations&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;寻找要填入Repository接口的对象的值的文件.&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;附录C:Repository 查询关键词
+支持的查询关键字:&lt;/p&gt;
+
+        &lt;table class=&quot;tableblock frame-all grid-all spread&quot;&gt;
+&lt;colgroup&gt;
+&lt;col style=&quot;width: 25%;&quot; /&gt;
+&lt;col style=&quot;width: 75%;&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class=&quot;tableblock halign-left valign-top&quot;&gt;Logical keyword&lt;/th&gt;
+&lt;th class=&quot;tableblock halign-left valign-top&quot;&gt;Keyword expressions&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;AND&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;And&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;OR&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Or&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;AFTER&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;After&lt;/code&gt;, &lt;code&gt;IsAfter&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;BEFORE&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Before&lt;/code&gt;, &lt;code&gt;IsBefore&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;CONTAINING&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Containing&lt;/code&gt;, &lt;code&gt;IsContaining&lt;/code&gt;, &lt;code&gt;Contains&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;BETWEEN&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Between&lt;/code&gt;, &lt;code&gt;IsBetween&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;ENDING_WITH&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;EndingWith&lt;/code&gt;, &lt;code&gt;IsEndingWith&lt;/code&gt;, &lt;code&gt;EndsWith&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;EXISTS&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Exists&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;FALSE&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;False&lt;/code&gt;, &lt;code&gt;IsFalse&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;GREATER_THAN&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;GreaterThan&lt;/code&gt;, &lt;code&gt;IsGreaterThan&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;GREATER_THAN_EQUALS&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;GreaterThanEqual&lt;/code&gt;, &lt;code&gt;IsGreaterThanEqual&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;IN&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;In&lt;/code&gt;, &lt;code&gt;IsIn&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;IS&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Is&lt;/code&gt;, &lt;code&gt;Equals&lt;/code&gt;, (or no keyword)&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;IS_NOT_NULL&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;NotNull&lt;/code&gt;, &lt;code&gt;IsNotNull&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;IS_NULL&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Null&lt;/code&gt;, &lt;code&gt;IsNull&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;LESS_THAN&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;LessThan&lt;/code&gt;, &lt;code&gt;IsLessThan&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;LESS_THAN_EQUAL&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;LessThanEqual&lt;/code&gt;, &lt;code&gt;IsLessThanEqual&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;LIKE&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Like&lt;/code&gt;, &lt;code&gt;IsLike&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;NEAR&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Near&lt;/code&gt;, &lt;code&gt;IsNear&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;NOT&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Not&lt;/code&gt;, &lt;code&gt;IsNot&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;NOT_IN&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;NotIn&lt;/code&gt;, &lt;code&gt;IsNotIn&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;NOT_LIKE&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;NotLike&lt;/code&gt;, &lt;code&gt;IsNotLike&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;REGEX&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Regex&lt;/code&gt;, &lt;code&gt;MatchesRegex&lt;/code&gt;, &lt;code&gt;Matches&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;STARTING_WITH&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;StartingWith&lt;/code&gt;, &lt;code&gt;IsStartingWith&lt;/code&gt;, &lt;code&gt;StartsWith&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;TRUE&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;True&lt;/code&gt;, &lt;code&gt;IsTrue&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;WITHIN&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Within&lt;/code&gt;, &lt;code&gt;IsWithin&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;附录D:Repository查询的返回结果类型
+支持的查询返回结果类型:&lt;/p&gt;
+
+        &lt;table class=&quot;tableblock frame-all grid-all spread&quot;&gt;
+&lt;colgroup&gt;
+&lt;col style=&quot;width: 25%;&quot; /&gt;
+&lt;col style=&quot;width: 75%;&quot; /&gt;
+&lt;/colgroup&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class=&quot;tableblock halign-left valign-top&quot;&gt;Return type&lt;/th&gt;
+&lt;th class=&quot;tableblock halign-left valign-top&quot;&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;void&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;Denotes no return value.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;Primitives&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;Java primitives.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;Wrapper types&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;Java wrapper types.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;T&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;An unique entity. Expects the query method to return one result at most. In case no result is found &lt;code&gt;null&lt;/code&gt; is returned. More than one result will trigger an &lt;code&gt;IncorrectResultSizeDataAccessException&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Iterator&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;An &lt;code&gt;Iterator&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Collection&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A &lt;code&gt;Collection&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;List&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A &lt;code&gt;List&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Optional&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A Java 8 or Guava &lt;code&gt;Optional&lt;/code&gt;. Expects the query method to return one result at most. In case no result is found &lt;code&gt;Optional.empty()&lt;/code&gt;/&lt;code&gt;Optional.absent()&lt;/code&gt; is returned. More than one result will trigger an &lt;code&gt;IncorrectResultSizeDataAccessException&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Stream&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A Java 8 &lt;code&gt;Stream&lt;/code&gt;.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Future&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A &lt;code&gt;Future&lt;/code&gt;. Expects method to be annotated with &lt;code&gt;@Async&lt;/code&gt; and requires Spring’s asynchronous method execution capability enabled.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;CompletableFuture&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A Java 8 &lt;code&gt;CompletableFuture&lt;/code&gt;. Expects method to be annotated with &lt;code&gt;@Async&lt;/code&gt; and requires Spring’s asynchronous method execution capability enabled.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;ListenableFuture&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A &lt;code&gt;org.springframework.util.concurrent.ListenableFuture&lt;/code&gt;. Expects method to be annotated with &lt;code&gt;@Async&lt;/code&gt; and requires Spring’s asynchronous method execution capability enabled.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Slice&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A sized chunk of data with information whether there is more data available. Requires a &lt;code&gt;Pageable&lt;/code&gt; method parameter.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;Page&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A &lt;code&gt;Slice&lt;/code&gt; with additional information, e.g. the total number of results. Requires a &lt;code&gt;Pageable&lt;/code&gt; method parameter.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;GeoResult&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A result entry with additional information, e.g. distance to a reference location.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;GeoResults&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A list of &lt;code&gt;GeoResult&amp;lt;T&amp;gt;&lt;/code&gt; with additional information, e.g. average distance to a reference location.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;&lt;code&gt;GeoPage&amp;lt;T&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&quot;tableblock halign-left valign-top&quot;&gt;&lt;p class=&quot;tableblock&quot;&gt;A &lt;code&gt;Page&lt;/code&gt; with &lt;code&gt;GeoResult&amp;lt;T&amp;gt;&lt;/code&gt;, e.g. average distance to a reference location.&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+      &lt;/li&gt;
+      &lt;li&gt;附录E : faq. 略 &lt;a href=&quot;http://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#faq&quot;&gt;点击查看&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;附录F: 词汇表: 略 &lt;a href=&quot;http://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#glossary&quot;&gt;点击查看&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 28 Aug 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/08/28/spring-data-jpa-%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3(2)/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/08/28/spring-data-jpa-%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3(2)/</guid>
+        
+        <category>JPA</category>
+        
+        
+        <category>JPA</category>
+        
+      </item>
+    
+      <item>
+        <title>spring-data-jpa 中文文档(1)</title>
+        <description>&lt;p&gt;spring data jpa 中文文档 1&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;简介&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;为了让Spring Data的版本保持一致,可以使用maven提供的&lt;code class=&quot;highlighter-rouge&quot;&gt;dependencyManagement&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;```xml&lt;/p&gt;
+    &lt;dependencymanagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupid&gt;org.springframework.data&lt;/groupid&gt;
+      &lt;artifactid&gt;spring-data-releasetrain&lt;/artifactid&gt;
+      &lt;version&gt;${release-train}&lt;/version&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/dependencymanagement&gt;
+    &lt;p&gt;```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Spring Boot依赖管理&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Spring Boot 会选择一个较新的版本,但是假使你想升级到一个更新的版本,你可以只配置&lt;code class=&quot;highlighter-rouge&quot;&gt;spring-data-releasetrain.version&lt;/code&gt;属性为下列属性值中的一个.&lt;/p&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;BUILD-SNAPSHOT - current snapshots&lt;/code&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;M1, M2 etc. - milestones&lt;/code&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;RC1, RC2 etc. - release candidates&lt;/code&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;RELEASE - GA release&lt;/code&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;SR1, SR2 etc. - service releases&lt;/code&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spring-data-repositories&quot;&gt;开始使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data Repositories&lt;/code&gt;.&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;核心概念 核心接口是&lt;code class=&quot;highlighter-rouge&quot;&gt;Repository&lt;/code&gt;.它以&lt;code class=&quot;highlighter-rouge&quot;&gt;domain&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;domain的id类型&lt;/code&gt;作为参数进行管理 . &lt;code class=&quot;highlighter-rouge&quot;&gt;CrudRepository&lt;/code&gt; 接口提供了CRUD功能.&lt;/p&gt;
+
+    &lt;p&gt;```java
+public interface Repository&amp;lt;T, ID extends Serializable&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;}&lt;/p&gt;
+
+    &lt;p&gt;public interface CrudRepository&amp;lt;T, ID extends Serializable&amp;gt;
+  extends Repository&amp;lt;T, ID&amp;gt; {&lt;/p&gt;
+
+    &lt;s extends=&quot;&quot; t=&quot;&quot;&gt; S save(S entity);
+
+  T findOne(ID primaryKey);
+
+  Iterable&lt;t&gt; findAll();
+
+  Long count();
+
+  void delete(T entity);
+
+  boolean exists(ID primaryKey);
+
+  // … more functionality omitted.
+}
+```
+
+Spring Data  也提供持久化的具体抽象接口 比如说`JpaRepository` 和`MongoRepository` 这些接口扩展`CrudRepository` 并暴露出底层的持久化技术,但是`CrudRepository`等类似的比较通用的持久性与具体技术无关(没有直接的实现)的接口并不包含在内.其只提供要实现的方法.
+
+接着`CrudRepository`有一个`PagingAndSortingRepository`的抽象接口.其有一些分页相关的功能.
+
+```java
+public interface PagingAndSortingRepository&amp;lt;T, ID extends Serializable&amp;gt;
+  extends CrudRepository&amp;lt;T, ID&amp;gt; {
+
+  Iterable&lt;t&gt; findAll(Sort sort);
+
+  Page&lt;t&gt; findAll(Pageable pageable);
+}
+```
+
+获取一个每页20条第二页的`User` 信息,你可以只是简单的如此做:
+
+```java
+PagingAndSortingRepository&amp;lt;User, Long&amp;gt; repository = // … get access to a bean
+Page&lt;user&gt; users = repository.findAll(new PageRequest(1, 20));
+```
+
+除查询的方法,查询数量和删除的语句也可以用这样的方式实现.
+
+```java
+public interface UserRepository extends CrudRepository&amp;lt;User, Long&amp;gt; {
+
+  Long countByLastname(String lastname);
+}
+```
+
+```java
+public interface UserRepository extends CrudRepository&amp;lt;User, Long&amp;gt; {
+
+  Long deleteByLastname(String lastname);
+
+  List&lt;user&gt; removeByLastname(String lastname);
+
+}
+```
+
+&lt;/user&gt;&lt;/user&gt;&lt;/t&gt;&lt;/t&gt;&lt;/t&gt;&lt;/s&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;查询方法(Query Methods)&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;标准的CRUD功能仓库实现的查询比较底层.用Spring Data,定义这些查询变成了四步:
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;定义一实现了&lt;code class=&quot;highlighter-rouge&quot;&gt;Repository&lt;/code&gt;接口或者它的子接口的接口,并且它将会绑定输入&lt;code class=&quot;highlighter-rouge&quot;&gt;domain类&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;domain类的ID类型&lt;/code&gt;.&lt;/p&gt;
+
+            &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface PersonRepository extends Repository&amp;lt;Person, Long&amp;gt; {
+    List&amp;lt;Person&amp;gt; findByLastname(String lastname);
+}
+&lt;/code&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;定义查询的方法&lt;/p&gt;
+
+            &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface PersonRepository extends Repository&amp;lt;Person, Long&amp;gt; {
+  List&amp;lt;Person&amp;gt; findByLastname(String lastname);
+}
+&lt;/code&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;让&lt;code class=&quot;highlighter-rouge&quot;&gt;spring&lt;/code&gt;为这些接口创建代理实例&lt;/p&gt;
+
+            &lt;p&gt;```java
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;&lt;/p&gt;
+
+            &lt;p&gt;@EnableJpaRepositories
+class Config {}
+```&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;获得&lt;code class=&quot;highlighter-rouge&quot;&gt;repository&lt;/code&gt;实例并且使用&lt;/p&gt;
+
+            &lt;p&gt;```java
+public class SomeClient {&lt;/p&gt;
+
+            &lt;p&gt;@Autowired
+  private PersonRepository repository;&lt;/p&gt;
+
+            &lt;p&gt;public void doSomething() {
+    List&lt;person&gt; persons = repository.findByLastname(&quot;Matthews&quot;);
+  }
+}
+```&lt;/person&gt;&lt;/p&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;p&gt;接下来详细解释每一步:&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;定义repository接口
+第一部中你定义一个特定&lt;code class=&quot;highlighter-rouge&quot;&gt;domain&lt;/code&gt;类型的repository接口.这个接口你必须继承&lt;code class=&quot;highlighter-rouge&quot;&gt;Repository&lt;/code&gt;接口并且定义&lt;code class=&quot;highlighter-rouge&quot;&gt;domain类&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;ID类型&lt;/code&gt;.如果你想暴露CRUD方法,你可以继承&lt;code class=&quot;highlighter-rouge&quot;&gt;CrudRepository&lt;/code&gt;.&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;
+            &lt;p&gt;让Repository定义的更有规则
+通常,你的repository接口会继承&lt;code class=&quot;highlighter-rouge&quot;&gt;Repository&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;CrudRepository&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;PagingAndSortingRepository&lt;/code&gt;.如果你不想继承&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data interfaces&lt;/code&gt; 你也可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;@RepositoryDefinition&lt;/code&gt;自己定义repository接口.继承&lt;code class=&quot;highlighter-rouge&quot;&gt;CrudRepository&lt;/code&gt; 暴露了完整的管理你的实体的方法,如果你更喜欢自己定义哪些方法需要去暴露,只需要把要暴露的方法从&lt;code class=&quot;highlighter-rouge&quot;&gt;CrudRepository&lt;/code&gt;中复制出来就可以了.&lt;/p&gt;
+
+            &lt;p&gt;```java
+@NoRepositoryBean
+interface MyBaseRepository&amp;lt;T, ID extends Serializable&amp;gt; extends Repository&amp;lt;T, ID&amp;gt; {&lt;/p&gt;
+
+            &lt;p&gt;T findOne(ID id);&lt;/p&gt;
+
+            &lt;p&gt;T save(T entity);
+}&lt;/p&gt;
+
+            &lt;p&gt;interface UserRepository extends MyBaseRepository&amp;lt;User, Long&amp;gt; {
+  User findByEmailAddress(EmailAddress emailAddress);
+}
+```&lt;/p&gt;
+
+            &lt;p&gt;&lt;strong&gt;你需要确保你自己定义的repository接口有@NoRepositoryBean注解.这样可以保证Spring Data可以实例化它&lt;/strong&gt;&lt;/p&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;p&gt;利用&lt;code class=&quot;highlighter-rouge&quot;&gt;multiple Spring Data modules&lt;/code&gt;来使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Repositories&lt;/code&gt;
+使用应用程序中的一个独特的&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data Module&lt;/code&gt; 让事情变得很简单.因此在定义范围内的所有repository接口都会绑定到 &lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data Module&lt;/code&gt; .有时候,应用程序需要多个&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data Module&lt;/code&gt;,这种情况下,它需要用持久化技术来区分不同的repository.&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data Module&lt;/code&gt;进入&lt;code class=&quot;highlighter-rouge&quot;&gt;strict repository mode&lt;/code&gt; ,因为它检测到在类路径上有多个资源库的工厂.&lt;code class=&quot;highlighter-rouge&quot;&gt;strict repository mode&lt;/code&gt;要求在repository或者domain的细节来决定一个&lt;code class=&quot;highlighter-rouge&quot;&gt;repository&lt;/code&gt;定义的&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data module&lt;/code&gt;绑定:&lt;/p&gt;
+
+            &lt;ul&gt;
+              &lt;li&gt;如果&lt;code class=&quot;highlighter-rouge&quot;&gt;repository&lt;/code&gt;定义 继承&lt;code class=&quot;highlighter-rouge&quot;&gt;the module-specific repository&lt;/code&gt;&lt;/li&gt;
+              &lt;li&gt;
+                &lt;p&gt;如果domain被&lt;code class=&quot;highlighter-rouge&quot;&gt;the module-specific type annotation&lt;/code&gt;注解.例如JPA’s &lt;code class=&quot;highlighter-rouge&quot;&gt;@Entity&lt;/code&gt;,或者说Spring Data MongoDb/Spring Data Elasticsearch的&lt;code class=&quot;highlighter-rouge&quot;&gt;@Document&lt;/code&gt;.&lt;/p&gt;
+
+                &lt;p&gt;```java
+interface MyRepository extends JpaRepository&amp;lt;User, Long&amp;gt; { }&lt;/p&gt;
+
+                &lt;p&gt;@NoRepositoryBean
+interface MyBaseRepository&amp;lt;T, ID extends Serializable&amp;gt; extends JpaRepository&amp;lt;T, ID&amp;gt; {
+  …
+}&lt;/p&gt;
+
+                &lt;p&gt;interface UserRepository extends MyBaseRepository&amp;lt;User, Long&amp;gt; {
+  …
+}&lt;/p&gt;
+
+                &lt;p&gt;```
+  MyRepository 和UserRepository 继承了JpaRepository 在他们的类型结构中,这是有效的.&lt;/p&gt;
+
+                &lt;p&gt;```java
+interface AmbiguousRepository extends Repository&amp;lt;User, Long&amp;gt; {
+…
+}&lt;/p&gt;
+
+                &lt;p&gt;@NoRepositoryBean
+interface MyBaseRepository&amp;lt;T, ID extends Serializable&amp;gt; extends CrudRepository&amp;lt;T, ID&amp;gt; {
+  …
+}&lt;/p&gt;
+
+                &lt;p&gt;interface AmbiguousUserRepository extends MyBaseRepository&amp;lt;User, Long&amp;gt; {
+  …
+}
+```
+AmbiguousRepository 和AmbiguousUserRepository 分别继承Repository 和CrudRepository在他们的类型结构中,虽然这也是非常好的,&lt;code class=&quot;highlighter-rouge&quot;&gt;multiple modules &lt;/code&gt;不能区分哪一个特定的&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Data&lt;/code&gt;是repositories要绑定的.&lt;/p&gt;
+
+                &lt;p&gt;```java
+interface PersonRepository extends Repository&amp;lt;Person, Long&amp;gt; {
+ …
+}&lt;/p&gt;
+
+                &lt;p&gt;@Entity
+public class Person {
+  …
+}&lt;/p&gt;
+
+                &lt;p&gt;interface UserRepository extends Repository&amp;lt;User, Long&amp;gt; {
+ …
+}&lt;/p&gt;
+
+                &lt;p&gt;@Document
+public class User {
+  …
+}
+```
+domain类被第三方(如@Entity或者@Document)注解注解了的.&lt;/p&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;定义查询方法&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;SpringData通过方法名有两种方式去解析出用户的查询意图:一种是直接通过方法的命名规则去解析,第二种是通过Query去解析,那么当同时存在几种方式时,SpringData怎么去选择这两
+种方式呢?好了,SpringData有一个策略去决定到底使用哪种方式:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;查询策略
+接下来我们将介绍策略的信息,你可以通过配置&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;repository&amp;gt;&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;query-lookup-strategy&lt;/code&gt;属性来决定。或者通过Java config的&lt;code class=&quot;highlighter-rouge&quot;&gt; Enable${store}Repositories&lt;/code&gt;注解的&lt;code class=&quot;highlighter-rouge&quot;&gt;queryLookupStrategy&lt;/code&gt;属性来指定:
+    &lt;ul&gt;
+      &lt;li&gt;CREATE 通过解析方法名字来创建查询。这个策略是删除方法中固定的前缀,然后再来解析其余的部分。&lt;/li&gt;
+      &lt;li&gt;USE_DECLARED_QUERY 它会根据已经定义好的语句去查询,如果找不到,则会抛出异常信息。这个语句可以在某个注解或者方法上定义。根据给定的规范来查找可用选项,如果在方法被调用时没有找到定义的查
+询,那么会抛出异常。&lt;/li&gt;
+      &lt;li&gt;CREATE_IF_NOT_FOUND 这个策略结合了以上两个策略。他会优先查询是否有定义好的查询语句,如果没有,就根据方法的名字去构建查询。这是一个默认策略,如果不特别指定其他策略,那么这个策略会在项目
+中沿用。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;构建查询
+查询构造器是内置在SpringData中的,他是非常强大的,这个构造器会从方法名中剔除掉类似find…By, read…By, 或者get…By的前缀,然后开始解析其余的名字。你可以在方法名中加入更多的表达式,例如你需要Distinct的约束,那么你可以在方法名中加入Distinct即可。在方法中,第一个By表示着查询语句的开始,你也可以用And或者Or来关联多个条件。&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+public interface PersonRepository extends Repository&amp;lt;User, Long&amp;gt; {
+List&amp;lt;Person&amp;gt; findByEmailAddressAndLastname(EmailAddress emailAddress, String lastname);
+// 需要在语句中使用Distinct 关键字,你需要做的是如下
+List&amp;lt;Person&amp;gt; findDistinctPeopleByLastnameOrFirstname(String lastname, String firstname);
+List&amp;lt;Person&amp;gt; findPeopleDistinctByLastnameOrFirstname(String lastname, String firstname);
+// 如果你需要忽略大小写,那么你要用IgnoreCase 关键字,你需要做的是如下
+List&amp;lt;Person&amp;gt; findByLastnameIgnoreCase(String lastname);
+// 所有属性都忽略大小写呢?AllIgnoreCase 可以帮到您
+List&amp;lt;Person&amp;gt; findByLastnameAndFirstnameAllIgnoreCase(String lastname, String firstname);
+// 同样的,如果需要排序的话,那你需要:OrderBy
+List&amp;lt;Person&amp;gt; findByLastnameOrderByFirstnameAsc(String lastname);
+List&amp;lt;Person&amp;gt; findByLastnameOrderByFirstnameDesc(String lastname);
+}
+&lt;/code&gt;
+  根据方法名解析的查询结果跟数据库是相关,但是,还有几个问题需要注意:
+  多个属性的查询可以通过连接操作来完成,例如&lt;code class=&quot;highlighter-rouge&quot;&gt;And,Or&lt;/code&gt;。当然还有其他的,例如&lt;code class=&quot;highlighter-rouge&quot;&gt;Between,LessThan,GreaterThan,Like&lt;/code&gt;。这些操作时跟数据库相关的,当然你还需要看看相关的数据库文档是否支持这些操作。
+  你可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;IngoreCase&lt;/code&gt;来忽略被标记的属性的大小写,也可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;AllIgnoreCase&lt;/code&gt;来忽略全部的属性,当然这个也是需要数据库支持才允许的。
+  你可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;OrderBy&lt;/code&gt;来进行排序查询,排序的方向是Asc跟Desc,如果需要动态排序,请看后面的章节。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;属性表达式
+具体的方法名解析查询需要怎样的规则呢?这种方法名查询只能用在被管理的实体类上,就好像之前的案例。假设一个类&lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt;中有个&lt;code class=&quot;highlighter-rouge&quot;&gt;Address&lt;/code&gt;,并且&lt;code class=&quot;highlighter-rouge&quot;&gt;Address&lt;/code&gt;还有&lt;code class=&quot;highlighter-rouge&quot;&gt;ZipCode&lt;/code&gt;,那么根据ZipCode来查询这个&lt;code class=&quot;highlighter-rouge&quot;&gt;Person&lt;/code&gt;需要怎么做呢?&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+List&amp;lt;Person&amp;gt; findByAddressZipCode(ZipCode zipCode);
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;在上面的例子中,我们用&lt;code class=&quot;highlighter-rouge&quot;&gt;x.address.zipCode&lt;/code&gt;去检索属性,这种解析算法会在方法名中先找出实体属性的完整部分(&lt;code class=&quot;highlighter-rouge&quot;&gt;AddressZipCode&lt;/code&gt;),检查这部分是不是实体类的属性,如果解析成功,则按
+照驼峰式从右到左去解析属性,如:&lt;code class=&quot;highlighter-rouge&quot;&gt;AddressZipCode&lt;/code&gt;将分为&lt;code class=&quot;highlighter-rouge&quot;&gt;AddressZip&lt;/code&gt;跟&lt;code class=&quot;highlighter-rouge&quot;&gt;Code&lt;/code&gt;,在这个时候,我们的属性解析不出Code属性,则会在此用同样的方式切割,分为&lt;code class=&quot;highlighter-rouge&quot;&gt;Address&lt;/code&gt;跟&lt;code class=&quot;highlighter-rouge&quot;&gt;ZipCode&lt;/code&gt;(如果
+第一次分割不能匹配,解析器会向左移动分割点),并继续解析。
+为了避免这种解析的问题,你可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;“_”&lt;/code&gt;去区分,如下所示:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+List&amp;lt;Person&amp;gt; findByAddress_ZipCode(ZipCode zipCode);
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;特殊参数处理
+上面的例子已经展示了绑定简单的参数,那么除此之外,我们还可以绑定一些指定的参数,如&lt;code class=&quot;highlighter-rouge&quot;&gt;Pageable&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;Sort&lt;/code&gt;来动态的添加分页、排序查询。&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+Page&amp;lt;User&amp;gt; findByLastname(String lastname, Pageable pageable);
+List&amp;lt;User&amp;gt; findByLastname(String lastname, Sort sort);
+List&amp;lt;User&amp;gt; findByLastname(String lastname, Pageable pageable);
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;第一个方法通过传递&lt;code class=&quot;highlighter-rouge&quot;&gt;org.springframework.data.domain.Pageable&lt;/code&gt;来实现分页功能,排序也绑定在里面。如果需要排序功能,那么需要添加参数&lt;code class=&quot;highlighter-rouge&quot;&gt;org.springframework.data.domain.Sort&lt;/code&gt;,如第二行中,返回的对象可以是&lt;code class=&quot;highlighter-rouge&quot;&gt;List&lt;/code&gt;,当然也可以是&lt;code class=&quot;highlighter-rouge&quot;&gt;Page&lt;/code&gt;类型的。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;限制查询结果
+查询结果可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;first&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt;来进行限制,&lt;code class=&quot;highlighter-rouge&quot;&gt;first&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt;是可以替换的.可以用一个数字追加在&lt;code class=&quot;highlighter-rouge&quot;&gt;top/first&lt;/code&gt;后边以指定返回结果的条数.如果这个数字在&lt;code class=&quot;highlighter-rouge&quot;&gt;first/top&lt;/code&gt;左边,则返回结果大小为&lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt;.&lt;/p&gt;
+
+    &lt;p&gt;```java
+User findFirstByOrderByLastnameAsc();&lt;/p&gt;
+
+    &lt;p&gt;User findTopByOrderByAgeDesc();&lt;/p&gt;
+
+    &lt;p&gt;Page&lt;user&gt; queryFirst10ByLastname(String lastname, Pageable pageable);&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;Slice&lt;user&gt; findTop3ByLastname(String lastname, Pageable pageable);&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;List&lt;user&gt; findFirst10ByLastname(String lastname, Sort sort);&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;List&lt;user&gt; findTop10ByLastname(String lastname, Pageable pageable);
+```&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;表达的限制条件也可以使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Distinct&lt;/code&gt;关键字&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将查询结果放入到&lt;code class=&quot;highlighter-rouge&quot;&gt;Stream&lt;/code&gt;中
+查询结果可以用Java 8 &lt;code class=&quot;highlighter-rouge&quot;&gt;Stream&amp;lt;T&amp;gt;&lt;/code&gt; 作为返回结果类型进行处理.&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Query(“select u from User u”)
+Stream&lt;user&gt; findAllByCustomQueryAndStream();&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;Stream&lt;user&gt; readAllByFirstnameNotNull();&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;@Query(“select u from User u”)
+Stream&lt;user&gt; streamAllPaged(Pageable pageable);
+```&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;但并不是所有的 Spring Data modules都能正确的支持&lt;code class=&quot;highlighter-rouge&quot;&gt;Stream&amp;lt;T&amp;gt;&lt;/code&gt;作为返回结果类型.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;异步查询结果
+Repository查询可以通过Spring的异步处理方法 异步执行.这意味着查询方法会立即返回.真是的查询会被作为一个task放入到&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring TaskExecutor&lt;/code&gt;中.&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Async
+Future&lt;user&gt; findByFirstname(String firstname);&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;@Async
+CompletableFuture&lt;user&gt; findOneByFirstname(String firstname);&lt;/user&gt;&lt;/p&gt;
+
+    &lt;p&gt;@Async
+ListenableFuture&lt;user&gt; findOneByLastname(String lastname);
+Use java.util.concurrent.Future as return type.
+Use a Java 8 java.util.concurrent.CompletableFuture as return type.
+Use a org.springframework.util.concurrent.ListenableFuture as return type.
+```&lt;/user&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;创建Repository实体
+创建已定义的Repository接口,最简单的方式就是使用Spring配置文件,当然,需要JPA的命名空间。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;XML配置
+你可以使用JPA命名空间里面的repositories去自动检索路径下的repositories元素:&lt;/p&gt;
+
+    &lt;p&gt;```xml
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;/p&gt;
+    &lt;beans:beans xmlns:beans=&quot;http://www.springframework.org/schema/beans&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://www.springframework.org/schema/data/jpa&quot; xsi:schemalocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd&quot;&gt;
+
+  &lt;repositories base-package=&quot;com.acme.repositories&quot; /&gt;
+
+&lt;/beans:beans&gt;
+    &lt;p&gt;```
+在本例中,Spring能够通过&lt;code class=&quot;highlighter-rouge&quot;&gt;base-package&lt;/code&gt;检测出指定路径下所有继承Repository或者其子接口的接口(有点绕口)。每找到一个接口的时候,&lt;code class=&quot;highlighter-rouge&quot;&gt;FactoryBean&lt;/code&gt;就会创建一个合适的代理去处理以及调用里面的查询方法。每个注册的Bean的名称都是源于接口名称,例如:UserRepository将会被注册为userRepository。&lt;code class=&quot;highlighter-rouge&quot;&gt;base-package&lt;/code&gt;允许使用通配符作为扫描格式。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;使用过滤器
+在默认的设置中,将使用全路径扫描的方式去检索接口,当然,你在业务上可能需要更细致的操作,这时候,你可以在&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;repositories&amp;gt;&lt;/code&gt;中使用&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;include-filter&amp;gt;&lt;/code&gt;或者&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;exclude-filter&amp;gt;&lt;/code&gt;。这样的话,
+你可以指定扫描的路径包含或者不包含指定的路径。&lt;/p&gt;
+
+        &lt;p&gt;```xml&lt;/p&gt;
+        &lt;repositories base-package=&quot;com.acme.repositories&quot;&gt;
+  &lt;context:exclude-filter type=&quot;regex&quot; expression=&quot;.*SomeRepository&quot; /&gt;
+&lt;/repositories&gt;
+        &lt;p&gt;```
+这个例子中,我们排除了所有以&lt;code class=&quot;highlighter-rouge&quot;&gt;SomeRepository&lt;/code&gt;结尾的接口。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;JavaConfig
+可以通过在一个JavaConfig 类上用&lt;code class=&quot;highlighter-rouge&quot;&gt;@Enable${store}Repositories&lt;/code&gt;注解来触发.&lt;/p&gt;
+
+    &lt;p&gt;```java
+@Configuration
+@EnableJpaRepositories(“com.acme.repositories”)
+class ApplicationConfiguration {&lt;/p&gt;
+
+    &lt;p&gt;@Bean
+  public EntityManagerFactory entityManagerFactory() {
+    // …
+  }
+}
+```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;独立使用
+你可以不在Spring容器里面使用repository。但是你还需要Spring的依赖包在你的&lt;code class=&quot;highlighter-rouge&quot;&gt;classpath&lt;/code&gt;中,你需要使用&lt;code class=&quot;highlighter-rouge&quot;&gt;RepositoryFactory&lt;/code&gt;来实现,代码如下:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+RepositoryFactorySupport factory = ... // 初始化
+UserRepository repository = factory.getRepository(UserRepository. class);
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;自定义Repository实现
+  我们可以自己实现repository的方法。&lt;/li&gt;
+  &lt;li&gt;在repository中添加自定义方法
+    &lt;ul&gt;
+      &lt;li&gt;自定义接口:&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface UserRepositoryCustom {
+  public void someCustomMethod(User user);
+}
+&lt;/code&gt;
+* 自定义接口的实现类&lt;/p&gt;
+
+    &lt;p&gt;```java
+class UserRepositoryImpl implements UserRepositoryCustom {&lt;/p&gt;
+
+    &lt;p&gt;public void someCustomMethod(User user) {
+    // Your custom implementation
+  }
+}
+```
+* 扩展CRUDRepository&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface UserRepository extends CrudRepository&amp;lt;User, Long&amp;gt;, UserRepositoryCustom {
+  // Declare query methods here
+}
+&lt;/code&gt;
+  这样的话,就能够在常用的Repository中实现自己的方法。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;配置
+在XML的配置里面,框架会自动搜索base-package里面的实现类,这些实现类的后缀必须满足repository-impl-postfix中指定的命名规则,默认的规则是:Impl&lt;/p&gt;
+
+    &lt;p&gt;```xml&lt;/p&gt;
+    &lt;repositories base-=&quot;&quot; package=&quot;com.acme.repository&quot; /&gt;
+
+    &lt;repositories base-=&quot;&quot; package=&quot;com.acme.repository&quot; repository-impl-postfix=&quot;FooBar&quot; /&gt;
+
+    &lt;p&gt;```
+第一个配置我们将找到com.acme.repository.UserRepositoryImpl,而第二个配置我们将找到com.acme.repository.UserRepositoryFooBar。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;人工装配
+前面的代码中,我们使用了注释以及配置去自动装载。如果你自己定义的实现类需要特殊的装载,那么你可以跟普通bean一样声明出来就可以了,框架会手工的装载起来,而不是创建本身。&lt;/p&gt;
+
+    &lt;p&gt;```xml&lt;/p&gt;
+    &lt;repositories base-package=&quot;com.acme.repository&quot; /&gt;
+
+    &lt;beans:bean id=&quot;userRepositoryImpl&quot; class=&quot;…&quot;&gt;
+&lt;/beans:bean&gt;
+    &lt;p&gt;```&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;为所有的repository添加自定义方法
+假如你要为所有的repository添加一个方法,那么前面的方法都不可行。你可以这样做:
+1.你需要先声明一个中间接口,然后让你的接口来继承这个中间接口而不是Repository接口,代码如下:
+中间接口:&lt;/p&gt;
+
+    &lt;p&gt;```java
+@NoRepositoryBean
+public interface MyRepository&amp;lt;T, ID extends Serializable&amp;gt;
+  extends PagingAndSortingRepository&amp;lt;T, ID&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;void sharedCustomMethod(ID id);
+}
+```
+2.这时候,我们需要创建我们的实现类,这个实现类是基于Repository中的基类的,这个类会作为Repository代理的自定义类来执行。&lt;/p&gt;
+
+    &lt;p&gt;```java
+public class MyRepositoryImpl&amp;lt;T, ID extends Serializable&amp;gt;
+  extends SimpleJpaRepository&amp;lt;T, ID&amp;gt; implements MyRepository&amp;lt;T, ID&amp;gt; {&lt;/p&gt;
+
+    &lt;p&gt;private final EntityManager entityManager;&lt;/p&gt;
+
+    &lt;p&gt;public MyRepositoryImpl(JpaEntityInformation entityInformation,
+                          EntityManager entityManager) {
+    super(entityInformation, entityManager);&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Keep the EntityManager around to used from the newly introduced methods.
+this.entityManager = entityManager;   }
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;p&gt;public void sharedCustomMethod(ID id) {
+    // implementation goes here
+  }
+}
+```&lt;/p&gt;
+
+    &lt;p&gt;3.配置自定义Repository的&lt;code class=&quot;highlighter-rouge&quot;&gt;base class&lt;/code&gt;&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;用JavaConfig类&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+@Configuration
+@EnableJpaRepositories(repositoryBaseClass = MyRepositoryImpl.class)
+class ApplicationConfiguration { … }
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;用XML&lt;/p&gt;
+
+        &lt;p&gt;```xml&lt;/p&gt;
+        &lt;repositories base-package=&quot;com.acme.repository&quot; repository-base-class=&quot;….MyRepositoryImpl&quot; /&gt;
+
+        &lt;p&gt;```&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Spring Data 扩展
+这部分我们将会把SpringData扩展到其他框架中,目前我们继承的目标是SpringMVC。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Querydsl扩展&lt;/p&gt;
+
+    &lt;p&gt;```java
+public interface QueryDslPredicateExecutor&lt;t&gt; {&lt;/t&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;T findOne(Predicate predicate);
+
+Iterable&amp;lt;T&amp;gt; findAll(Predicate predicate);
+
+long count(Predicate predicate);
+
+boolean exists(Predicate predicate);
+
+// … more functionality omitted. } ```
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;Finds and returns a single entity matching the &lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt;.
+Finds and returns all entities matching the &lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt;.
+Returns the number of entities matching the &lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt;.
+Returns if an entity that matches the &lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt; exists.&lt;/p&gt;
+    &lt;/blockquote&gt;
+
+    &lt;blockquote&gt;
+      &lt;p&gt;&lt;a href=&quot;http://www.iteye.com/topic/1132035&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt;简介&lt;/a&gt;&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;利用&lt;code class=&quot;highlighter-rouge&quot;&gt;Querydsl&lt;/code&gt;,在你的Repository接口上继承&lt;code class=&quot;highlighter-rouge&quot;&gt;QueryDslPredicateExecutor&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface UserRepository extends CrudRepository&amp;lt;User, Long&amp;gt;, QueryDslPredicateExecutor&amp;lt;User&amp;gt; {}
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;然后可以用Querydsl &lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt;写类型安全的查询&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+Predicate predicate = user.firstname.equalsIgnoreCase(&quot;dave&quot;)
+.and(user.lastname.startsWithIgnoreCase(&quot;mathews&quot;));
+userRepository.findAll(predicate);
+&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Web支持
+SpringData支持很多web功能。当然你的应用也要有SpringMVC的Jar包,有的还需要继承Spring HATEOAS。
+通常来说,你可以在你的JavaConfig配置类中加入@EnableSpringDataWebSupport即可:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+  @Configuration
+  @EnableWebMvc
+  @EnableSpringDataWebSupport
+  class WebConfiguration { }
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;这个注解注册了几个功能,我们稍后会说,他也能检测Spring HATEOAS,并且注册他们。
+如果你用XML配置的话,那么你可以用下面的配置:
+在xml中配置:&lt;/p&gt;
+
+    &lt;p&gt;```xml&lt;/p&gt;
+    &lt;bean class=&quot;org.springframework.data.web.config.SpringDataWebConfiguration&quot; /&gt;
+
+    &lt;p&gt;&lt;!-- If you&#39;re using Spring HATEOAS as well register this one *instead* of the former --&gt;&lt;/p&gt;
+    &lt;bean class=&quot;org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration&quot; /&gt;
+
+    &lt;p&gt;```&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;基本的web支持
+上面的配置注册了以下的几个功能:
+        &lt;ol&gt;
+          &lt;li&gt;DomainClassConverter将会让SpringMVC能从请求参数或者路径参数中解析出来。&lt;/li&gt;
+          &lt;li&gt;HandlerMethodArgumentResolver 能让SpringMVC从请求参数中解析出Pageable(分页)与Sort(排序)。&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;DomainClassConverter
+这个类允许你在SpringMVC控制层的方法中直接使用你的领域类型(Domain types),如下:&lt;/p&gt;
+
+        &lt;p&gt;```java
+@Controller
+@RequestMapping(“/users”)
+public class UserController {&lt;/p&gt;
+
+        &lt;p&gt;@RequestMapping(“/{id}”)
+  public String showUserForm(@PathVariable(“id”) User user, Model model) {&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;model.addAttribute(&quot;user&quot;, user);
+return &quot;userForm&quot;;   } } ``` 正如你所见,上面的方法直接接收了一个User对象,你不需要做任何的搜索操作,这个转换器自动的设id的值进去对象中,并且最终调用了`findOne`方法查询出实体。`(注:当前的Repository 必须实现CrudRepository)`
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;HandlerMethodArgumentResolver分页排序
+这个配置项同时注册了PageableHandlerMethodArgumentResolver 和 SortHandlerMethodArgumentResolver,使得Pageable跟Sort能作为控制层的参数使用:&lt;/p&gt;
+
+        &lt;p&gt;```java
+@Controller
+@RequestMapping(“/users”)
+public class UserController {&lt;/p&gt;
+
+        &lt;p&gt;@Autowired UserRepository repository;&lt;/p&gt;
+
+        &lt;p&gt;@RequestMapping
+  public String showUsers(Model model, Pageable pageable) {&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;model.addAttribute(&quot;users&quot;, repository.findAll(pageable));
+return &quot;users&quot;;   } } ```
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;这个配置会让SpringMVC传递一个Pageable实体参数,下面是默认的参数:&lt;/p&gt;
+
+        &lt;table&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;参数名&lt;/th&gt;
+              &lt;th style=&quot;text-align: left&quot;&gt;说明&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;page&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;你要获取的页数&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;size&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;一页中最大的数据量&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;sort&lt;/td&gt;
+              &lt;td style=&quot;text-align: left&quot;&gt;需要被排序的属性(格式:属性1,属性2(ASC/DESC)),默认是ASC,使用多个字段排序,你可以使用sort=first&amp;amp;sort=last,asc&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;p&gt;如果你需要对多个表写多个分页或排序,那么你需要用@Qualifier来区分,请求参数的前缀是${qualifire}_,那么你的方法可能变成这样:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+public String showUsers(Model model,
+    @Qualifier(&quot;foo&quot;) Pageable first,
+    @Qualifier(&quot;bar&quot;) Pageable second) { … }
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;你需要填写foo_page和bar_page等。
+ 默认的Pageable相当于new PageRequest(0,20),你可以用@PageableDefaults注解来放在Pageable上。&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;超媒体分页
+Spring HATEOAS有一个PagedResources类,他丰富了Page实体以及一些让用户更容易导航到资源的请求方式。Page转换到PagedResources是由一个实现了Spring HATEOAS
+ResourceAssembler接口的实现类:PagedResourcesAssembler提供转换的。&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+@Controller
+class PersonController {
+  @Autowired PersonRepository repository;
+  @RequestMapping(value = &quot;/persons&quot;, method = RequestMethod.GET)
+  HttpEntity&amp;lt;PagedResources&amp;lt;Person&amp;gt;&amp;gt; persons(Pageable pageable,
+    PagedResourcesAssembler assembler) {
+    Page&amp;lt;Person&amp;gt; persons = repository.findAll(pageable);
+    return new ResponseEntity&amp;lt;&amp;gt;(assembler.toResources(persons), HttpStatus.OK);
+  }
+}
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;上面的toResources方法会执行以下的几个步骤:&lt;/p&gt;
+
+        &lt;ol&gt;
+          &lt;li&gt;Page对象的内容会转换成为PagedResources对象。&lt;/li&gt;
+          &lt;li&gt;PagedResources会的到一个PageMetadata的实体附加,包含Page跟PageRequest。&lt;/li&gt;
+          &lt;li&gt;PagedResources会根据状态得到prev跟next链接,这些链接指向URI所匹配的方法中。分页参数会根据PageableHandlerMethodArgumentResolver配置,以让其在后面的方法中&lt;/li&gt;
+          &lt;li&gt;解析使用。
+假使我们现在有30个Person实例在数据库中,你可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;GET&lt;/code&gt; http://localhost:8080/persons 并且 你会得到像下边这样的一些反馈:&lt;/li&gt;
+        &lt;/ol&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;json
+{ &quot;links&quot; : [ { &quot;rel&quot; : &quot;next&quot;,
+            &quot;href&quot; : &quot;http://localhost:8080/persons?page=1&amp;amp;size=20 }
+  ],
+  &quot;content&quot; : [
+     … // 20 Person instances rendered here
+  ],
+  &quot;pageMetadata&quot; : {
+    &quot;size&quot; : 20,
+    &quot;totalElements&quot; : 30,
+    &quot;totalPages&quot; : 2,
+    &quot;number&quot; : 0
+  }
+}
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Querydsl web支持
+它可以从&lt;code class=&quot;highlighter-rouge&quot;&gt;Request&lt;/code&gt;的query string中提取出一些属性,并转换成Querydsl样式.
+这意味着它可以把&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;http
+?firstname=Dave&amp;amp;lastname=Matthews
+&lt;/code&gt;
+这样的query string 解析成:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+QUser.user.firstname.eq(&quot;Dave&quot;).and(QUser.user.lastname.eq(&quot;Matthews&quot;))
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;QuerydslPredicateArgumentResolver&lt;/code&gt;.&lt;/p&gt;
+
+        &lt;p&gt;&lt;em&gt;在未来当Querydsl在classpath中被发现时,仅仅使用&lt;code class=&quot;highlighter-rouge&quot;&gt;@EnableSpringDataWebSupport&lt;/code&gt;就可以激活&lt;/em&gt;
+在方法上增加一个&lt;code class=&quot;highlighter-rouge&quot;&gt;@QuerydslPredicate&lt;/code&gt;将会提供一个可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;QueryDslPredicateExecutor&lt;/code&gt;来执行的&lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt;
+&lt;em&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;QueryDslPredicateExecutor&lt;/code&gt;中的&lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt;属性来确定&lt;code class=&quot;highlighter-rouge&quot;&gt;@QuerydslPredicate&lt;/code&gt;的返回值类型&lt;/em&gt;&lt;/p&gt;
+
+        &lt;p&gt;```java
+@Controller
+class UserController {&lt;/p&gt;
+
+        &lt;p&gt;@Autowired UserRepository repository;&lt;/p&gt;
+
+        &lt;p&gt;@RequestMapping(value = “/”, method = RequestMethod.GET)
+  String index(Model model, @QuerydslPredicate(root = User.class) Predicate predicate,
+          Pageable pageable, @RequestParam MultiValueMap&amp;lt;String, String&amp;gt; parameters) {&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;model.addAttribute(&quot;users&quot;, repository.findAll(predicate, pageable));
+
+return &quot;index&quot;;   } } ```
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+
+        &lt;p&gt;为User解析query string来匹配&lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt;
+默认的绑定方式如下:&lt;/p&gt;
+
+        &lt;p&gt;1.&lt;code class=&quot;highlighter-rouge&quot;&gt;Object&lt;/code&gt; on simple properties as &lt;code class=&quot;highlighter-rouge&quot;&gt;eq&lt;/code&gt;.
+2.&lt;code class=&quot;highlighter-rouge&quot;&gt;Object&lt;/code&gt; on collection like properties as &lt;code class=&quot;highlighter-rouge&quot;&gt;contains&lt;/code&gt;.
+3.&lt;code class=&quot;highlighter-rouge&quot;&gt;Collection&lt;/code&gt; on simple properties as &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;.
+这样的绑定可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;@QuerydslPredicate&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;bingdings&lt;/code&gt;属性来定制,也可以使用Java 8 的&lt;code class=&quot;highlighter-rouge&quot;&gt;default methods&lt;/code&gt; 在Repository接口上追加&lt;code class=&quot;highlighter-rouge&quot;&gt;QuerydslBinderCustomizer&lt;/code&gt;&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+interface UserRepository extends CrudRepository&amp;lt;User, String&amp;gt;,
+                              QueryDslPredicateExecutor&amp;lt;User&amp;gt;,
+                              QuerydslBinderCustomizer&amp;lt;QUser&amp;gt; {
+  @Override
+  default public void customize(QuerydslBindings bindings, QUser user) {
+    bindings.bind(user.username).first((path, value) -&amp;gt; path.contains(value))
+    bindings.bind(String.class)
+      .first((StringPath path, String value) -&amp;gt; path.containsIgnoreCase(value));
+    bindings.excluding(user.password);
+  }
+}
+&lt;/code&gt;&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;QueryDslPredicateExecutor&lt;/code&gt; 给&lt;code class=&quot;highlighter-rouge&quot;&gt;Predicate&lt;/code&gt; 提供具体的查找方法.&lt;/li&gt;
+          &lt;li&gt;在Repository 接口中&lt;code class=&quot;highlighter-rouge&quot;&gt;QuerydslBinderCustomizer&lt;/code&gt; 的定义和&lt;code class=&quot;highlighter-rouge&quot;&gt;@QuerydslPredicate(bindings=…​)&lt;/code&gt;的快捷方式将会被自动抓取&lt;/li&gt;
+          &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;username&lt;/code&gt; 属性的绑定就是一个简单的&lt;code class=&quot;highlighter-rouge&quot;&gt;contains&lt;/code&gt;绑定.&lt;/li&gt;
+          &lt;li&gt;默认的&lt;code class=&quot;highlighter-rouge&quot;&gt;String&lt;/code&gt;属性绑定是不区分大小写的匹配&lt;code class=&quot;highlighter-rouge&quot;&gt;contains&lt;/code&gt;&lt;/li&gt;
+          &lt;li&gt;Exclude the password property from Predicate resolution.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Repository填充
+如果你用过Spring JDBC,那么你肯定很熟悉使用SQL去填写数据源(DataSource),在这里,我们可以使用XML或者Json去填写数据,而不再使用SQL填充。
+假如你有一个data.json的文件,如下:&lt;/p&gt;
+
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;json
+[ { &quot;_class&quot; : &quot;com.acme.Person&quot;,
+ &quot;firstname&quot; : &quot;Dave&quot;,
+  &quot;lastname&quot; : &quot;Matthews&quot; },
+  { &quot;_class&quot; : &quot;com.acme.Person&quot;,
+ &quot;firstname&quot; : &quot;Carter&quot;,
+  &quot;lastname&quot; : &quot;Beauford&quot; } ]
+&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;要PersonRepository填充这些数据进去,你需要做如下的声明:&lt;/p&gt;
+
+    &lt;p&gt;```xml
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;/p&gt;
+    &lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:repository=&quot;http://www.springframework.org/schema/data/repository&quot; xsi:schemalocation=&quot;http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/data/repository
+    http://www.springframework.org/schema/data/repository/spring-repository.xsd&quot;&gt;
+&lt;repository:jackson2-populator locations=&quot;classpath:data.json&quot; /&gt;
+&lt;/beans&gt;
+    &lt;p&gt;```
+  这个声明使得data.json能够通过Jackson ObjectMapper被其他地方读取,反序列化。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Legacy Web(传统web)支持&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;在SpringMVC中绑定领域类(Domain class)
+你在开发web项目的时候,你经常需要从URL或者请求参数中解析领域类中的ID,你可能是这么做得:&lt;/p&gt;
+
+        &lt;p&gt;```java
+@Controller
+@RequestMapping(“/users”)
+public class UserController {&lt;/p&gt;
+
+        &lt;p&gt;private final UserRepository userRepository;&lt;/p&gt;
+
+        &lt;p&gt;@Autowired
+  public UserController(UserRepository userRepository) {
+    Assert.notNull(repository, “Repository must not be null!”);
+    this.userRepository = userRepository;
+  }&lt;/p&gt;
+
+        &lt;p&gt;@RequestMapping(“/{id}”)
+  public String showUserForm(@PathVariable(“id”) Long id, Model model) {&lt;/p&gt;
+
+        &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Do null check for id
+User user = userRepository.findOne(id);
+// Do null check for user
+
+model.addAttribute(&quot;user&quot;, user);
+return &quot;user&quot;;   } } ``` 首先你要注入一个UserRepository ,然后通过findOne查询出结果。幸运的是,Spring提供了自定义组件允许你从String类型到任意类型的转换。
+&lt;/code&gt;&lt;/pre&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;PropertyEditors(属性编辑器)
+在Spring3.0之前,Java的PropertyEditor已经被使用。现在我们要集成它,SpringData提供了一个DomainClassPropertyEditorRegistrar类,他能在ApplicationContext中查找SpringData的
+Repositories,并且注册自定义的PropertyEditor。&lt;/p&gt;
+
+        &lt;p&gt;```xml&lt;/p&gt;
+        &lt;bean class=&quot;….web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter&quot;&gt;
+  &lt;property name=&quot;webBindingInitializer&quot;&gt;
+    &lt;bean class=&quot;….web.bind.support.ConfigurableWebBindingInitializer&quot;&gt;
+      &lt;property name=&quot;propertyEditorRegistrars&quot;&gt;
+        &lt;bean class=&quot;org.springframework.data.repository.support.DomainClassPropertyEditorRegistrar&quot; /&gt;
+      &lt;/property&gt;
+    &lt;/bean&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;
+        &lt;p&gt;```&lt;/p&gt;
+
+        &lt;p&gt;如果你做了上面的工作,那么你在前面的例子中,会大大减少工作量:&lt;/p&gt;
+
+        &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java
+  @Controller
+  @RequestMapping(&quot;/users&quot;)
+  public class UserController {
+  @RequestMapping(&quot;/{id}&quot;)
+  public String showUserForm(@PathVariable(&quot;id&quot;) User user, Model model) {
+  model.addAttribute(&quot;user&quot;, user);
+  return &quot;userForm&quot;;
+  }
+  }
+&lt;/code&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;转换服务
+在Spring3以后,PropertyEditor已经被转换服务取代了,SpringData现在用DomainClassConverter模仿
+  DomainClassPropertyEditorRegistrar中的实现。你可以使用如下的配置:&lt;/p&gt;
+
+    &lt;p&gt;```xml&lt;/p&gt;
+    &lt;mvc:annotation-driven conversion-service=&quot;conversionService&quot; /&gt;
+
+    &lt;bean class=&quot;org.springframework.data.repository.support.DomainClassConverter&quot;&gt;
+  &lt;constructor-arg ref=&quot;conversionService&quot; /&gt;
+```
+
+如果你是用JavaConfig,你可以集成SpringMVC的WebMvcConfigurationSupport并且处理FormatingConversionService,那么你可以这么做:
+
+```java
+public class WebConfiguration extends WebMvcConfigurationSupport {
+  // 省略其他配置
+  @Bean
+  public DomainClassConverter&amp;lt;?&amp;gt; domainClassConverter() {
+  return new DomainClassConverter&lt;formattingconversionservice&gt;(mvcConversionService());
+  }
+}
+```
+&lt;/formattingconversionservice&gt;&lt;/bean&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 28 Aug 2016 01:08:00 +0800</pubDate>
+        <link>http://www.veryjava.cn/2016/08/28/spring-data-jpa-%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3(1)/</link>
+        <guid isPermaLink="true">http://www.veryjava.cn/2016/08/28/spring-data-jpa-%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3(1)/</guid>
+        
+        <category>JPA</category>
+        
+        
+        <category>JPA</category>
+        
+      </item>
+    
+  </channel>
+</rss>

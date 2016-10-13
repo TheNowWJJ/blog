@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>spring-data-jpa 中文文档(2)</title>
+
+	<link rel="shortcut icon" href="/styles/images/favicon.jpg">
+	<link rel="icon" href="/styles/images/favicon.jpg">
+
+	<link rel="stylesheet" href="/styles/css/index.css">
+	<link rel="stylesheet" href="/styles/css/fontawesome/css/font-awesome.min.css">
+	<link rel="canonical" href="/2016/08/28/spring-data-jpa-%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3(2)/">
+	<link rel="alternate" type="application/rss+xml" title="非常咖啡" href="/feed.xml">
+	
+	<meta name="description" content="阳光如初;sunshineasbefore;个人博客;学而不思则罔;怀揣梦想,永不止步;">
+
+	<script src="/styles/js/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+    	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  	<![endif]-->
+  	<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "//hm.baidu.com/hm.js?94be4b0f9fc5d94cc0d0415ea6761ae9";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+  	<style type="text/css">
+	  	.docs-content{
+	  		margin-bottom: 10px;
+	  	}
+  	</style>
+</head>
+
+  <body class="index">
+
+    <header class="navbar navbar-inverse navbar-fixed-top docs-nav" role="banner">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" class="navbar-brand">
+        <img src="/styles/images/logo.jpg">
+      </a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/">主页</a>
+        </li>
+        <li>
+          <a href="/categories/">分类</a>
+        </li>
+        <li>
+          <a href="/tag">标签</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <!--<a href="/donate/"><strong>打赏</strong></a>-->
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">关于<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a rel="nofollow" target="_blank" href="https://github.com/sunshineasbefore">Github</a></li>
+            <li><a rel="nofollow" target="_blank" href="">关于作者</a></li>
+            <li><a rel="nofollow" href="/books">我的书单</a></li>
+            <li><a rel="nofollow" href="/reference">推荐博客</a></li>
+            <li><a href="/feed.xml">RSS订阅</a></li>
+            <li class="divider"></li>
+            <li><a rel="nofollow" target="_blank" href="https://github.com/luoyan35714/LessOrMore.git">本项目</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+    <div class="docs-header" id="content">
+  <div class="container">
+  	
+  		<!--
+		    <h1>spring-data-jpa 中文文档(2)</h1>
+		    <p>Post on Aug 28, 2016 by <a href="/about">sunshineasbefore</a></p>
+		-->
+		    <h3>怀揣梦想,永不止步!</h3>
+    
+  </div>
+</div>
+
+    
+      
+<div class="banner">
+  <div class="container">
+  	
+    	<a href="/categories/#JPA-ref">JPA</a>	/
+    	<a href="/tag/#JPA-ref">JPA</a>
+    
+  </div>
+</div>
+
+    
+
+    <div class="container docs-container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sidebar hidden-print" role="complementary">
+        <div id="navigation">
+  <h1>目录</h1>
+  <ul class="nav sidenav">
+<!--
+    
+      
+      
+      
+      
+
+      
+        <li><a href="#year_2016">2016</a>
+          <ul class="nav">
+            <li><a href="#month_2016_October">October</a></li>
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+              <li><a href="#month_2016_September">September</a></li>
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+              <li><a href="#month_2016_August">August</a></li>
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            
+          
+        
+      
+    
+      
+      
+      
+      
+
+      
+
+      
+            </ul>
+          </li>
+      
+    
+-->
+  </ul>
+</div> 
+      </div>
+    </div>
+    <div class="col-md-9" role="main">
+      <div class="panel docs-content">
+        <div class="wrapper">
+            <header class="post-header">
+              <h1 class="post-title">spring-data-jpa 中文文档(2)</h1>
+              <!--
+                <p class="post-meta">Aug 28, 2016</p>
+              -->
+              <div class="meta">Posted on <span class="postdate">Aug 28, 2016</span> By <a target="_blank" href="http://www.veryjava.cn">sunshineasbefore</a></div>
+              <br />
+            </header>
+            <article class="post-content">
+              <p>spring data jpa 中文文档 2</p>
+
+<h2 id="jpa-repositories"><strong>JPA Repositories</strong></h2>
+<ul>
+  <li>简介
+    <ul>
+      <li>
+        <p>Spring命名空间
+SpringData使用了自定义的命名空间去定义repository。通常我们会使用repositories元素:</p>
+
+        <p>```xml
+  <?xml version="1.0" encoding="UTF-8"?></p>
+        <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa" xsi:schemalocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/data/jpa
+      http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <jpa:repositories base-package="com.acme.repositories" />
+  </beans>
+        <p>```</p>
+
+        <p>这个配置中启用了持久化异常处理,所有标志了<code class="highlighter-rouge">@Repository</code>的Bean将会被转换成为Spring的<code class="highlighter-rouge">DataAccessException</code>。</p>
+      </li>
+      <li>
+        <p>自定义命名空间属性
+除了repositories,JPA命名空间还提供了其他的属性去控制:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align: left">属性名</th>
+              <th style="text-align: left">属性值</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left">entity-manager-factory-ref</td>
+              <td style="text-align: left">默认的话,是使用<code class="highlighter-rouge">ApplicationContext</code>中找到的<code class="highlighter-rouge">EntityManagerFactory</code>,如果有多个的时候,则需要特别指明这个属性,他将会对repositories路径中找到的类进行处理</td>
+            </tr>
+            <tr>
+              <td style="text-align: left">transaction-manager-ref</td>
+              <td style="text-align: left">默认使用系统定义的<code class="highlighter-rouge">PlatformTransactionManager</code>,如果有多个事务管理器的话,则需特别指定。</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>基于注解的配置
+SpringData JPA支持JavaConfig方式的配置:</p>
+
+        <p>```java
+@Configuration
+@EnableJpaRepositories
+@EnableTransactionManagement
+class ApplicationConfig {</p>
+
+        <p>@Bean
+  public DataSource dataSource() {</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code>EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+return builder.setType(EmbeddedDatabaseType.HSQL).build();   }
+</code></pre>
+        </div>
+
+        <p>@Bean
+  public EntityManagerFactory entityManagerFactory() {</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code>HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+vendorAdapter.setGenerateDdl(true);
+
+LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+factory.setJpaVendorAdapter(vendorAdapter);
+factory.setPackagesToScan("com.acme.domain");
+factory.setDataSource(dataSource());
+factory.afterPropertiesSet();
+
+return factory.getObject();   }
+</code></pre>
+        </div>
+
+        <p>@Bean
+  public PlatformTransactionManager transactionManager() {</p>
+
+        <div class="highlighter-rouge"><pre class="highlight"><code>JpaTransactionManager txManager = new JpaTransactionManager();
+txManager.setEntityManagerFactory(entityManagerFactory());
+return txManager;   } } ``` 上面的配置中,我们设置了一个内嵌的HSQL数据库,我们也配置了`EntityManagerFactory`,并且使用Hibernate作为持久层。最后也定义了`JPATransactionManager`。最上面我们还使用了`@EnableJpaRepositories`注解。
+</code></pre>
+        </div>
+      </li>
+    </ul>
+  </li>
+  <li>持久化实体
+    <ul>
+      <li>保存实体
+保存实体,我们之前使用了CrudRepository.save(…)方法。他会使用相关的JPA EntityManager来调用persist或者merge,如果数据没存在于数据库中,则调用entityManager.persist(..),否
+则调用entityManager.merge(…)。
+        <ul>
+          <li>
+            <p>实体状态监测策略
+SpringData JPA提供三种策略去监测实体是否存在:</p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left">属性名</th>
+                  <th style="text-align: left">属性值</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: left">Id-Property inspection (default)</td>
+                  <td style="text-align: left">默认的会通过ID来监测是否新数据,如果ID属性是空的,则认为是新数据,反则认为旧数据</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Implementing Persistable</td>
+                  <td style="text-align: left">如果实体实现了Persistable接口,那么就会通过isNew的方法来监测。</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Implementing EntityInformation</td>
+                  <td style="text-align: left">这个是很少用的</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>查询方法
+    <ul>
+      <li>查询策略
+你可以写一个语句或者从方法名中查询。
+        <ul>
+          <li>声明查询方法
+  虽然说方法名查询的方式很方便,可是你可能会遇到方法名查询规则不支持你所要查询的关键字或者方法名写的很长,不方便,或者很丑陋。那么你就需要通过命名查询或者在方法上使用
+<code class="highlighter-rouge">@Query</code>来解决。</li>
+          <li>
+            <p>查询创建
+通常我们可以使用方法名来解析查询语句,例如:</p>
+
+            <p>```java
+public interface UserRepository extends Repository&lt;User, Long&gt; {</p>
+
+            <p>List<user> findByEmailAddressAndLastname(String emailAddress, String lastname);
+}
+```
+其所支持的在方法名中可以使用的关键字:</user></p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left">关键字</th>
+                  <th style="text-align: left">例子</th>
+                  <th style="text-align: left">JPQL片段</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: left">And</td>
+                  <td style="text-align: left">findByLastnameAndFirstname</td>
+                  <td style="text-align: left">… where x.lastname = ?1 and x.firstname = ?2</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Or</td>
+                  <td style="text-align: left">findByLastnameOrFirstname</td>
+                  <td style="text-align: left">… where x.lastname = ?1 or x.firstname = ?2</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Is,Equals</td>
+                  <td style="text-align: left">findByFirstname,findByFirstnameIs,findByFirstnameEquals</td>
+                  <td style="text-align: left">… where x.firstname = ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Between</td>
+                  <td style="text-align: left">findByStartDateBetween</td>
+                  <td style="text-align: left">… where x.startDate between ?1 and ?2</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">LessThan</td>
+                  <td style="text-align: left">findByAgeLessThan</td>
+                  <td style="text-align: left">… where x.age &lt; ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">LessThanEqual</td>
+                  <td style="text-align: left">findByAgeLessThanEqual</td>
+                  <td style="text-align: left">… where x.age ⇐ ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">GreaterThan</td>
+                  <td style="text-align: left">findByAgeGreaterThan</td>
+                  <td style="text-align: left">… where x.age &gt; ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">GreaterThanEqual</td>
+                  <td style="text-align: left">findByAgeGreaterThanEqual</td>
+                  <td style="text-align: left">… where x.age &gt;= ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">After</td>
+                  <td style="text-align: left">findByStartDateAfter</td>
+                  <td style="text-align: left">… where x.startDate &gt; ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Before</td>
+                  <td style="text-align: left">findByStartDateBefore</td>
+                  <td style="text-align: left">… where x.startDate &lt; ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">IsNull</td>
+                  <td style="text-align: left">findByAgeIsNull</td>
+                  <td style="text-align: left">… where x.age is null</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">IsNotNull,NotNull</td>
+                  <td style="text-align: left">findByAge(Is)NotNull</td>
+                  <td style="text-align: left">… where x.age not null</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Like</td>
+                  <td style="text-align: left">findByFirstnameLike</td>
+                  <td style="text-align: left">… where x.firstname like ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">NotLike</td>
+                  <td style="text-align: left">findByFirstnameNotLike</td>
+                  <td style="text-align: left">… where x.firstname not like ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">StartingWith</td>
+                  <td style="text-align: left">findByFirstnameStartingWith</td>
+                  <td style="text-align: left">… where x.firstname like ?1 (parameter bound with appended %)</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">EndingWith</td>
+                  <td style="text-align: left">findByFirstnameEndingWith</td>
+                  <td style="text-align: left">… where x.firstname like ?1 (parameter bound with prepended %)</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Containing</td>
+                  <td style="text-align: left">findByFirstnameContaining</td>
+                  <td style="text-align: left">… where x.firstname like ?1 (parameter bound wrapped in %)</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">OrderBy</td>
+                  <td style="text-align: left">findByAgeOrderByLastnameDesc</td>
+                  <td style="text-align: left">… where x.age = ?1 order by x.lastname desc</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Not</td>
+                  <td style="text-align: left">findByLastnameNot</td>
+                  <td style="text-align: left">… where x.lastname &lt;&gt; ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">In</td>
+                  <td style="text-align: left">findByAgeIn(Collection<age> ages)</age></td>
+                  <td style="text-align: left">… where x.age in ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">NotIn</td>
+                  <td style="text-align: left">findByAgeNotIn(Collection<age> age)</age></td>
+                  <td style="text-align: left">… where x.age not in ?1</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">True</td>
+                  <td style="text-align: left">findByActiveTrue()</td>
+                  <td style="text-align: left">… where x.active = true</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">False</td>
+                  <td style="text-align: left">findByActiveFalse()</td>
+                  <td style="text-align: left">… where x.active = false</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">IgnoreCase</td>
+                  <td style="text-align: left">findByFirstnameIgnoreCase</td>
+                  <td style="text-align: left">… where UPPER(x.firstame) = UPPER(?1)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p><em><code class="highlighter-rouge">In</code>和<code class="highlighter-rouge">NotIn</code>也可以用<code class="highlighter-rouge">Collection</code>的子类.</em></p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>使用JPA命名查询
+    <ul>
+      <li>
+        <p>注解方式</p>
+
+        <p>```java
+@Entity
+@NamedQuery(name = “User.findByEmailAddress”,
+  query = “select u from User u where u.emailAddress = ?1”)
+public class User {</p>
+
+        <p>}
+```</p>
+      </li>
+      <li>XML方式 略.</li>
+      <li>
+        <p>声明接口
+要使用上面的命名查询,我们的接口需要这么声明</p>
+
+        <p>```java
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {</p>
+
+        <p>List<user> findByLastname(String lastname);</user></p>
+
+        <p>User findByEmailAddress(String emailAddress);
+}
+```
+SpringData会先从域类中查询配置,根据”.(原点)“区分方法名,而不会使用自动方法名解析的方式去创建查询。</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>使用<code class="highlighter-rouge">@Query</code>
+命名查询适合用于小数量的查询,我们可以使用@Query来替代:</p>
+
+    <p>```java
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {</p>
+
+    <p>@Query(“select u from User u where u.emailAddress = ?1”)
+  User findByEmailAddress(String emailAddress);
+}
+```
+在表达式中使用Like查询,例子如下:</p>
+
+    <p><code class="highlighter-rouge">java
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+  @Query("select u from User u where u.firstname like %?1")
+  List&lt;User&gt; findByFirstnameEndsWith(String firstname);
+}
+</code>
+这个例子中,我们使用了%,当然,你的参数就没必要加入这个符号了。</p>
+
+    <p>使用原生sql查询
+我们可以在<code class="highlighter-rouge">@Query</code>中使用本地查询,当然,你需要设置<code class="highlighter-rouge">nativeQuery=true</code>,必须说明的是,这样的话,<em>就不再支持分页以及排序。</em></p>
+
+    <p>```java
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {</p>
+
+    <p>@Query(value = “SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1”, nativeQuery = true)
+  User findByEmailAddress(String emailAddress);
+}
+```</p>
+  </li>
+  <li>
+    <p>使用命名参数
+使用命名查询,我们需要用到@Param来注释到指定的参数上,如下:</p>
+
+    <p>```java
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {</p>
+
+    <p>@Query(“select u from User u where u.firstname = :firstname or u.lastname = :lastname”)
+  User findByLastnameOrFirstname(@Param(“lastname”) String lastname,
+                                 @Param(“firstname”) String firstname);
+}
+```</p>
+  </li>
+  <li>
+    <p>使用SpEL表达式
+在Spring Data JPA 1.4以后,我们支持在<code class="highlighter-rouge">@Query</code>中使用<code class="highlighter-rouge">SpEL表达式</code>(<a href="http://sishuok.com/forum/blogPost/list/2463.html">简介</a>)来接收变量。
+SpEL支持的变量:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left">变量名</th>
+          <th style="text-align: left">使用方式</th>
+          <th style="text-align: left">描述</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left">entityName</td>
+          <td style="text-align: left">select x from #{#entityName} x</td>
+          <td style="text-align: left">根据给定的Repository自动插入相关的entityName。有两种方式能被解析出来:如果域类型定义了@Entity属性名称。或者直接使用类名称。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>以下的例子中,我们在查询语句中插入表达式(你也可以用@Entity(name = “MyUser”)。</p>
+
+    <p><code class="highlighter-rouge">java
+@Entity
+public class User {
+  @Id
+  @GeneratedValue
+  Long id;
+  String lastname;
+}
+public interface UserRepository extends JpaRepository&lt;User,Long&gt; {
+  @Query("select u from #{#entityName} u where u.lastname = ?1")
+  List&lt;User&gt; findByLastname(String lastname);
+}
+</code></p>
+
+    <p>如果你想写一个通用的Repository接口,那么你也可以用这个表达式来处理:</p>
+
+    <p>```java</p>
+
+    <p>@MappedSuperclass
+  public abstract class AbstractMappedType {
+    …
+    String attribute
+  }</p>
+
+    <p>@Entity
+  public class ConcreteType extends AbstractMappedType { … }</p>
+
+    <p>@NoRepositoryBean
+  public interface MappedTypeRepository<t extends="" abstractmappedtype="">
+    extends Repository&lt;T, Long&gt; {</t></p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>@Query("select t from #{#entityName} t where t.attribute = ?1")
+List&lt;T&gt; findAllByAttribute(String attribute);   }
+</code></pre>
+    </div>
+
+    <p>public interface ConcreteRepository
+    extends MappedTypeRepository<concretetype> { … }
+```</concretetype></p>
+  </li>
+  <li>
+    <p>修改语句
+之前我们演示了如何去声明查询语句,当然我们还有修改语句。修改语句的实现,我们只需要在加多一个注解<code class="highlighter-rouge">@Modifying</code>:</p>
+
+    <p><code class="highlighter-rouge">java
+@Modifying
+@Query("update User u set u.firstname = ?1 where u.lastname = ?2")
+int setFixedFirstnameFor(String firstname, String lastname);
+</code>
+这样一来,我们就使用了update操作来代替select操作。当我们发起update操作后,可能会有一些过期的数据产生,我们不需要自动去清除它们,因为EntityManager会有效的丢掉那些未提
+  交的变更,如果你想EntityManager自动清除,那么你可以在@Modify上添加clearAutomatically属性(true);</p>
+  </li>
+  <li>
+    <p>使用<code class="highlighter-rouge">QueryHints</code>(查询提示  <a href="http://www.eclipse.org/eclipselink/documentation/2.5/jpa/extensions/queryhints.htm">QueryHits简介</a>)</p>
+
+    <p>```java
+public interface UserRepository extends Repository&lt;User, Long&gt; {</p>
+
+    <p>@QueryHints(value = { @QueryHint(name = “name”, value = “value”)},
+              forCounting = false)
+  Page<user> findByLastname(String lastname, Pageable pageable);
+}
+```</user></p>
+  </li>
+  <li>
+    <p>配置获取和负载图(loadgraph) <a href="https://yq.aliyun.com/articles/2378"><code class="highlighter-rouge">@NamedEntityGraph</code>简介</a>
+JPA2.1 支持 通过<code class="highlighter-rouge">@EntityGraph</code>及其子类型<code class="highlighter-rouge">@NamedEntityGraph</code>来定义获取和负载.它们可以被直接在实体类上,用来配置查询结果的获取计划.获取的方式(获取/负载)可以通过<code class="highlighter-rouge">@EntityGraph</code>的<code class="highlighter-rouge">type</code>属性来进行配置.
+在一个实体类上定义 <code class="highlighter-rouge">named entity graph</code></p>
+
+    <p>```java
+@Entity
+@NamedEntityGraph(name = “GroupInfo.detail”,
+  attributeNodes = @NamedAttributeNode(“members”))
+public class GroupInfo {</p>
+
+    <p>// default fetch mode is lazy.
+  @ManyToMany
+  List<groupmember> members = new ArrayList<groupmember>();</groupmember></groupmember></p>
+
+    <p>…
+}
+```
+在repository接口中引用在实体类上定义的<code class="highlighter-rouge">named entity graph</code></p>
+
+    <p>```java
+@Repository
+public interface GroupRepository extends CrudRepository&lt;GroupInfo, String&gt; {</p>
+
+    <p>@EntityGraph(value = “GroupInfo.detail”, type = EntityGraphType.LOAD)
+  GroupInfo getByGroupName(String name);
+```
+它也可以通过<code class="highlighter-rouge">@EntityGraph</code>注解来直接点对点的指定<code class="highlighter-rouge">entity graphs</code>.假如依照<code class="highlighter-rouge">EntityGraph</code> <code class="highlighter-rouge">attributePaths</code>可以被正确的找到,就可以不用在实体类上写<code class="highlighter-rouge">@NamedEntityGraph</code>注解了:</p>
+
+    <p>```java
+@Repository
+public interface GroupRepository extends CrudRepository&lt;GroupInfo, String&gt; {</p>
+
+    <p>@EntityGraph(attributePaths = { “members” })
+  GroupInfo getByGroupName(String name);</p>
+
+    <p>}
+```</p>
+  </li>
+  <li>
+    <p>投影(Projections)
+通常情况下 Spring Data Repositories 会返回整个domain 类.有时候,你需要因为不同的原因,修改domain类的返回结果.
+看下面的例子:</p>
+
+    <p>```java
+@Entity
+public class Person {</p>
+
+    <p>@Id @GeneratedValue
+  private Long id;
+  private String firstName, lastName;</p>
+
+    <p>@OneToOne
+  private Address address;
+  …
+}</p>
+
+    <p>@Entity
+public class Address {</p>
+
+    <p>@Id @GeneratedValue
+  private Long id;
+  private String street, state, country;</p>
+
+    <p>…
+}
+```</p>
+
+    <p><code class="highlighter-rouge">Person</code>的几个属性:</p>
+
+    <ul>
+      <li><code class="highlighter-rouge">id</code>是主键</li>
+      <li><code class="highlighter-rouge">fristName</code>和<code class="highlighter-rouge">lastName</code>是数据属性.</li>
+      <li>
+        <p><code class="highlighter-rouge">address</code>链接到其他的domain类型.
+现在假设我们创建了一个像下边这样的repository:</p>
+
+        <p><code class="highlighter-rouge">java
+interface PersonRepository extends CrudRepository&lt;Person, Long&gt; {
+  Person findPersonByFirstName(String firstName);
+}
+</code>
+Spring Data将会返回domain类的所有属性.现在有两种选择去仅仅返回<code class="highlighter-rouge">address</code>属性:</p>
+      </li>
+      <li>
+        <p>为<code class="highlighter-rouge">Address</code>定义一个repository:</p>
+
+        <p><code class="highlighter-rouge">java
+interface AddressRepository extends CrudRepository&lt;Address, Long&gt; {}
+</code></p>
+
+        <p>在这种情况下 用<code class="highlighter-rouge">PersonRepository</code>将会返回整个<code class="highlighter-rouge">Person</code>对象.使用<code class="highlighter-rouge">AddressRepository</code>仅仅会返回<code class="highlighter-rouge">Address</code>对象.
+但是,如果你真的不想暴露address的信息怎么办?你可以提供一个像下边这样的repository,仅仅提供你想暴露的属性:</p>
+
+        <p>```java
+interface NoAddresses {</p>
+
+        <p>String getFirstName();</p>
+
+        <p>String getLastName();
+}
+```
+其中</p>
+
+        <ul>
+          <li><code class="highlighter-rouge">interface NoAddresses</code>定义一个接口</li>
+          <li><code class="highlighter-rouge">String getFirstName();</code>导出<code class="highlighter-rouge">firstName</code></li>
+          <li><code class="highlighter-rouge">String getLastName();</code>导出<code class="highlighter-rouge">lastName</code></li>
+        </ul>
+
+        <p>这个<code class="highlighter-rouge">NoAddress</code> 只有<code class="highlighter-rouge">firstName</code>和<code class="highlighter-rouge">lastName</code>的getter方法.它意味着它将不会提供任何的address信息.在定义查询方法的时候,应该用<code class="highlighter-rouge">NoAddress</code>代替<code class="highlighter-rouge">Person</code></p>
+
+        <p>```java
+interface PersonRepository extends CrudRepository&lt;Person, Long&gt; {</p>
+
+        <p>NoAddresses findByFirstName(String firstName);
+}
+```</p>
+      </li>
+      <li>
+        <p>改变属性的值
+现在你已经知道了怎么样对结果进行投影,已达到不暴露不必要的部分给用户.投影也可以调整要暴露的数据模型.你可以添加一个虚拟的属性:</p>
+
+        <p>```java
+interface RenamedProperty {</p>
+
+        <p>String getFirstName();</p>
+
+        <p>@Value(“#{target.lastName}”)
+  String getName();
+}
+```
+其中:</p>
+
+        <ul>
+          <li><code class="highlighter-rouge">interface RenamedProperty</code> 定义一个接口.</li>
+          <li><code class="highlighter-rouge">String getFirstName();</code>导出<code class="highlighter-rouge">firstName</code>属性.</li>
+          <li><code class="highlighter-rouge">@Value("#{target.lastName}") String getName();</code>导出<code class="highlighter-rouge">name</code>属性,由于此属性是虚拟的,因此他需要用``@Value(“#{target.lastName}”)`来指定数据的来源.</li>
+        </ul>
+
+        <p>如果你想获得一个人的全称.你可能要用<code class="highlighter-rouge">String.format("%s %s", person.getFirstName(), person.getLastName())</code>来拼接.用虚拟的属性可以这样来实现:</p>
+
+        <p>```java
+interface FullNameAndCountry {</p>
+
+        <p>@Value(“#{target.firstName} #{target.lastName}”)
+  String getFullName();</p>
+
+        <p>@Value(“#{target.address.country}”)
+  String getCountry();
+}
+```
+实际上<code class="highlighter-rouge">@Value</code>可以完全访问对象及其内嵌的属性.<code class="highlighter-rouge">SpEL</code>表达式对于施加在投影方法上的定义来说也是非常强大的:
+想想你有一个如下的domain模型:</p>
+
+        <p>```java
+@Entity
+public class User {</p>
+
+        <p>@Id @GeneratedValue
+  private Long id;
+  private String name;</p>
+
+        <p>private String password;
+  …
+}
+```
+在某些情况下,你想让密码在可能的情况下不让其明文出现.这种情况下你可以用<code class="highlighter-rouge">@Value</code>和<code class="highlighter-rouge">SpEL表达式</code>来创建一个投影:</p>
+
+        <p><code class="highlighter-rouge">java
+interface PasswordProjection {
+  @Value("#{(target.password == null || target.password.empty) ? null : '******'}")
+  String getPassword();
+}
+</code>
+这个表达式判断当password是null或者empty的时候返回null,否则返回’******’</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>存储过程
+JPA2.1 规格介绍了JPA标准查询API对存储过程调用的支持.下面介绍下<code class="highlighter-rouge">@Procedure</code>注解的使用.</p>
+
+    <p><code class="highlighter-rouge">sql
+DROP procedure IF EXISTS plus1inout
+CREATE procedure plus1inout (IN arg int, OUT res int)
+BEGIN ATOMIC
+ set res = arg + 1;
+END
+</code>
+存储过程的元数据可以在实体类上通过@NamedStoredProcedureQuery进行配置.</p>
+
+    <p><code class="highlighter-rouge">java
+@Entity
+@NamedStoredProcedureQuery(name = "User.plus1", procedureName = "plus1inout", parameters = {
+  @StoredProcedureParameter(mode = ParameterMode.IN, name = "arg", type = Integer.class),
+  @StoredProcedureParameter(mode = ParameterMode.OUT, name = "res", type = Integer.class) })
+public class User {}
+</code>
+在repository 方法上可以通过多种方式引用存储过程.存储过程可以直接通过<code class="highlighter-rouge">@Procedure</code>注解的<code class="highlighter-rouge">value</code>或者<code class="highlighter-rouge">procedureName</code>属性调用或者通过<code class="highlighter-rouge">name</code>属性.如果repository方法没有名字,则将其作为后备.</p>
+
+    <p>```java
+@Procedure(“plus1inout”)
+Integer explicitlyNamedPlus1inout(Integer arg);</p>
+
+    <p>@Procedure(procedureName = “plus1inout”)
+Integer plus1inout(Integer arg);</p>
+
+    <p>@Procedure(name = “User.plus1IO”)
+Integer entityAnnotatedCustomNamedProcedurePlus1IO(@Param(“arg”) Integer arg);</p>
+
+    <p>@Procedure
+Integer plus1(@Param(“arg”) Integer arg);
+```</p>
+  </li>
+  <li>
+    <p>JPA2 引入了criteria API 去建立查询,Spring Data JPA使用Specifications来实现这个API。在Repository中,你需要继承JpaSpecificationExecutor:</p>
+
+    <p><code class="highlighter-rouge">java
+public interface CustomerRepository extends CrudRepository&lt;Customer, Long&gt;, JpaSpecificationExecutor {
+ …
+}
+</code>
+下面先给个例子,演示如何利用findAll方法返回所有符合条件的对象:</p>
+
+    <p><code class="highlighter-rouge">java
+List&lt;T&gt; findAll(Specification&lt;T&gt; spec);
+</code></p>
+
+    <p>Specification 接口定义如下:</p>
+
+    <p><code class="highlighter-rouge">java
+public interface Specification&lt;T&gt; {
+  Predicate toPredicate(Root&lt;T&gt; root, CriteriaQuery&lt;?&gt; query,
+            CriteriaBuilder builder);
+}
+</code></p>
+
+    <p>好了,那么我们如何去实现这个接口呢?代码如下:</p>
+
+    <p>```java
+public class CustomerSpecs {</p>
+
+    <p>public static Specification<customer> isLongTermCustomer() {
+    return new Specification<customer>() {
+      public Predicate toPredicate(Root<customer> root, CriteriaQuery&lt;?&gt; query,
+            CriteriaBuilder builder) {</customer></customer></customer></p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>     LocalDate date = new LocalDate().minusYears(2);
+     return builder.lessThan(root.get(_Customer.createdAt), date);
+  }
+};   }
+</code></pre>
+    </div>
+
+    <p>public static Specification<customer> hasSalesOfMoreThan(MontaryAmount value) {
+    return new Specification<customer>() {
+      public Predicate toPredicate(Root<t> root, CriteriaQuery&lt;?&gt; query,
+            CriteriaBuilder builder) {</t></customer></customer></p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>     // build query here
+  }
+};   } } ```
+</code></pre>
+    </div>
+
+    <p>好了,那如果有多个需要结合的话,我们可以这么做:</p>
+
+    <p><code class="highlighter-rouge">java
+MonetaryAmount amount = new MonetaryAmount(200.0, Currencies.DOLLAR);
+List&lt;Customer&gt; customers = customerRepository.findAll(
+  where(isLongTermCustomer()).or(hasSalesOfMoreThan(amount)));
+</code></p>
+  </li>
+  <li>Query by Example
+    <ul>
+      <li>介绍
+这一部分介绍Query by Example和解释怎么去使用Examples.</li>
+      <li>
+        <p>使用
+Query by Example由三部分组成.</p>
+
+        <ul>
+          <li><code class="highlighter-rouge">Probe</code> 这是填充字段的domain对象的实际范例.</li>
+          <li><code class="highlighter-rouge">ExampleMatcher</code> <code class="highlighter-rouge">ExampleMatcher</code> 描述怎么去匹配特定字段的细节.他可以通过多个Examples进行重复利用.</li>
+          <li><code class="highlighter-rouge">Example</code> 它由<code class="highlighter-rouge">ExampleMatcher</code>和<code class="highlighter-rouge">Probe</code>组成.用来创建一个查询.</li>
+        </ul>
+
+        <p>Query by Example使用与多种情况,但是它也有一些限制.
+适用于:</p>
+
+        <ul>
+          <li>用静态或者静态的约束来查询数据</li>
+          <li>domain对象的频繁重构,而不用担心破坏现有的查询</li>
+          <li>根据底层数据存储API进行独立工作
+限制:</li>
+          <li>用<code class="highlighter-rouge">AND</code>关键字进行条件查询的时候.</li>
+          <li>不支持内嵌的/组合的属性约束,像<code class="highlighter-rouge">firstname = ?0 or (firstname = ?1 and lastname = ?2)</code></li>
+          <li>
+            <p>仅仅支持starts/contains/ends/regex匹配strings或者精确匹配其他属性类型.
+在使用Query by Example之前,你需要有一个domain对象:</p>
+
+            <p>```java
+public class Person {</p>
+
+            <p>@Id
+  private String id;
+  private String firstname;
+  private String lastname;
+  private Address address;</p>
+
+            <p>// … getters and setters omitted
+}
+```
+这是一个简单的domain对象.你可以使用它去创建一个<code class="highlighter-rouge">Example</code>默认情况下,字段为<code class="highlighter-rouge">null</code>值时会被忽略.
+<code class="highlighter-rouge">Examples</code>通过使用<code class="highlighter-rouge">of</code>工厂方法或者<code class="highlighter-rouge">ExampleMatcher</code>来创建.<code class="highlighter-rouge">Example</code>是不可改变的.</p>
+
+            <p>```java
+Person person = new Person();
+person.setFirstname(“Dave”);</p>
+
+            <p>Example<person> example = Example.of(person);
+```
+其中:</person></p>
+
+            <ul>
+              <li><code class="highlighter-rouge">Person person = new Person(); </code>创建一个domain对象实例</li>
+              <li><code class="highlighter-rouge">person.setFirstname("Dave"); </code>设置firstName属性去查询</li>
+              <li>
+                <p><code class="highlighter-rouge">Example&lt;Person&gt; example = Example.of(person);</code> 创建<code class="highlighter-rouge">Example</code>
+Examples用repositories来执行是非常理想的.要使用它需要让你的repository接口继承<code class="highlighter-rouge">QueryByExampleExecutor&lt;T&gt;</code>.</p>
+
+                <p>```java
+public interface QueryByExampleExecutor<t> {</t></p>
+
+                <s extends="" t=""> S findOne(Example<s> example);
+
+  <s extends="" t=""> Iterable<s> findAll(Example<s> example);
+
+  // … more functionality omitted.
+}
+```
+</s></s></s></s></s>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Example matchers
+Example不仅仅局限于默认的设置.你可以给strings定义自己的默认值然后去匹配.使用<code class="highlighter-rouge">ExampleMatcher</code>绑定null和特定属性的设置.</p>
+
+            <p>```java
+Person person = new Person();
+person.setFirstname(“Dave”);</p>
+
+            <p>ExampleMatcher matcher = ExampleMatcher.matching()
+  .withIgnorePaths(“lastname”)
+  .withIncludeNullValues()
+  .withStringMatcherEnding();</p>
+
+            <p>Example<person> example = Example.of(person, matcher);
+```
+其中:</person></p>
+
+            <ul>
+              <li><code class="highlighter-rouge">Person person = new Person();</code>  创建一个domain对象实例.</li>
+              <li>设置属性值去查询.</li>
+              <li><code class="highlighter-rouge">ExampleMatcher matcher = ExampleMatcher.matching()</code>创建一个<code class="highlighter-rouge">ExampleMatcher </code>让其可以使用,但没有多余的配置项.</li>
+              <li><code class="highlighter-rouge">.withIgnorePaths("lastname")</code> Construct a new ExampleMatcher to ignore the property path lastname.</li>
+              <li><code class="highlighter-rouge">.withIncludeNullValues()</code> Construct a new ExampleMatcher to ignore the property path lastname and to include null values.</li>
+              <li><code class="highlighter-rouge">.withStringMatcherEnding();</code> Construct a new ExampleMatcher to ignore the property path lastname, to include null values, and use perform suffix string matching.</li>
+              <li><code class="highlighter-rouge">Example&lt;Person&gt; example = Example.of(person, matcher);</code>根据domain对象和配置的<code class="highlighter-rouge">ExampleMatcher</code>对象来创建一个<code class="highlighter-rouge">Example</code></li>
+            </ul>
+
+            <p>你可以给个别的属性指定行为.(比如.<code class="highlighter-rouge">firstname</code>和<code class="highlighter-rouge">lastname</code>以及domain对象的嵌套属性<code class="highlighter-rouge">address.city</code>)
+你可以调整他让他匹配大小写敏感的选项.</p>
+
+            <p><code class="highlighter-rouge">java
+ExampleMatcher matcher = ExampleMatcher.matching()
+  .withMatcher("firstname", endsWith())
+  .withMatcher("lastname", startsWith().ignoreCase());
+}
+</code>
+另一种配置matcher选项的方式是通过使用Java 8 lambdas表达式.这种方式是一种可以通过询问实现者修改matcher的回调方法.你不需要去返回matcher,因为他已经保留了matcher的实例.(引用)</p>
+
+            <p><code class="highlighter-rouge">java
+ExampleMatcher matcher = ExampleMatcher.matching()
+  .withMatcher("firstname", match -&gt; match.endsWith())
+  .withMatcher("firstname", match -&gt; match.startsWith());
+}
+</code>
+<code class="highlighter-rouge">ExampleMatcher</code></p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left">设置</th>
+                  <th style="text-align: left">范围</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: left">Null-handling</td>
+                  <td style="text-align: left">ExampleMatcher</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">String matching</td>
+                  <td style="text-align: left">ExampleMatcher and property path</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Ignoring properties</td>
+                  <td style="text-align: left">Property path</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Case sensitivity</td>
+                  <td style="text-align: left">ExampleMatcher and property path</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">Value transformation</td>
+                  <td style="text-align: left">Property path</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p><em>Property path指 这个设置项要跟在需要设置的属性后边,而不是在ExampleMatcher对象上进行设置.</em></p>
+
+            <p><strong>对比<code class="highlighter-rouge">ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("firstname", endsWith()).withMatcher("lastname", startsWith().ignoreCase());</code>和<code class="highlighter-rouge">ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("lastname").withIncludeNullValues().withStringMatcherEnding();</code></strong></p>
+          </li>
+          <li>
+            <p>执行一个Example</p>
+
+            <p>```java
+public interface PersonRepository extends JpaRepository&lt;Person, String&gt; { … }</p>
+
+            <p>public class PersonService {</p>
+
+            <p>@Autowired PersonRepository personRepository;</p>
+
+            <p>public List<person> findPeople(Person probe) {
+    return personRepository.findAll(Example.of(probe));
+  }
+}
+```
+仅仅只有`SingularAttribute`(单数属性)可以被属性匹配正确使用.
+`StringMatcher`选项:</person></p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align: left">匹配</th>
+                  <th style="text-align: left">逻辑结果</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: left">DEFAULT (case-sensitive)</td>
+                  <td style="text-align: left">firstname = ?0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">DEFAULT (case-insensitive)</td>
+                  <td style="text-align: left">LOWER(firstname) = LOWER(?0)</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">EXACT (case-sensitive)</td>
+                  <td style="text-align: left">firstname = ?0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">STARTING (case-sensitive)</td>
+                  <td style="text-align: left">firstname like ?0 + ‘%’</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">STARTING (case-insensitive)</td>
+                  <td style="text-align: left">LOWER(firstname) like LOWER(?0) + ‘%’</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">ENDING (case-sensitive)</td>
+                  <td style="text-align: left">firstname like ‘%’ + ?0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">ENDING (case-insensitive)</td>
+                  <td style="text-align: left">LOWER(firstname) like ‘%’ + LOWER(?0)</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">CONTAINING (case-sensitive)</td>
+                  <td style="text-align: left">firstname like ‘%’ + ?0 + ‘%’</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left">CONTAINING (case-insensitive)</td>
+                  <td style="text-align: left">LOWER(firstname) like ‘%’ + LOWER(?0) + ‘%’</td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>事务
+默认的CRUD操作在Repository里面都是事务性的。如果是只读操作,只需要设置事务readOnly为true,其他的操作则配置为@Transaction。如果你想修改一个Repository的事务性,你只需要在子接口中重写并且修改他的事务:</p>
+
+    <p><code class="highlighter-rouge">java
+public interface UserRepository extends CrudRepository&lt;User, Long&gt; {
+    @Override
+    @Transactional(timeout = 10)
+    public List\&lt;\User\&gt;\ findAll();
+    // Further query method declarations
+}
+</code></p>
+
+    <p>这样会让findAll方法在10秒内执行否则会超时的非只读事务中。
+另一种修改事务行为的方式在于使用门面或者服务层中,他们包含了多个repository。</p>
+
+    <p><code class="highlighter-rouge">java
+@Service
+class UserManagementImpl implements UserManagement {
+private final UserRepository userRepository;
+private final RoleRepository roleRepository;
+@Autowired
+public UserManagementImpl(UserRepository userRepository,
+  RoleRepository roleRepository) {
+  this.userRepository = userRepository;
+  this.roleRepository = roleRepository;
+}
+@Transactional
+public void addRoleToAllUsers(String roleName) {
+  Role role = roleRepository.findByName(roleName);
+  for (User user : userRepository.findAll()) {
+    user.addRole(role);
+    userRepository.save(user);
+  }
+}
+</code></p>
+
+    <p>这将会导致在调用addRoleToAllUsers方法的时候,创建一个或者加入一个事务中去。实际在Repository里面定义的事务将会被忽略,而外部定义的事务将会被应用。当然,要使用事务,你需要声明<tx:annotation-driven></tx:annotation-driven>(这个例子中,假设你已经使用了component-scan)
+  要让方法在事务中,最简单的方式就是使用@Transactional注解:</p>
+
+    <p><code class="highlighter-rouge">java
+@Transactional(readOnly = true)
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+List &lt;User&gt; findByLastname(String lastname);
+@Modifying
+@Transactional
+@Query("delete from User u where u.active = false")
+void deleteInactiveUsers();
+}
+</code></p>
+
+    <p>一般的查询操作,你需要设置readOnly=true。在deleteInactiveUsers方法中,我们添加了Modifying注解以及覆盖了Transactional,这样这个方法执行的时候readOnly=false了.</p>
+  </li>
+  <li>
+    <p>锁
+想要为方法指定锁的类型,你只需要使用<code class="highlighter-rouge">@Lock</code>:</p>
+
+    <p><code class="highlighter-rouge">java
+interface UserRepository extends Repository&lt;User, Long&gt; {
+// Plain query method
+@Lock(LockModeType.READ)
+List&lt;User&gt; findByLastname(String lastname);
+}
+</code>
+当然你也可以覆盖原有的方法:</p>
+
+    <p><code class="highlighter-rouge">java
+interface UserRepository extends Repository&lt;User, Long&gt; {
+  // Redeclaration of a CRUD method
+  @Lock(LockModeType.READ);
+  List&lt;User&gt; findAll();
+}
+</code></p>
+  </li>
+  <li>审计
+    <ul>
+      <li>基础知识
+SpringData为您跟踪谁创建或者修改数据,以及相应的时间提供了复杂的支持。你现在想要这些支持的话,仅仅需要使用几个注解或者实现接口即可。
+        <ul>
+          <li>
+            <p>注解方式: 我们提供了<code class="highlighter-rouge">@CreatedBy</code>, <code class="highlighter-rouge">@LastModifiedBy</code>去捕获谁操作的实体,当然还有相应的时间<code class="highlighter-rouge">@CreatedDate</code>和<code class="highlighter-rouge">@LastModifiedDate</code>。</p>
+
+            <p>```java
+class Customer {</p>
+
+            <p>@CreatedBy
+  private User user;</p>
+
+            <p>@CreatedDate
+  private DateTime createdDate;</p>
+
+            <p>// … further properties omitted
+}
+```
+正如你看到的,你可以选择性的使用这些注解。操作时间方面,你可以使用org.joda.time.DateTime 或者java.util.Date或者long/Long表示。</p>
+          </li>
+          <li>基于接口的审计:
+如果你不想用注解来做审计的话,那么你可以实现<code class="highlighter-rouge">Auditable</code>接口。他暴露了审计属性的get/set方法。
+如果你不想实现接口,那么你可以继承AbstractAuditable,通常来说,注解方式时更加方便的。</li>
+          <li>
+            <p>审计织入:
+如果你在用@CreatedBy或者@LastModifiedBy的时候,想织入当前的业务操作者,那你可以使用我们提供的AuditorAware<t>接口。T表示你想织入在这两个字段上的类型。</t></p>
+
+            <p>```java
+class SpringSecurityAuditorAware implements AuditorAware<user> {</user></p>
+
+            <p>public User getCurrentAuditor() {</p>
+
+            <div class="highlighter-rouge"><pre class="highlight"><code>Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+if (authentication == null || !authentication.isAuthenticated()) {
+  return null;
+}
+
+return ((MyUserDetails) authentication.getPrincipal()).getUser();   } } ```   在这个实现类中,我们使用SpringSecurity内置的Authentication来查找用户的UserDetails。
+</code></pre>
+            </div>
+          </li>
+          <li>
+            <p>通用审计配置:
+SpringData JPA有一个实体监听器,他可以用于触发捕获审计信息。要用之前,你需要在orm.xml里面注册AuditingEntityListener.当然你得引入<code class="highlighter-rouge">spring-aspects.jar</code>
+审计配置:</p>
+
+            <p>```xml</p>
+            <persistence-unit-metadata>
+<persistence-unit-defaults>
+  <entity-listeners>
+    <entity-listener class="….data.jpa.domain.support.AuditingEntityListener" />
+  </entity-listeners>
+</persistence-unit-defaults>
+</persistence-unit-metadata>
+            <p>```</p>
+
+            <p>你也可以再每个实体类上使用<code class="highlighter-rouge">@EntityListeners</code>注解来激活<code class="highlighter-rouge">AuditingEntityListener</code>监听.</p>
+
+            <p>```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class MyEntity {</p>
+
+            <p>}
+```
+要启用这个审计,我们还需要在配置文件里面配置多一条:</p>
+
+            <p>```xml</p>
+            <jpa:auditing auditor-aware-ref="yourAuditorAwareBean" />
+
+            <p>```
+Spring Data JPA 1.5之后,你也可以使用<code class="highlighter-rouge">@EnableJpaAuditing </code>注解来激活.</p>
+
+            <p>```java
+@Configuration
+@EnableJpaAuditing
+class Config {</p>
+
+            <p>@Bean
+  public AuditorAware<auditableuser> auditorProvider() {
+    return new AuditorAwareImpl();
+  }
+}
+```</auditableuser></p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>其他: 略. <a href="http://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#jpa.misc">点击查看</a></p>
+  </li>
+  <li>附录
+    <ul>
+      <li>
+        <p>附录A: 命名空间引用
+<code class="highlighter-rouge">&lt;repositories /&gt;</code>的元素:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align: left">属性名称</th>
+              <th style="text-align: left">描述</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left">base-package</td>
+              <td style="text-align: left">定义去扫描哪些继承了*Repository接口的用户自定义Repository接口.</td>
+            </tr>
+            <tr>
+              <td style="text-align: left">repository-impl-postfix</td>
+              <td style="text-align: left">定义用户自定义实现sql语句的实现类以什么结尾,以用来自动发现.默认是<code class="highlighter-rouge">Impl</code></td>
+            </tr>
+            <tr>
+              <td style="text-align: left">query-lookup-strategy</td>
+              <td style="text-align: left">定义查询的策略.默认的是<code class="highlighter-rouge">create-if-not-found</code></td>
+            </tr>
+            <tr>
+              <td style="text-align: left">named-queries-location</td>
+              <td style="text-align: left">定义去哪里寻找已经写好了named-query查询的配置文件</td>
+            </tr>
+            <tr>
+              <td style="text-align: left">consider-nested-repositories</td>
+              <td style="text-align: left">考虑是否要控制内嵌的Repository接口.默认是<code class="highlighter-rouge">false</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>附录B:Populators 命名空间引用
+<code class="highlighter-rouge">&lt;populator /&gt;</code>的元素:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align: left">属性名称</th>
+              <th style="text-align: left">描述</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left">locations</td>
+              <td style="text-align: left">寻找要填入Repository接口的对象的值的文件.</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>附录C:Repository 查询关键词
+支持的查询关键字:</p>
+
+        <table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;" />
+<col style="width: 75%;" />
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Logical keyword</th>
+<th class="tableblock halign-left valign-top">Keyword expressions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AND</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>And</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>OR</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Or</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AFTER</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>After</code>, <code>IsAfter</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BEFORE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Before</code>, <code>IsBefore</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CONTAINING</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Containing</code>, <code>IsContaining</code>, <code>Contains</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BETWEEN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Between</code>, <code>IsBetween</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ENDING_WITH</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EndingWith</code>, <code>IsEndingWith</code>, <code>EndsWith</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EXISTS</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Exists</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FALSE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>False</code>, <code>IsFalse</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GREATER_THAN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GreaterThan</code>, <code>IsGreaterThan</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GREATER_THAN_EQUALS</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GreaterThanEqual</code>, <code>IsGreaterThanEqual</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>In</code>, <code>IsIn</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IS</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Is</code>, <code>Equals</code>, (or no keyword)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IS_NOT_NULL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NotNull</code>, <code>IsNotNull</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IS_NULL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code>, <code>IsNull</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LESS_THAN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LessThan</code>, <code>IsLessThan</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LESS_THAN_EQUAL</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LessThanEqual</code>, <code>IsLessThanEqual</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>LIKE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Like</code>, <code>IsLike</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NEAR</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Near</code>, <code>IsNear</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Not</code>, <code>IsNot</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_IN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NotIn</code>, <code>IsNotIn</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NOT_LIKE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NotLike</code>, <code>IsNotLike</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>REGEX</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Regex</code>, <code>MatchesRegex</code>, <code>Matches</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>STARTING_WITH</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>StartingWith</code>, <code>IsStartingWith</code>, <code>StartsWith</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TRUE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>True</code>, <code>IsTrue</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WITHIN</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Within</code>, <code>IsWithin</code></p></td>
+</tr>
+</tbody>
+</table>
+      </li>
+      <li>
+        <p>附录D:Repository查询的返回结果类型
+支持的查询返回结果类型:</p>
+
+        <table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;" />
+<col style="width: 75%;" />
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>void</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Denotes no return value.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Primitives</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java primitives.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Wrapper types</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java wrapper types.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An unique entity. Expects the query method to return one result at most. In case no result is found <code>null</code> is returned. More than one result will trigger an <code>IncorrectResultSizeDataAccessException</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Iterator&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An <code>Iterator</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Collection&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>Collection</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>List&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>List</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Optional&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A Java 8 or Guava <code>Optional</code>. Expects the query method to return one result at most. In case no result is found <code>Optional.empty()</code>/<code>Optional.absent()</code> is returned. More than one result will trigger an <code>IncorrectResultSizeDataAccessException</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Stream&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A Java 8 <code>Stream</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Future&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>Future</code>. Expects method to be annotated with <code>@Async</code> and requires Spring’s asynchronous method execution capability enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CompletableFuture&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A Java 8 <code>CompletableFuture</code>. Expects method to be annotated with <code>@Async</code> and requires Spring’s asynchronous method execution capability enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ListenableFuture</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>org.springframework.util.concurrent.ListenableFuture</code>. Expects method to be annotated with <code>@Async</code> and requires Spring’s asynchronous method execution capability enabled.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Slice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A sized chunk of data with information whether there is more data available. Requires a <code>Pageable</code> method parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Page&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>Slice</code> with additional information, e.g. the total number of results. Requires a <code>Pageable</code> method parameter.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GeoResult&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A result entry with additional information, e.g. distance to a reference location.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GeoResults&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A list of <code>GeoResult&lt;T&gt;</code> with additional information, e.g. average distance to a reference location.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GeoPage&lt;T&gt;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>Page</code> with <code>GeoResult&lt;T&gt;</code>, e.g. average distance to a reference location.</p></td>
+</tr>
+</tbody>
+</table>
+      </li>
+      <li>附录E : faq. 略 <a href="http://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#faq">点击查看</a></li>
+      <li>附录F: 词汇表: 略 <a href="http://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#glossary">点击查看</a></li>
+    </ul>
+  </li>
+</ul>
+
+            </article>
+        </div>
+      </div>
+      <div class="panel docs-content">
+        <article class="post-content">
+          <div class="wrapper">
+            
+
+
+  <div class="ds-thread" data-thread-key="/2016/08/28/spring-data-jpa-%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3(2)/" data-title="spring-data-jpa 中文文档(2)" data-url="http://www.veryjava.cn/2016/08/28/spring-data-jpa-%E4%B8%AD%E6%96%87%E6%96%87%E6%A1%A3(2)/"></div>
+
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"ssab"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+ 
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+    <footer class="footer" role="contentinfo">
+	<div class="container">
+		<p class="copyright">Copyright &copy; 2014-2016 <a href=""><code>sunshineasbefore</code></a>.</p>
+		<p>Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme from <a href="http://lesscss.cn/">Less</a></p>
+	</div>
+</footer>
+
+<script src="/styles/js/jquery.min.js"></script>
+<script src="/styles/js/bootstrap.min.js"></script>
+<script src="/styles/js/holder.min.js"></script>
+<script src="/styles/js/application.js"></script>
+<script src="/styles/js/lessismore.js"></script>
+
+  </body>
+</html>

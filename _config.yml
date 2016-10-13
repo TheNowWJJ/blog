@@ -1,22 +1,38 @@
 # Site settings
-title: 阳光如初.
-description: http://veryjava.cn/ 
-favicon: /assets/img/avatar.JPG
-baseurl: 
-url: http://veryjava.cn/
-rss_url:
+name: 非常咖啡
+email: work_wjj@163.com
+author: sunshineasbefore
+url: http://www.veryjava.cn
+resume_site: # 个人简历页面
+github: https://github.com/sunshineasbefore
+baseurl:
+description: 怀揣梦想,永不止步!
+meta_description: 阳光如初;sunshineasbefore;个人博客;怀揣梦想,永不止步;
+motto: 怀揣梦想,永不止步!
+#banner: 怀揣梦想,永不止步!
+
+gems: [jekyll-paginate]
+
+#permalink: /:categories/:year/:month/:day/:title/
+permalink: /:year/:month/:day/:title/
+paginate: 10
+
+exclude: ['README.md', 'Gemfile.lock', 'Gemfile', 'Rakefile']
+
+github_username: sunshineasbefore.
+highlighter: rouge
 
 # Build settings
-gems: [jekyll-paginate]
-paginate: 10
-paginate_path: "/blog/page:num"
-
-highlighter: pygments
-
-timezone: Asia/Shanghai
-
 markdown: kramdown
-kramdown:
-  input: GFM
-  auto_ids: true
-  auto_id_prefix: 'id-'
+FB:
+  comments :
+    provider : duoshuo
+    duoshuo:
+        short_name : ssab
+    disqus :
+        short_name : ssab
+    # facebook :
+    #   appid : 123
+    #   num_posts: 5
+    #   width: 580
+    #   colorscheme: light
