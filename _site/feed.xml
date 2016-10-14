@@ -5,13 +5,173 @@
     <description>怀揣梦想,永不止步!</description>
     <link>http://www.veryjava.cn/</link>
     <atom:link href="http://www.veryjava.cn/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 14 Oct 2016 11:09:25 +0800</pubDate>
-    <lastBuildDate>Fri, 14 Oct 2016 11:09:25 +0800</lastBuildDate>
+    <pubDate>Fri, 14 Oct 2016 18:05:03 +0800</pubDate>
+    <lastBuildDate>Fri, 14 Oct 2016 18:05:03 +0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
         <title>Spring Boot 起手式</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;起手&lt;/h2&gt;
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;简介&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#spring-boot&quot; id=&quot;markdown-toc-spring-boot&quot;&gt;搭建基础Spring Boot框架&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#section-1&quot; id=&quot;markdown-toc-section-1&quot;&gt;环境说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#spring-initializr&quot; id=&quot;markdown-toc-spring-initializr&quot;&gt;Spring Initializr&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#ide&quot; id=&quot;markdown-toc-ide&quot;&gt;导入到IDE&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#pomxml&quot; id=&quot;markdown-toc-pomxml&quot;&gt;初始pom.xml说明&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#hello-world&quot; id=&quot;markdown-toc-hello-world&quot;&gt;Hello World实例&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#section-2&quot; id=&quot;markdown-toc-section-2&quot;&gt;总结&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section&quot;&gt;简介&lt;/h1&gt;
+
+&lt;p&gt;Spring Boot精简了基于Spring创建的项目的配置,使用javaconfig的方式去除了xml带来的混乱;而且Spring Boot提供了一系列的自动化配置
+使开发人员能够很方便的集成Spring生态圈和其他工具链的整合,比如说Redis,EhCache,MongoDB;Spring Boot还提供了比如Tomcat,Jetty等
+servlet容器,使其可以用&lt;code class=&quot;highlighter-rouge&quot;&gt;java -jar xxx.jar&lt;/code&gt;的方式运行一个web应用.&lt;/p&gt;
+
+&lt;h1 id=&quot;spring-boot&quot;&gt;搭建基础Spring Boot框架&lt;/h1&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;环境说明&lt;/h2&gt;
+&lt;p&gt;本文采用Spring Boot 1.4.1.RELEASE , JDK1.8.0_101.&lt;/p&gt;
+
+&lt;h2 id=&quot;spring-initializr&quot;&gt;Spring Initializr&lt;/h2&gt;
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Initializr&lt;/code&gt;生成Spring Boot maven/gradle 项目&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;访问&lt;a href=&quot;http://start.spring.io/&quot;&gt;Spring Initializr&lt;/a&gt;
+&lt;img src=&quot;https://github.com/sunshineasbefore/resource/blob/master/spring_initializr.png?raw=true&quot; alt=&quot;spring_initializr.png&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;生成Spring Boot
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;Generate a&lt;/strong&gt; 选择&lt;code class=&quot;highlighter-rouge&quot;&gt;Maven Project&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Project Metadata&lt;/strong&gt; 酌情填写&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Dependencies&lt;/strong&gt; 填写Web&lt;/li&gt;
+      &lt;li&gt;点击&lt;strong&gt;Generate Project alt +&lt;/strong&gt; 生成使用Maven构建的Spring Boot项目&lt;/li&gt;
+      &lt;li&gt;浏览器会自动下载一个压缩包&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;其他
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Spring Initializr&lt;/code&gt;中还可以选择其他依赖包,自己酌情选择即可.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ide&quot;&gt;导入到IDE&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;将下载的压缩包解压后用IDE导入,注意需要转换为Maven Project.此时,IDE会自动下载所依赖的jar包&lt;/li&gt;
+  &lt;li&gt;目录结构 &lt;img src=&quot;https://github.com/sunshineasbefore/resource/blob/master/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png?raw=true&quot; alt=&quot;目录结构&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;目录结构说明
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/java&lt;/code&gt; java代码目录&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/resources/application.properties&lt;/code&gt; 配置文件&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/resources/templates&lt;/code&gt; 页面模板&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/resources/static&lt;/code&gt; 静态资源&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;src/main/test&lt;/code&gt; java测试代码目录&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;pomxml&quot;&gt;初始pom.xml说明&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;groupId,artifactId,version,packaging&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;groupId&amp;gt;cn.veryjava&amp;lt;/groupId&amp;gt;
+&amp;lt;artifactId&amp;gt;web-base&amp;lt;/artifactId&amp;gt;
+&amp;lt;version&amp;gt;0.0.1-SNAPSHOT&amp;lt;/version&amp;gt;
+&amp;lt;packaging&amp;gt;jar&amp;lt;/packaging&amp;gt;
+&amp;lt;name&amp;gt;web-base&amp;lt;/name&amp;gt;
+&amp;lt;description&amp;gt;spring boot web应用基础架构&amp;lt;/description&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;parent&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;parent&amp;gt;
+  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;spring-boot-starter-parent&amp;lt;/artifactId&amp;gt;
+  &amp;lt;version&amp;gt;1.4.1.RELEASE&amp;lt;/version&amp;gt;
+  &amp;lt;relativePath/&amp;gt; &amp;lt;!-- lookup parent from repository --&amp;gt;
+&amp;lt;/parent&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;dependencies&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;dependencies&amp;gt;
+  &amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;spring-boot-starter-web&amp;lt;/artifactId&amp;gt;
+  &amp;lt;/dependency&amp;gt;
+  &amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;spring-boot-starter-test&amp;lt;/artifactId&amp;gt;
+  &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;
+  &amp;lt;/dependency&amp;gt;
+&amp;lt;/dependencies&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;maven构建工具&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;build&amp;gt;
+  &amp;lt;plugins&amp;gt;
+  &amp;lt;plugin&amp;gt;
+    &amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;spring-boot-maven-plugin&amp;lt;/artifactId&amp;gt;
+  &amp;lt;/plugin&amp;gt;
+  &amp;lt;/plugins&amp;gt;
+&amp;lt;/build&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;hello-world&quot;&gt;Hello World实例&lt;/h2&gt;
+&lt;p&gt;通过上面的介绍,现在我们对Spring Boot有了一个大体了解,那么我们来写个Hello World!&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;创建HelloController类&lt;/p&gt;
+
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;package cn.veryjava;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+* 描述: TODO:
+* 包名: cn.veryjava.
+* 作者: barton.
+* 日期: 16-10-12.
+* 项目名称: veryjava.spring.boot
+* 版本: 1.0
+* JDK: since 1.8
+*/
+@RestController
+@RequestMapping
+public class HelloController {
+
+@RequestMapping(value = &quot;hello&quot;, method = RequestMethod.GET)
+public String hello() {
+return &quot;Hello World! Hello Spring Boot!&quot;;
+}
+}
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;测试
+打开浏览器输入:&lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:8080/hello&lt;/code&gt;&lt;/p&gt;
+
+    &lt;p&gt;输出: &lt;img src=&quot;https://github.com/sunshineasbefore/resource/blob/master/hellospringboot.png?raw=true&quot; alt=&quot;Hello World! Hello Spring Boot!&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;section-2&quot;&gt;总结&lt;/h1&gt;
+&lt;p&gt;到了这里,一个简单的能够接受Http请求的Spring Boot项目就搭建完了,当然这是最简单的项目,不过我们可以将这个项目作为其他项目的脚手架.&lt;/p&gt;
 </description>
         <pubDate>Thu, 13 Oct 2016 01:08:00 +0800</pubDate>
         <link>http://www.veryjava.cn/2016/10/13/Spring-Boot%E7%B3%BB%E5%88%97%E4%B9%8B%E4%B8%80-%E8%B5%B7%E6%89%8B%E5%BC%8F/</link>

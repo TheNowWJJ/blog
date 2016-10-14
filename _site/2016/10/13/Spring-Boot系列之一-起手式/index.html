@@ -235,7 +235,167 @@
               <br />
             </header>
             <article class="post-content">
-              <h2 id="section">起手</h2>
+              <ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">简介</a></li>
+  <li><a href="#spring-boot" id="markdown-toc-spring-boot">搭建基础Spring Boot框架</a>    <ul>
+      <li><a href="#section-1" id="markdown-toc-section-1">环境说明</a></li>
+      <li><a href="#spring-initializr" id="markdown-toc-spring-initializr">Spring Initializr</a></li>
+      <li><a href="#ide" id="markdown-toc-ide">导入到IDE</a></li>
+      <li><a href="#pomxml" id="markdown-toc-pomxml">初始pom.xml说明</a></li>
+      <li><a href="#hello-world" id="markdown-toc-hello-world">Hello World实例</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-2" id="markdown-toc-section-2">总结</a></li>
+</ul>
+
+<h1 id="section">简介</h1>
+
+<p>Spring Boot精简了基于Spring创建的项目的配置,使用javaconfig的方式去除了xml带来的混乱;而且Spring Boot提供了一系列的自动化配置
+使开发人员能够很方便的集成Spring生态圈和其他工具链的整合,比如说Redis,EhCache,MongoDB;Spring Boot还提供了比如Tomcat,Jetty等
+servlet容器,使其可以用<code class="highlighter-rouge">java -jar xxx.jar</code>的方式运行一个web应用.</p>
+
+<h1 id="spring-boot">搭建基础Spring Boot框架</h1>
+
+<h2 id="section-1">环境说明</h2>
+<p>本文采用Spring Boot 1.4.1.RELEASE , JDK1.8.0_101.</p>
+
+<h2 id="spring-initializr">Spring Initializr</h2>
+<p>使用<code class="highlighter-rouge">Spring Initializr</code>生成Spring Boot maven/gradle 项目</p>
+
+<ul>
+  <li>访问<a href="http://start.spring.io/">Spring Initializr</a>
+<img src="https://github.com/sunshineasbefore/resource/blob/master/spring_initializr.png?raw=true" alt="spring_initializr.png" /></li>
+  <li>生成Spring Boot
+    <ul>
+      <li><strong>Generate a</strong> 选择<code class="highlighter-rouge">Maven Project</code></li>
+      <li><strong>Project Metadata</strong> 酌情填写</li>
+      <li><strong>Dependencies</strong> 填写Web</li>
+      <li>点击<strong>Generate Project alt +</strong> 生成使用Maven构建的Spring Boot项目</li>
+      <li>浏览器会自动下载一个压缩包</li>
+    </ul>
+  </li>
+  <li>其他
+<code class="highlighter-rouge">Spring Initializr</code>中还可以选择其他依赖包,自己酌情选择即可.</li>
+</ul>
+
+<h2 id="ide">导入到IDE</h2>
+<ul>
+  <li>将下载的压缩包解压后用IDE导入,注意需要转换为Maven Project.此时,IDE会自动下载所依赖的jar包</li>
+  <li>目录结构 <img src="https://github.com/sunshineasbefore/resource/blob/master/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png?raw=true" alt="目录结构" /></li>
+  <li>目录结构说明
+    <ul>
+      <li><code class="highlighter-rouge">src/main/java</code> java代码目录</li>
+      <li><code class="highlighter-rouge">src/main/resources/application.properties</code> 配置文件</li>
+      <li><code class="highlighter-rouge">src/main/resources/templates</code> 页面模板</li>
+      <li><code class="highlighter-rouge">src/main/resources/static</code> 静态资源</li>
+      <li><code class="highlighter-rouge">src/main/test</code> java测试代码目录</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="pomxml">初始pom.xml说明</h2>
+<ul>
+  <li>
+    <p>groupId,artifactId,version,packaging</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>&lt;groupId&gt;cn.veryjava&lt;/groupId&gt;
+&lt;artifactId&gt;web-base&lt;/artifactId&gt;
+&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+&lt;packaging&gt;jar&lt;/packaging&gt;
+&lt;name&gt;web-base&lt;/name&gt;
+&lt;description&gt;spring boot web应用基础架构&lt;/description&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>parent</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>&lt;parent&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+  &lt;version&gt;1.4.1.RELEASE&lt;/version&gt;
+  &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+&lt;/parent&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>dependencies</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependencies&gt;
+  &lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+  &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>maven构建工具</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>&lt;build&gt;
+  &lt;plugins&gt;
+  &lt;plugin&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+  &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+    </div>
+  </li>
+</ul>
+
+<h2 id="hello-world">Hello World实例</h2>
+<p>通过上面的介绍,现在我们对Spring Boot有了一个大体了解,那么我们来写个Hello World!</p>
+
+<ul>
+  <li>
+    <p>创建HelloController类</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>package cn.veryjava;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+* 描述: TODO:
+* 包名: cn.veryjava.
+* 作者: barton.
+* 日期: 16-10-12.
+* 项目名称: veryjava.spring.boot
+* 版本: 1.0
+* JDK: since 1.8
+*/
+@RestController
+@RequestMapping
+public class HelloController {
+
+@RequestMapping(value = "hello", method = RequestMethod.GET)
+public String hello() {
+return "Hello World! Hello Spring Boot!";
+}
+}
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>测试
+打开浏览器输入:<code class="highlighter-rouge">http://localhost:8080/hello</code></p>
+
+    <p>输出: <img src="https://github.com/sunshineasbefore/resource/blob/master/hellospringboot.png?raw=true" alt="Hello World! Hello Spring Boot!" /></p>
+  </li>
+</ul>
+
+<h1 id="section-2">总结</h1>
+<p>到了这里,一个简单的能够接受Http请求的Spring Boot项目就搭建完了,当然这是最简单的项目,不过我们可以将这个项目作为其他项目的脚手架.</p>
 
             </article>
         </div>
