@@ -3,7 +3,7 @@ layout: post
 title: 使用 GitHub Markdown Jekyll 开发个人博客
 date: 2016-09-03 01:08:00 +0800
 categories: 其他
-tag: jekyll markdown github
+tag: jekyll
 ---
 
 ## GitHub简介
