@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spring Boot 起手式
+title: Spring Boot系列之一 起手式
 date: 2016-10-13 01:08:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
@@ -118,7 +118,7 @@ servlet容器,使其可以用`java -jar xxx.jar`的方式运行一个web应用.
         return "Hello World! Hello Spring Boot!";
         }
         }
-        
+
   * 测试
     打开浏览器输入:`http://localhost:8080/hello`
 

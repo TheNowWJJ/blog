@@ -5,12 +5,12 @@
     <description>怀揣梦想,永不止步!</description>
     <link>http://www.veryjava.cn/</link>
     <atom:link href="http://www.veryjava.cn/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 14 Oct 2016 18:05:03 +0800</pubDate>
-    <lastBuildDate>Fri, 14 Oct 2016 18:05:03 +0800</lastBuildDate>
+    <pubDate>Fri, 14 Oct 2016 18:10:32 +0800</pubDate>
+    <lastBuildDate>Fri, 14 Oct 2016 18:10:32 +0800</lastBuildDate>
     <generator>Jekyll v3.0.1</generator>
     
       <item>
-        <title>Spring Boot 起手式</title>
+        <title>Spring Boot系列之一 起手式</title>
         <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
   &lt;li&gt;&lt;a href=&quot;#section&quot; id=&quot;markdown-toc-section&quot;&gt;简介&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#spring-boot&quot; id=&quot;markdown-toc-spring-boot&quot;&gt;搭建基础Spring Boot框架&lt;/a&gt;    &lt;ul&gt;
