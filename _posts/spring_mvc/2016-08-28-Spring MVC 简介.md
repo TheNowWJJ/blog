@@ -6,9 +6,13 @@ categories: Spring-MVC
 tag: Spring MVC
 ---
 
+* content
+{:toc}
+
 本文主要介绍Spring MVC.
 
-## MVC概述
+MVC概述
+====================================
 
 * MVC 是 Model-View-Control 的简称，即模型-视图-控制器。它是一个存在于服务器表达层的模型，它将应用分开，改变应用之间的高度耦合。
 * 视图
@@ -22,13 +26,15 @@ tag: Spring MVC
 
 ![MVC 模型运行机制](http://dl.iteye.com/upload/attachment/576353/d3d769c0-5df9-3c31-9984-42f1fcbd00bb.jpg)
 
-## 三层架构概述
+三层架构概述
+====================================
 
 * Presentation tier + Application tier + Data tier (展现层 + 应用层 + 数据访问层)
 * 实际上MVC只存在三层架构的展现层,M实际商是数据模型,是包含数据的对象.
 * Service和Dao层反馈在应用层和数据访问层
 
-## Spring MVC 介绍
+Spring MVC 介绍
+====================================
 
 * Spring Web MVC处理请求的流程
   具体执行步骤如下：
@@ -41,7 +47,9 @@ tag: Spring MVC
   *  前端控制器再次收回控制权，将响应返回给用户，图2-1中的步骤8；至此整个结束
 ![Spring Web MVC处理请求的流程](http://sishuok.com/forum/upload/2012/7/14/529024df9d2b0d1e62d8054a86d866c9__1.JPG)
 
-## Spring MVC的优势
+Spring MVC的优势
+====================================
+
   * 清晰的角色划分：前端控制器（DispatcherServlet）、请求到处理器映射（HandlerMapping）、处理器适配器（HandlerAdapter）、视图解析器（ViewResolver）、处理器或页面控制器（Controller）、验证器（   Validator）、命令对象（Command  请求参数绑定到的对象就叫命令对象）、表单对象（Form Object 提供给表单展示和提交到的对象就叫表单对象）。
 
   * 分工明确，而且扩展点相当灵活，可以很容易扩展，虽然几乎不需要；
@@ -64,7 +72,8 @@ tag: Spring MVC
 
   * ………………还有比如RESTful风格的支持、简单的文件上传、约定大于配置的契约式编程支持、基于注解的零配置支持等等。
 
-## Spring MVC的常用注解
+Spring MVC的常用注解
+====================================
 
 * @ Controller 表明这个类是Spring MVC里的Controller.Dispatcher Servlet 会自动扫描注解了此注解的类.在声明普通Bean的时候,使用@Component,@Service,@Repository和@Controller是等同的,因为@Service,@Repository,@Controller都组合了@Component元注解.但在Spring MVC声明控制器Bean的时候,只能使用@Controller.
 * @RequestMapping 用来映射Web请求(访问路径和参数),处理类和方法.其支持Servlet的request和response作为参数.
@@ -75,70 +84,68 @@ tag: Spring MVC
 * **延伸阅读:
   > [什么是request,response](http://blog.csdn.net/jcx5083761/article/details/9340209)**
 
-## Spring MVC 基本配置
+Spring MVC 基本配置
+====================================
   Spring MVC的定制配置需要我们的配置类集成一个WebMvcConfigurerAdapter类,并在此类使用@EnableWebMvc注解,来开启Spring MVC的配置支持.
 
-## Spring MVC 静态资源配置
+Spring MVC 静态资源配置
+====================================
   [Spring Boot默认的静态资源配置](http://blog.csdn.net/isea533/article/details/50412212)
   如果需要直接访问静态资源,可以在我们的配置类中重写 addResourceHandlers方法
 
   * 快捷的ViewController
     无需做任何业务处理,只是简单的页面转向,可以使用addViewControllers方法来实现.
 
-    ```java
-    package com.wangge.buzmgt.config;
+        package com.wangge.buzmgt.config;
+        import com.wangge.json.JSONFormatMethodProcessor;
+        import org.springframework.context.annotation.Bean;
+        import org.springframework.context.annotation.Configuration;
+        import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+        import org.springframework.http.converter.HttpMessageConverter;
+        import org.springframework.http.converter.ResourceHttpMessageConverter;
+        import org.springframework.http.converter.StringHttpMessageConverter;
+        import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+        import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+        import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
+        import org.springframework.http.converter.xml.SourceHttpMessageConverter;
+        import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
+        import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+        import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+        import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+        import java.util.ArrayList;
+        import java.util.List;
 
-    import com.wangge.json.JSONFormatMethodProcessor;
-    import org.springframework.context.annotation.Bean;
-    import org.springframework.context.annotation.Configuration;
-    import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-    import org.springframework.http.converter.HttpMessageConverter;
-    import org.springframework.http.converter.ResourceHttpMessageConverter;
-    import org.springframework.http.converter.StringHttpMessageConverter;
-    import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-    import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
-    import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
-    import org.springframework.http.converter.xml.SourceHttpMessageConverter;
-    import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
-    import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-    import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-    import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+        @Configuration
+        @EnableWebMvc
+        public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-    import java.util.ArrayList;
-    import java.util.List;
+          @Override
+          public void addViewControllers (ViewControllerRegistry registry) {
+            registry.addViewController ("/").setViewName ("index");
+            registry.addViewController ("/left").setViewName ("left");
+          }
 
-    @Configuration
-    @EnableWebMvc
-    public class WebMvcConfig extends WebMvcConfigurerAdapter {
-      @Override
-      public void addViewControllers (ViewControllerRegistry registry) {
-        registry.addViewController ("/").setViewName ("index");
-        registry.addViewController ("/left").setViewName ("left");
-      }
+          @Override
+          public void addReturnValueHandlers (List<HandlerMethodReturnValueHandler> returnValueHandlers) {
+            returnValueHandlers.add (new JSONFormatMethodProcessor (messageConverter ()));
+          }
 
-      @Override
-      public void addReturnValueHandlers (List<HandlerMethodReturnValueHandler> returnValueHandlers) {
-        returnValueHandlers.add (new JSONFormatMethodProcessor (messageConverter ()));
-      }
+          private List<HttpMessageConverter<?>> messageConverter () {
+            List<HttpMessageConverter<?>> converters = new ArrayList<> ();
+            converters.add (new ByteArrayHttpMessageConverter ());
+            converters.add (new StringHttpMessageConverter ());
+            converters.add (new ResourceHttpMessageConverter ());
+            converters.add (new SourceHttpMessageConverter<> ());
+            converters.add (new AllEncompassingFormHttpMessageConverter ());
+            converters.add (new Jaxb2RootElementHttpMessageConverter ());
+            converters.add (new MappingJackson2HttpMessageConverter ());
+            return converters;
+          }
 
-      private List<HttpMessageConverter<?>> messageConverter () {
-        List<HttpMessageConverter<?>> converters = new ArrayList<> ();
-        converters.add (new ByteArrayHttpMessageConverter ());
-        converters.add (new StringHttpMessageConverter ());
-        converters.add (new ResourceHttpMessageConverter ());
-        converters.add (new SourceHttpMessageConverter<> ());
-        converters.add (new AllEncompassingFormHttpMessageConverter ());
-        converters.add (new Jaxb2RootElementHttpMessageConverter ());
-        converters.add (new MappingJackson2HttpMessageConverter ());
-        return converters;
-      }
-
-      @Override
-      public void addResourceHandlers (ResourceHandlerRegistry registry) {
-        registry.addResourceHandler ("/static/**").addResourceLocations ("classpath:/static/");
-      }
-    }
-
-    ```
+          @Override
+          public void addResourceHandlers (ResourceHandlerRegistry registry) {
+            registry.addResourceHandler ("/static/**").addResourceLocations ("classpath:/static/");
+          }
+        }
 
     其中 addResourceLocations 指的是文件放置的目录,addResourceHandler指的是对外暴露的访问路径.

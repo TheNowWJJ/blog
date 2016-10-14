@@ -214,32 +214,6 @@
       
 
       
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
             </ul>
           </li>
       
@@ -261,45 +235,55 @@
               <br />
             </header>
             <article class="post-content">
-              <p>本文主要解决JPA中实体关联关系在进行json序列化的过程中,产生的循环问题.</p>
+              <ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">现象</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">解决思路</a>    <ul>
+      <li><a href="#fastjson" id="markdown-toc-fastjson">使用fastjson</a></li>
+      <li><a href="#section-2" id="markdown-toc-section-2">重新设计实体关系</a></li>
+    </ul>
+  </li>
+  <li><a href="#section-3" id="markdown-toc-section-3">总结</a></li>
+</ul>
 
-<h2 id="section">现象</h2>
+<p>本文主要解决JPA中实体关联关系在进行json序列化的过程中,产生的循环问题.</p>
+
+<h1 id="section">现象</h1>
 
 <p>在使用JPA进行实体关系管理的时候,会产生无限循环的情况,如果使用<code class="highlighter-rouge">fastjson</code>来进行序列化,则表现形式如下:</p>
 
-<p>```json</p>
-
-<p>{
-  “address”:{
-    “id”:63,
-    “name”:”1address name”,
-    “person”:{“$ref”:”..”},
-    “zipCode”:”ZipCode01”
-  },
-  “firstName”:”0firstName”,
-  “id”:69,
-  “lastName”:”0lastName”
-},
-{
-  “address”:{
-    “id”:64,
-    “name”:”2address name”,
-    “person”:{“$ref”:”..”},
-    “zipCode”:”ZipCode11”
-  },
-  “firstName”:”1firstName”,
-  “id”:70,
-  “lastName”:”1lastName”
-}
-```</p>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"address"</span><span class="p">:{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="mi">63</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"1address name"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"person"</span><span class="p">:{</span><span class="nt">"$ref"</span><span class="p">:</span><span class="s2">".."</span><span class="p">},</span><span class="w">
+    </span><span class="nt">"zipCode"</span><span class="p">:</span><span class="s2">"ZipCode01"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"firstName"</span><span class="p">:</span><span class="s2">"0firstName"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="mi">69</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"lastName"</span><span class="p">:</span><span class="s2">"0lastName"</span><span class="w">
+</span><span class="p">}</span><span class="err">,</span><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="nt">"address"</span><span class="p">:{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="mi">64</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="s2">"2address name"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"person"</span><span class="p">:{</span><span class="nt">"$ref"</span><span class="p">:</span><span class="s2">".."</span><span class="p">},</span><span class="w">
+    </span><span class="nt">"zipCode"</span><span class="p">:</span><span class="s2">"ZipCode11"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nt">"firstName"</span><span class="p">:</span><span class="s2">"1firstName"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="mi">70</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"lastName"</span><span class="p">:</span><span class="s2">"1lastName"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
 
 <p><em>重点是<code class="highlighter-rouge">address.person</code>的值:<code class="highlighter-rouge"><span class="p">{</span><span class="nt">"$ref"</span><span class="p">:</span><span class="s2">".."</span><span class="p">}</span></code></em>
 如果你用的不是fastjson(它默认会检查该对象是否已经存在在json文本中)而是其他一些json类库,比如jackson,则会抛出<code class="highlighter-rouge">java.lang.StackOverflowError</code>异常(无限循环产生的栈溢出所导致).
 但是,哪怕你用的是fastjson,你也无法用js来解析<code class="highlighter-rouge"><span class="p">{</span><span class="nt">"$ref"</span><span class="p">:</span><span class="s2">".."</span><span class="p">}</span></code>.</p>
 
-<h3 id="section-1">解决思路</h3>
+<h1 id="section-1">解决思路</h1>
 
-<h4 id="fastjsonjsontojsonstringpageserializerfeaturedisablecircularreferencedetect">使用fastjson自带的<code class="highlighter-rouge">JSON.toJSONString(page,SerializerFeature.DisableCircularReferenceDetect)</code></h4>
+<h4 id="fastjson">使用fastjson</h4>
+<p>其自带的<code class="highlighter-rouge">JSON.toJSONString(page,SerializerFeature.DisableCircularReferenceDetect)</code></p>
 
 <ul>
   <li>优点:解决快速</li>
@@ -311,7 +295,8 @@
   </li>
 </ul>
 
-<h4 id="restful">重新设计实体关系,<em>尽量避免双向关联</em>,使用RESTful进行接口的暴露.(举个例子来说)</h4>
+<h4 id="section-2">重新设计实体关系</h4>
+<p><em>尽量避免双向关联</em>,使用RESTful进行接口的暴露.(举个例子来说)</p>
 
 <ul>
   <li>优点:逻辑清晰,结构更合理</li>
@@ -325,37 +310,37 @@
 
 <p>实体类Person:</p>
 
-<p>```java
-public class Person {
-  private String name;</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>public class Person {
+  private String name;
 
-<p>@Id
+  @Id
   @GeneratedValue
-  private Long id;</p>
+  private Long id;
 
-<p>@ManyToMany
-  @JoinColumn(name = “address_id”)
-  private List&lt;Address&gt; addresses;</p>
+  @ManyToMany
+  @JoinColumn(name = "address_id")
+  private List&lt;Address&gt; addresses;
 
-<p>// …… getter and setter
+  // ...... getter and setter
 }
-```</p>
+</code></pre>
+</div>
 
 <p>实体类Address:</p>
 
-<p>```java
-public class Address {
+<div class="highlighter-rouge"><pre class="highlight"><code>public class Address {
   @Id
   @GeneratedValue
-  private Long id;</p>
+  private Long id;
 
-<p>private String name;</p>
+  private String name;
 
-<p>private String zipCode;</p>
+  private String zipCode;
 
-<p>// …… getter and setter
+  // ...... getter and setter
 }
-```</p>
+</code></pre>
+</div>
 
 <p>两个实体类之间的关系为Many Person To Many Address,只在Person实体类中进行关系的配置,避免双向关联.</p>
 
@@ -393,7 +378,7 @@ public class Address {
   在controller层对<code class="highlighter-rouge">/persons?address.id_in=xxx1,xxx2,xxx3</code>接口的返回值进行处理,取得<code class="highlighter-rouge">List&lt;Address&gt;</code>和其对应的<code class="highlighter-rouge">List&lt;Person&gt;</code></li>
 </ul>
 
-<h2 id="section-2">总结</h2>
+<h1 id="section-3">总结</h1>
 
 <p>尽量避免双向关联,使用更合理的API设计方式,合理区分子资源和属性.
 大大减少数据库压力!</p>

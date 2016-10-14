@@ -214,32 +214,6 @@
       
 
       
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
             </ul>
           </li>
       
@@ -261,12 +235,24 @@
               <br />
             </header>
             <article class="post-content">
-              <p>本文主要介绍Spring Boot 对Spring MVC的支持.</p>
+              <ul id="markdown-toc">
+  <li><a href="#spring-bootweb" id="markdown-toc-spring-bootweb">Spring Boot的Web开发支持</a></li>
+  <li><a href="#thymeleaf" id="markdown-toc-thymeleaf">Thymeleaf模板引擎</a></li>
+  <li><a href="#spring-bootthymeleaf" id="markdown-toc-spring-bootthymeleaf">Spring Boot的Thymeleaf支持</a></li>
+  <li><a href="#spring-boot" id="markdown-toc-spring-boot">Spring Boot自动配置的静态资源</a></li>
+  <li><a href="#spring-boot-" id="markdown-toc-spring-boot-">Spring Boot 对静态首页的支持</a></li>
+  <li><a href="#tomcatjetty" id="markdown-toc-tomcatjetty">将Tomcat替换为Jetty</a></li>
+  <li><a href="#tomcatundertow" id="markdown-toc-tomcatundertow">将Tomcat替换为Undertow</a></li>
+  <li><a href="#favicon" id="markdown-toc-favicon">设置Favicon</a></li>
+</ul>
 
-<h2 id="spring-bootweb">Spring Boot的Web开发支持</h2>
+<p>本文主要介绍Spring Boot 对Spring MVC的支持.</p>
+
+<h1 id="spring-bootweb">Spring Boot的Web开发支持</h1>
+
 <p>Spring Boot提供了spring-boot-starter-web为Web开发予以支持.它为我们提供了嵌入的Tomcat以及Spring MVC的依赖.</p>
 
-<h2 id="thymeleaf">Thymeleaf模板引擎</h2>
+<h1 id="thymeleaf">Thymeleaf模板引擎</h1>
 
 <p>Spring Boot 推荐使用Thymeleaf作为模板引擎.因为其提供了完整的Spring MVC支持.
   因为使用嵌入的Servlet容器来运行JSP的话有一些小问题,内嵌Tomcat,Jetty不支持以jar的形式运行JSP,而且Undertow不支持JSP.</p>
@@ -284,85 +270,82 @@ Thymeleaf是一个java类库,它是一个xml/xhtml/html5的模板引擎,可以�
     <p>补充:
 在javascript中访问model</p>
 
-    <p><code class="highlighter-rouge">javascript
-&lt;script th:inline="javascript"&gt;
+    <div class="highlighter-rouge"><pre class="highlight"><code>&lt;script th:inline="javascript"&gt;
 var single=[[${singlePerson}]];
 console.log(single.name + "/" + single.age);
 &lt;/script&gt;
-</code></p>
+</code></pre>
+    </div>
   </li>
 </ul>
 
-<h2 id="spring-bootthymeleaf">Spring Boot的Thymeleaf支持</h2>
+<h1 id="spring-bootthymeleaf">Spring Boot的Thymeleaf支持</h1>
 <p>Spring Boot通过自动配置功能对Thymeleaf进行了自动配置,因此可以直接使用.</p>
 
-<p>```html
-&lt;!DOCTYPE html&gt;</p>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Thymeleaf</title>
-    <link th:src="@{bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
-    <link th:src="@{bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet" />
-    <script th:src="@{js/jquery-2.2.3.js}" type="text/javascript">
-    <script th:src="@{bootstrap/js/bootstrap.min.js}"/>
-    <script>
-        $(function () {
-            console.log(123);
-        });
-    </script>
-</head>
-<body>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h3 class="panel-title"> 访问model</h3>
-    </div>
-    <div class="panel-body">
-        <span th:text="${singlePerson.name}"></span>
-    </div>
-</div>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"X-UA-COMPATIBLE"</span> <span class="na">content=</span><span class="s">"IE=edge"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Thymeleaf<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">th:src=</span><span class="s">"@{bootstrap/css/bootstrap.min.css}"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">th:src=</span><span class="s">"@{bootstrap/css/bootstrap-theme.min.css}"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">th:src=</span><span class="s">"@{js/jquery-2.2.3.js}"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">/&gt;</span>
+    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">th</span><span class="err">:</span><span class="nx">src</span><span class="o">=</span><span class="s2">"@{bootstrap/js/bootstrap.min.js}"</span><span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+        <span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">123</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel panel-primary"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-heading"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"panel-title"</span><span class="nt">&gt;</span> 访问model<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-body"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${singlePerson.name}"</span><span class="nt">&gt;&lt;/span&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
 
-<div th:if="${not #lists.isEmpty(people)}">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">列表</h3>
-        </div>
-        <div class="panel-body">
-            <ul class="list-group">
-                <li class="list-group-item" th:each="person:${people}">
-                    <span th:text="${person.name}"></span>
-                    <span th:text="${person.age}"></span>
-                    <button class="btn" th:onclick="'getName(\''+${person.name}+'\');'">获得名字
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-<script th:inline="javascript">
-    var single = [[${singlePerson}]];
-    console.log(single.name + "/" + single.age);
-    function getName(name) {
-        console.log(name);
-    }
-</script>
-</body>
-</html>
-<p>```</p>
+<span class="nt">&lt;div</span> <span class="na">th:if=</span><span class="s">"${not #lists.isEmpty(people)}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel panel-primary"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-heading"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;h3</span> <span class="na">class=</span><span class="s">"panel-title"</span><span class="nt">&gt;</span>列表<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"panel-body"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">"list-group"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"list-group-item"</span> <span class="na">th:each=</span><span class="s">"person:${people}"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${person.name}"</span><span class="nt">&gt;&lt;/span&gt;</span>
+                    <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${person.age}"</span><span class="nt">&gt;&lt;/span&gt;</span>
+                    <span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">"btn"</span> <span class="na">th:onclick=</span><span class="s">"'getName(\''+${person.name}+'\');'"</span><span class="nt">&gt;</span>获得名字
+                    <span class="nt">&lt;/button&gt;</span>
+                <span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;/ul&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script </span><span class="na">th:inline=</span><span class="s">"javascript"</span><span class="nt">&gt;</span>
+    <span class="kd">var</span> <span class="nx">single</span> <span class="o">=</span> <span class="p">[[</span><span class="nx">$</span><span class="p">{</span><span class="nx">singlePerson</span><span class="p">}]];</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">single</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">"/"</span> <span class="o">+</span> <span class="nx">single</span><span class="p">.</span><span class="nx">age</span><span class="p">);</span>
+    <span class="kd">function</span> <span class="nx">getName</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">name</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
 
-<p>```java
-package person.learn.thymeleaf;</p>
+package person.learn.thymeleaf;
 
-<p>import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;</p>
+import org.springframework.web.bind.annotation.RequestMapping;
 
-<p>import java.util.ArrayList;
-import java.util.List;</p>
+import java.util.ArrayList;
+import java.util.List;
 
-<p>/**
+/**
  * 1.使用Thymeleaf作为模板引擎,要在application.yml里设置spring.thymeleaf.caching设置为false
  * 2.用了模板引擎之后,原先对于jsp的设置无效
  * 3.(idea编辑器需要手动点击CTRL+F9,手动编译,因为IDEA文件不需要手动保存)修改Thymeleaf模板的内容后,要不重启项目就生效的话,需要make一下,
@@ -371,69 +354,65 @@ import java.util.List;</p>
  * Created by barton on 16-5-19.
  */
 @Controller
-public class ThymeleafController {</p>
+public class ThymeleafController {
 
-<div class="highlighter-rouge"><pre class="highlight"><code>@RequestMapping("/thymeleaf")
-public String index(Model model) {
-    Person single = new Person("aa", 11);
+    @RequestMapping("/thymeleaf")
+    public String index(Model model) {
+        Person single = new Person("aa", 11);
 
-    List&lt;Person&gt; people = new ArrayList&lt;&gt;();
+        List<span class="nt">&lt;Person&gt;</span> people = new ArrayList<span class="err">&lt;</span>&gt;();
 
-    Person p1 = new Person("xx", 11);
-    Person p2 = new Person("yy", 22);
-    Person p3 = new Person("zz", 33);
+        Person p1 = new Person("xx", 11);
+        Person p2 = new Person("yy", 22);
+        Person p3 = new Person("zz", 33);
 
-    people.add(p1);
-    people.add(p2);
-    people.add(p3);
+        people.add(p1);
+        people.add(p2);
+        people.add(p3);
 
-    model.addAttribute("singlePerson", single);
-    model.addAttribute("people", people);
+        model.addAttribute("singlePerson", single);
+        model.addAttribute("people", people);
 
-    return "thymeleaf/thymeleaf";
-} }
-</code></pre>
-</div>
+        return "thymeleaf/thymeleaf";
+    }
+}
 
-<p>```</p>
 
-<p>```java
-package person.learn.thymeleaf;</p>
+package person.learn.thymeleaf;
 
-<p>/**
+/**
  * Created by barton on 16-5-19.
  */
-public class Person {</p>
+public class Person {
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public Person(String name, Integer age) {
-    this.name = name;
-    this.age = age;
+    public Person(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    private String name;
+    private Integer age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
 }
-
-private String name;
-private Integer age;
-
-public String getName() {
-    return name;
-}
-
-public void setName(String name) {
-    this.name = name;
-}
-
-public Integer getAge() {
-    return age;
-}
-
-public void setAge(Integer age) {
-    this.age = age;
-} }
 </code></pre>
 </div>
 
-<p>```</p>
-
-<h2 id="spring-boot">Spring Boot自动配置的静态资源</h2>
+<h1 id="spring-boot">Spring Boot自动配置的静态资源</h1>
 
 <ul>
   <li>类路径文件
@@ -443,7 +422,7 @@ webjar就是将我们常用的脚本框架封装在jar包中的jar包.
 把webjar的/META-INF/resources/webjars/下的静态文件映射为/webjar/<strong>,可以通过http://localhost:8080/webjar/</strong> 来访问</li>
 </ul>
 
-<h2 id="spring-boot-">Spring Boot 对静态首页的支持</h2>
+<h1 id="spring-boot-">Spring Boot 对静态首页的支持</h1>
 
 <ul>
   <li>classpath:/META-INF/resources/index.html</li>
@@ -452,49 +431,48 @@ webjar就是将我们常用的脚本框架封装在jar包中的jar包.
   <li>classpath:/public/index.html</li>
 </ul>
 
-<h2 id="tomcatjetty">将Tomcat替换为Jetty</h2>
+<h1 id="tomcatjetty">将Tomcat替换为Jetty</h1>
 
-<p>```xml</p>
-<dependency>
-          <groupid>org.springframework.boot</groupid>
-          <artifactid>spring-boot-starter-web</artifactid>
-          <exclusions>
-              <exclusion>
-                  <groupid>org.springframework.boot</groupid>
-                  <artifactid>spring-boot-starter-tomcat</artifactid>
-              </exclusion>
-          </exclusions>
-      </dependency>
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+      &lt;exclusions&gt;
+          &lt;exclusion&gt;
+              &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+              &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+          &lt;/exclusion&gt;
+      &lt;/exclusions&gt;
+  &lt;/dependency&gt;
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  &lt;!-- 使用jetty替代tomcat,如果是使用jsp作为模板，则不能使用内嵌的jetty容器。 --&gt;
+  &lt;!-- 使用jetty替代tomcat,如果是使用jsp作为模板，则不能使用内嵌的jetty容器。 --&gt;
   &lt;!-- 内嵌的jetty容器不支持jsp模板 --&gt;
   &lt;dependency&gt;
       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
       &lt;artifactId&gt;spring-boot-starter-jetty&lt;/artifactId&gt;
-  &lt;/dependency&gt; ```
+  &lt;/dependency&gt;
 </code></pre>
 </div>
 
-<h2 id="tomcatundertow">将Tomcat替换为Undertow</h2>
+<h1 id="tomcatundertow">将Tomcat替换为Undertow</h1>
 
-<p>```xml</p>
-<dependency>
-         <groupid>org.springframework.boot</groupid>
-         <artifactid>spring-boot-starter-web</artifactid>
-         <exclusions>
-             <exclusion>
-                 <groupid>org.springframework.boot</groupid>
-                 <artifactid>spring-boot-starter-tomcat</artifactid>
-             </exclusion>
-         </exclusions>
-     </dependency>
-<dependency>
-         <groupid>org.springframework.boot</groupid>
-         <artifactid>spring-boot-starter-undertow</artifactid>
-  </dependency>
-<p>```</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;dependency&gt;
+     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+     &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+     &lt;exclusions&gt;
+         &lt;exclusion&gt;
+             &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+             &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+         &lt;/exclusion&gt;
+     &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+     &lt;artifactId&gt;spring-boot-starter-undertow&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+</div>
 
-<h2 id="favicon">设置Favicon</h2>
+<h1 id="favicon">设置Favicon</h1>
 <div class="highlighter-rouge"><pre class="highlight"><code>只需将自己的favicon.ico 防止在类路径根目录,类路径META-INF/resources/下,类路径resources/下,类路径static/下或者类路径public/下.
 </code></pre>
 </div>

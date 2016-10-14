@@ -214,32 +214,6 @@
       
 
       
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
             </ul>
           </li>
       
@@ -261,11 +235,18 @@
               <br />
             </header>
             <article class="post-content">
-              <h2 id="section">问题描述</h2>
+              <ul id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">问题描述</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">解决思路</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">解决步骤</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">总结</a></li>
+</ul>
+
+<h1 id="section">问题描述</h1>
 
 <p>mysql在运行过程中报错,进入mysql容器修改配置文件时,单词拼错,导致mysql容器无法重新启动.</p>
 
-<h2 id="section-1">解决思路</h2>
+<h1 id="section-1">解决思路</h1>
 
 <p>由于docker无法进入已经停止的容器,所以只能曲线救国.</p>
 
@@ -276,7 +257,7 @@
   <li>使用新的镜像启动容器并挂载文件内容</li>
 </ul>
 
-<h2 id="section-2">解决步骤</h2>
+<h1 id="section-2">解决步骤</h1>
 
 <ul>
   <li>
@@ -325,7 +306,7 @@
   </li>
 </ul>
 
-<h2 id="section-3">总结</h2>
+<h1 id="section-3">总结</h1>
 
 <ul>
   <li>话说在使用docker的过程中,直接进入容器修改配置文件,出错了好像真没有什么办法能够回复.只能在使用过程中注意了…</li>

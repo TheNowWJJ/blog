@@ -214,32 +214,6 @@
       
 
       
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
             </ul>
           </li>
       
@@ -261,7 +235,21 @@
               <br />
             </header>
             <article class="post-content">
-              <h2 id="github">GitHub简介</h2>
+              <ul id="markdown-toc">
+  <li><a href="#github" id="markdown-toc-github">GitHub简介</a></li>
+  <li><a href="#markdown" id="markdown-toc-markdown">Markdown简介</a></li>
+  <li><a href="#jekyll" id="markdown-toc-jekyll">Jekyll简介</a></li>
+  <li><a href="#section" id="markdown-toc-section">好处</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">搭建本地开发环境</a></li>
+  <li><a href="#jekyll-themesclone" id="markdown-toc-jekyll-themesclone">选择Jekyll themes并clone到本地</a></li>
+  <li><a href="#pushbloggithub" id="markdown-toc-pushbloggithub">push本地blog文件夹到github仓库</a></li>
+  <li><a href="#blogpages" id="markdown-toc-blogpages">在blog仓库中设置开启pages功能</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">博客配置</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">书写博客</a></li>
+  <li><a href="#section-4" id="markdown-toc-section-4">个性域名设置.</a></li>
+</ul>
+
+<h1 id="github">GitHub简介</h1>
 
 <p>Git是一个分布式的版本控制系统，最初由Linus Torvalds编写，用作Linux内核代码的管理。在推出后，Git在其它项目中也取得了很大成功，尤其是在Ruby社区中。目前，包括Rubinius、Merb和Bitcoin在内的很多知名项目都使用了Git。Git同样可以被诸如Capistrano和Vlad the Deployer这样的部署工具所使用。</p>
 
@@ -278,7 +266,7 @@
   <p><a href="http://rogerdudler.github.io/git-guide/index.zh.html">git - 简明指南</a></p>
 </blockquote>
 
-<h2 id="markdown">Markdown简介</h2>
+<h1 id="markdown">Markdown简介</h1>
 
 <p>Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。
 Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格、脚注、内嵌HTML等等），这些功能原初的Markdown尚不具备，它们能让Markdown转换成更多的格式，例如LaTeX，Docbook。Markdown增强版中比较有名的有Markdown Extra、MultiMarkdown、 Maruku等。这些衍生版本要么基于工具，如Pandoc；要么基于网站，如GitHub和Wikipedia，在语法上基本兼容，但在一些语法和渲染效果上有改动。</p>
@@ -295,7 +283,7 @@ Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格�
   <p><a href="http://www.appinn.com/markdown/">Markdown 语法说明 (简体中文版)</a></p>
 </blockquote>
 
-<h2 id="jekyll">Jekyll简介</h2>
+<h1 id="jekyll">Jekyll简介</h1>
 
 <p>jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和WordPress又有很大的不同，原因是jekyll只是一个生成静态网页的工具，不需要数据库支持。但是可以配合第三方服务,例如Disqus。最关键的是jekyll可以免费部署在Github上，而且可以绑定自己的域名。</p>
 
@@ -307,11 +295,12 @@ Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格�
   <p><a href="http://jekyllcn.com/">Jekyll中文文档</a></p>
 </blockquote>
 
-<h2 id="section">好处</h2>
+<h1 id="section">好处</h1>
 
 <p>我们可以像提交代码一样来管理我们的博客,简单方便快捷,而且还免费. 在此感谢<a href="www.github.com">GitHub</a>!</p>
 
-<h2 id="section-1">搭建本地开发环境</h2>
+<h1 id="section-1">搭建本地开发环境</h1>
+
 <p>本文开发环境基于Ubuntu Kylin 16.04 LTS</p>
 
 <ul>
@@ -340,7 +329,8 @@ Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格�
   </li>
 </ul>
 
-<h2 id="jekyll-themesclone">选择Jekyll themes并clone到本地</h2>
+<h1 id="jekyll-themesclone">选择Jekyll themes并clone到本地</h1>
+
 <p>我选择的是 &gt; <a href="https://github.com/liungkejin/liungkejin.github.io">Jekyll theme链接:</a></p>
 
 <ul>
@@ -380,7 +370,7 @@ Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格�
   </li>
 </ul>
 
-<h2 id="pushbloggithub">push本地blog文件夹到github仓库</h2>
+<h1 id="pushbloggithub">push本地blog文件夹到github仓库</h1>
 
 <ul>
   <li>首先需要在github上创建blog仓库</li>
@@ -398,12 +388,13 @@ Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格�
   </li>
 </ul>
 
-<h2 id="blogpages">在blog仓库中设置开启pages功能</h2>
+<h1 id="blogpages">在blog仓库中设置开启pages功能</h1>
+
 <p>网上介绍这个功能的文章有很多,咱就不再重复一便了…
   进行到此步骤,在设置中就可以看到github分配给你的域名,比如说:sunshineasbefore.github.io/blog
   点击此域名即可访问使用github pages功能搭建的静态博客.</p>
 
-<h2 id="section-2">博客配置</h2>
+<h1 id="section-2">博客配置</h1>
 
 <ul>
   <li>Jekyll的语法以及目录结构请参考Jekyll的中文文档.(文章开头有)</li>
@@ -412,37 +403,35 @@ Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格�
 
     <p>更改后内容如下:</p>
 
-    <p>```yml
-# Site settings
+    <div class="highlighter-rouge"><pre class="highlight"><code># Site settings
 title: 阳光如初.
 description: http://veryjava.cn/
 favicon: /assets/img/avatar.JPG
-baseurl: #此处写 <code class="highlighter-rouge">/</code> + <code class="highlighter-rouge">仓库名称</code>,如果使用个人名,则不用写
+baseurl: #此处写 `/` + `仓库名称`,如果使用个人名,则不用写
 url: http://veryjava.cn/ # 如果没有个人域名(稍后介绍),此处写 github分配给你的域名,比如说:sunshineasbefore.github.io/blog
-rss_url:</p>
+rss_url:
+# Build settings
+highlighter: pygments # 语法高亮
 
-    <h1 id="build-settings">Build settings</h1>
+timezone: Asia/Shanghai
 
-    <p>highlighter: pygments # 语法高亮</p>
-
-    <p>timezone: Asia/Shanghai</p>
-
-    <p>markdown: kramdown # 此处使用kramdown编辑器
+markdown: kramdown # 此处使用kramdown编辑器
 kramdown:
   input: GFM # 扩展语法.这个很重要,如果不写,则语法高亮不起作用
   auto_ids: true
-  auto_id_prefix: ‘id-‘
-```</p>
+  auto_id_prefix: 'id-'
+</code></pre>
+    </div>
   </li>
   <li>
     <p>更改作者设置和博客设置
 这两个文件主要是个人简介功能和博客头部个人签名设置
 这两个文件在_data目录下.
-更改后author.yml和blog.yml内容如下:
-author.yml:</p>
+更改后author.yml和blog.yml内容如下:</p>
 
-    <p>```yml
-# Author settings
+    <p>author.yml:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code># Author settings
 name: 王
 title: Java 开发工程师
 address: 山东, 济南
@@ -456,30 +445,25 @@ workHistory:
   title: Java 高级开发工程师
   started: 2015
   duration: (2015.8 - 至今)
-  description: Linux服务器维护,项目开发,参与系统架构设计</p>
+  description: Linux服务器维护,项目开发,参与系统架构设计
 
-    <ul>
-      <li>
-        <p>work2:
-company: 上海某科技公司
-location: 中国，上海
-title: Java 开发工程师
-started: 2014
-duration: (2014.4 - 2015.8)
-description: 在平安好车做新车购,C2C项目</p>
-      </li>
-      <li>
-        <p>work1:
-company: 济南某对日外包企业
-location: 山东, 济南
-title: Java 程序员
-started: 2013
-duration: (2012.6 - 2014.4)
-description: 对日项目外包</p>
-      </li>
-    </ul>
+- work2:
+  company: 上海某科技公司
+  location: 中国，上海
+  title: Java 开发工程师
+  started: 2014
+  duration: (2014.4 - 2015.8)
+  description: 在平安好车做新车购,C2C项目
 
-    <p>educationHistory:
+- work1:
+  company: 济南某对日外包企业
+  location: 山东, 济南
+  title: Java 程序员
+  started: 2013
+  duration: (2012.6 - 2014.4)
+  description: 对日项目外包
+
+educationHistory:
 - education1:
   organization: 烟台某大学
   degree: 学士
@@ -512,20 +496,21 @@ programmingSkills:
   percentage: 70%
 - MySQL:
   name: MySQL
-  percentage: 70%</p>
-
-    <p>```</p>
+  percentage: 70%
+</code></pre>
+    </div>
 
     <p>blog.yml:</p>
 
-    <p><code class="highlighter-rouge">yml
-title: 阳光如初.
+    <div class="highlighter-rouge"><pre class="highlight"><code>title: 阳光如初.
 description: 怀揣梦想,永不止步!
-</code></p>
+</code></pre>
+    </div>
   </li>
 </ul>
 
-<h2 id="section-3">书写博客</h2>
+<h1 id="section-3">书写博客</h1>
+
 <ul>
   <li>格式
 在_posts文件夹下新建文档,格式如下:<code class="highlighter-rouge">yyyy-mm-dd-文件名称.md</code> (文件名称可以带空格)
@@ -533,13 +518,14 @@ jekyll以日期+名称的格式命名文章,否则将不识别.</li>
   <li>
     <p>文档头部</p>
 
-    <h2 id="section-4">```</h2>
-    <p>layout: post
-title:  “Welcome to Jekyll!”
+    <div class="highlighter-rouge"><pre class="highlight"><code>---
+layout: post
+title:  "Welcome to Jekyll!"
 date:   2014-01-27 21:57:11
 categories: jekyll update
-—
-```</p>
+---
+</code></pre>
+    </div>
 
     <p>其中:</p>
 
@@ -560,7 +546,8 @@ kramdown遵循大多数markdown的语法,但是有一些细节的地方不太一
   </li>
 </ul>
 
-<h2 id="section-5">个性域名设置.</h2>
+<h1 id="section-4">个性域名设置.</h1>
+
 <ul>
   <li>申请域名:
 我是从<a href="https://wanwang.aliyun.com/">万网</a> 申请的域名veryjava.cn. (已经归属于阿里云旗下)

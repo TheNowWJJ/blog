@@ -6,7 +6,11 @@ categories: 其他
 tag: jekyll
 ---
 
-## GitHub简介
+* content
+{:toc}
+
+GitHub简介
+====================================
 
 Git是一个分布式的版本控制系统，最初由Linus Torvalds编写，用作Linux内核代码的管理。在推出后，Git在其它项目中也取得了很大成功，尤其是在Ruby社区中。目前，包括Rubinius、Merb和Bitcoin在内的很多知名项目都使用了Git。Git同样可以被诸如Capistrano和Vlad the Deployer这样的部署工具所使用。
 
@@ -17,7 +21,8 @@ Git是一个分布式的版本控制系统，最初由Linus Torvalds编写，用
 
 > [git - 简明指南](http://rogerdudler.github.io/git-guide/index.zh.html)
 
-## Markdown简介
+Markdown简介
+====================================
 
 Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。
 Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格、脚注、内嵌HTML等等），这些功能原初的Markdown尚不具备，它们能让Markdown转换成更多的格式，例如LaTeX，Docbook。Markdown增强版中比较有名的有Markdown Extra、MultiMarkdown、 Maruku等。这些衍生版本要么基于工具，如Pandoc；要么基于网站，如GitHub和Wikipedia，在语法上基本兼容，但在一些语法和渲染效果上有改动。
@@ -28,7 +33,8 @@ Markdown具有一系列衍生版本，用于扩展Markdown的功能（如表格�
 
 > [Markdown 语法说明 (简体中文版)](http://www.appinn.com/markdown/)
 
-## Jekyll简介
+Jekyll简介
+====================================
 
 jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和WordPress又有很大的不同，原因是jekyll只是一个生成静态网页的工具，不需要数据库支持。但是可以配合第三方服务,例如Disqus。最关键的是jekyll可以免费部署在Github上，而且可以绑定自己的域名。
 
@@ -36,11 +42,14 @@ jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和W
 
 > [Jekyll中文文档](http://jekyllcn.com/)
 
-## 好处
+好处
+====================================
 
 我们可以像提交代码一样来管理我们的博客,简单方便快捷,而且还免费. 在此感谢[GitHub](www.github.com)!
 
-## 搭建本地开发环境
+搭建本地开发环境
+====================================
+
 本文开发环境基于Ubuntu Kylin 16.04 LTS
 
 * 安装Ruby
@@ -61,7 +70,9 @@ jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和W
    sudo gem install jekyll
   ```
 
-## 选择Jekyll themes并clone到本地
+选择Jekyll themes并clone到本地
+====================================
+
   我选择的是 > [Jekyll theme链接:](https://github.com/liungkejin/liungkejin.github.io)
 
 * 点击github 的 fork功能 将代码fork到自己的仓库
@@ -92,7 +103,8 @@ jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和W
   等待运行完成后,在控制台也会打印出URL,复制此URL用浏览器打开即可访问,比如输入localhost:4000.
   **注意此处可能也会输入localhost:4000/blog 这个要根据_config.yml文件中是否配置baseurl来决定**
 
-## push本地blog文件夹到github仓库
+push本地blog文件夹到github仓库
+====================================
 
 * 首先需要在github上创建blog仓库
 * 然后在`/home/barton/develop/code/git/blog`文件夹下执行一下命令:
@@ -106,136 +118,132 @@ jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和W
     git push -u origin gh-pages #推送本地gh-pages分支到远程仓库,此步骤需要输入github用户名(邮箱)和密码
   ```
 
-## 在blog仓库中设置开启pages功能
+在blog仓库中设置开启pages功能
+====================================
+
   网上介绍这个功能的文章有很多,咱就不再重复一便了...
   进行到此步骤,在设置中就可以看到github分配给你的域名,比如说:sunshineasbefore.github.io/blog
   点击此域名即可访问使用github pages功能搭建的静态博客.
 
-## 博客配置
+博客配置
+====================================
 
 * Jekyll的语法以及目录结构请参考Jekyll的中文文档.(文章开头有)
 * 更改_config.yml
 
   更改后内容如下:
 
-  ```yml
-  # Site settings
-  title: 阳光如初.
-  description: http://veryjava.cn/
-  favicon: /assets/img/avatar.JPG
-  baseurl: #此处写 `/` + `仓库名称`,如果使用个人名,则不用写
-  url: http://veryjava.cn/ # 如果没有个人域名(稍后介绍),此处写 github分配给你的域名,比如说:sunshineasbefore.github.io/blog
-  rss_url:
+      # Site settings
+      title: 阳光如初.
+      description: http://veryjava.cn/
+      favicon: /assets/img/avatar.JPG
+      baseurl: #此处写 `/` + `仓库名称`,如果使用个人名,则不用写
+      url: http://veryjava.cn/ # 如果没有个人域名(稍后介绍),此处写 github分配给你的域名,比如说:sunshineasbefore.github.io/blog
+      rss_url:
+      # Build settings
+      highlighter: pygments # 语法高亮
 
-  # Build settings
+      timezone: Asia/Shanghai
 
-  highlighter: pygments # 语法高亮
+      markdown: kramdown # 此处使用kramdown编辑器
+      kramdown:
+        input: GFM # 扩展语法.这个很重要,如果不写,则语法高亮不起作用
+        auto_ids: true
+        auto_id_prefix: 'id-'
 
-  timezone: Asia/Shanghai
-
-  markdown: kramdown # 此处使用kramdown编辑器
-  kramdown:
-    input: GFM # 扩展语法.这个很重要,如果不写,则语法高亮不起作用
-    auto_ids: true
-    auto_id_prefix: 'id-'
-  ```
 * 更改作者设置和博客设置
   这两个文件主要是个人简介功能和博客头部个人签名设置
   这两个文件在_data目录下.
   更改后author.yml和blog.yml内容如下:
+
   author.yml:
 
-  ```yml
-  # Author settings
-  name: 王
-  title: Java 开发工程师
-  address: 山东, 济南
-  email: work_wjj@163.com
-  github: sunshineasbefore
-  gavatar: /assets/img/avatar.JPG
-  workHistory:
-  - work3:
-    company: 济南三际电子商务有限公司
-    location: 山东, 济南
-    title: Java 高级开发工程师
-    started: 2015
-    duration: (2015.8 - 至今)
-    description: Linux服务器维护,项目开发,参与系统架构设计
+      # Author settings
+      name: 王
+      title: Java 开发工程师
+      address: 山东, 济南
+      email: work_wjj@163.com
+      github: sunshineasbefore
+      gavatar: /assets/img/avatar.JPG
+      workHistory:
+      - work3:
+        company: 济南三际电子商务有限公司
+        location: 山东, 济南
+        title: Java 高级开发工程师
+        started: 2015
+        duration: (2015.8 - 至今)
+        description: Linux服务器维护,项目开发,参与系统架构设计
 
-  - work2:
-    company: 上海某科技公司
-    location: 中国，上海
-    title: Java 开发工程师
-    started: 2014
-    duration: (2014.4 - 2015.8)
-    description: 在平安好车做新车购,C2C项目
+      - work2:
+        company: 上海某科技公司
+        location: 中国，上海
+        title: Java 开发工程师
+        started: 2014
+        duration: (2014.4 - 2015.8)
+        description: 在平安好车做新车购,C2C项目
 
-  - work1:
-    company: 济南某对日外包企业
-    location: 山东, 济南
-    title: Java 程序员
-    started: 2013
-    duration: (2012.6 - 2014.4)
-    description: 对日项目外包
+      - work1:
+        company: 济南某对日外包企业
+        location: 山东, 济南
+        title: Java 程序员
+        started: 2013
+        duration: (2012.6 - 2014.4)
+        description: 对日项目外包
 
-  educationHistory:
-  - education1:
-    organization: 烟台某大学
-    degree: 学士
-    major: 软件技术
-    started: 2008
-    duration: (2008.9 - 2012.7)
-    description: C/C++, Java, C#, 等
-  languages:
-  - language1:
-    name: 中文
-    proficiency: 母语
-  - language2:
-    name: 英语
-    proficiency: 有限
-  programmingSkills:
-  - Java:
-    name: Java
-    percentage: 90%
-  - Bash:
-    name: Bash Shell
-    percentage: 60%
-  - JS:
-    name: JavaScript
-    percentage: 70%
-  - Docker:
-    name: Docker
-    percentage: 50%
-  - git:
-    name: Git
-    percentage: 70%
-  - MySQL:
-    name: MySQL
-    percentage: 70%
-
-  ```
+      educationHistory:
+      - education1:
+        organization: 烟台某大学
+        degree: 学士
+        major: 软件技术
+        started: 2008
+        duration: (2008.9 - 2012.7)
+        description: C/C++, Java, C#, 等
+      languages:
+      - language1:
+        name: 中文
+        proficiency: 母语
+      - language2:
+        name: 英语
+        proficiency: 有限
+      programmingSkills:
+      - Java:
+        name: Java
+        percentage: 90%
+      - Bash:
+        name: Bash Shell
+        percentage: 60%
+      - JS:
+        name: JavaScript
+        percentage: 70%
+      - Docker:
+        name: Docker
+        percentage: 50%
+      - git:
+        name: Git
+        percentage: 70%
+      - MySQL:
+        name: MySQL
+        percentage: 70%
 
   blog.yml:
 
-  ```yml
-  title: 阳光如初.
-  description: 怀揣梦想,永不止步!
-  ```
+      title: 阳光如初.
+      description: 怀揣梦想,永不止步!
 
-## 书写博客
+书写博客
+====================================
+
 * 格式
   在_posts文件夹下新建文档,格式如下:`yyyy-mm-dd-文件名称.md` (文件名称可以带空格)
   jekyll以日期+名称的格式命名文章,否则将不识别.
 * 文档头部
 
-  ```
-  ---
-  layout: post
-  title:  "Welcome to Jekyll!"
-  date:   2014-01-27 21:57:11
-  categories: jekyll update
-  ---
-  ```
+      ---
+      layout: post
+      title:  "Welcome to Jekyll!"
+      date:   2014-01-27 21:57:11
+      categories: jekyll update
+      ---
 
   其中:
 
@@ -250,7 +258,9 @@ jekyll是一个简单的免费的Blog生成工具，类似WordPress。但是和W
 
   将写好的文章push到远程仓库的gh-pages分支后,点击github分配给你的域名便可访问了.
 
-## 个性域名设置.
+个性域名设置.
+====================================
+
 * 申请域名:
   我是从[万网](https://wanwang.aliyun.com/) 申请的域名veryjava.cn. (已经归属于阿里云旗下)
   具体申请步骤不再介绍.

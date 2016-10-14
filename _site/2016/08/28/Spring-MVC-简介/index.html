@@ -214,32 +214,6 @@
       
 
       
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
-            
-          
-        
-      
-    
-      
-      
-      
-      
-
-      
-
-      
             </ul>
           </li>
       
@@ -261,9 +235,19 @@
               <br />
             </header>
             <article class="post-content">
-              <p>本文主要介绍Spring MVC.</p>
+              <ul id="markdown-toc">
+  <li><a href="#mvc" id="markdown-toc-mvc">MVC概述</a></li>
+  <li><a href="#section" id="markdown-toc-section">三层架构概述</a></li>
+  <li><a href="#spring-mvc-" id="markdown-toc-spring-mvc-">Spring MVC 介绍</a></li>
+  <li><a href="#spring-mvc" id="markdown-toc-spring-mvc">Spring MVC的优势</a></li>
+  <li><a href="#spring-mvc-1" id="markdown-toc-spring-mvc-1">Spring MVC的常用注解</a></li>
+  <li><a href="#spring-mvc--1" id="markdown-toc-spring-mvc--1">Spring MVC 基本配置</a></li>
+  <li><a href="#spring-mvc--2" id="markdown-toc-spring-mvc--2">Spring MVC 静态资源配置</a></li>
+</ul>
 
-<h2 id="mvc">MVC概述</h2>
+<p>本文主要介绍Spring MVC.</p>
+
+<h1 id="mvc">MVC概述</h1>
 
 <ul>
   <li>MVC 是 Model-View-Control 的简称，即模型-视图-控制器。它是一个存在于服务器表达层的模型，它将应用分开，改变应用之间的高度耦合。</li>
@@ -288,7 +272,7 @@
 
 <p><img src="http://dl.iteye.com/upload/attachment/576353/d3d769c0-5df9-3c31-9984-42f1fcbd00bb.jpg" alt="MVC 模型运行机制" /></p>
 
-<h2 id="section">三层架构概述</h2>
+<h1 id="section">三层架构概述</h1>
 
 <ul>
   <li>Presentation tier + Application tier + Data tier (展现层 + 应用层 + 数据访问层)</li>
@@ -296,7 +280,7 @@
   <li>Service和Dao层反馈在应用层和数据访问层</li>
 </ul>
 
-<h2 id="spring-mvc-">Spring MVC 介绍</h2>
+<h1 id="spring-mvc-">Spring MVC 介绍</h1>
 
 <ul>
   <li>Spring Web MVC处理请求的流程
@@ -319,7 +303,8 @@
   </li>
 </ul>
 
-<h2 id="spring-mvc">Spring MVC的优势</h2>
+<h1 id="spring-mvc">Spring MVC的优势</h1>
+
 <ul>
   <li>
     <p>清晰的角色划分：前端控制器（DispatcherServlet）、请求到处理器映射（HandlerMapping）、处理器适配器（HandlerAdapter）、视图解析器（ViewResolver）、处理器或页面控制器（Controller）、验证器（   Validator）、命令对象（Command  请求参数绑定到的对象就叫命令对象）、表单对象（Form Object 提供给表单展示和提交到的对象就叫表单对象）。</p>
@@ -356,7 +341,7 @@
   </li>
 </ul>
 
-<h2 id="spring-mvc-1">Spring MVC的常用注解</h2>
+<h1 id="spring-mvc-1">Spring MVC的常用注解</h1>
 
 <ul>
   <li>@ Controller 表明这个类是Spring MVC里的Controller.Dispatcher Servlet 会自动扫描注解了此注解的类.在声明普通Bean的时候,使用@Component,@Service,@Repository和@Controller是等同的,因为@Service,@Repository,@Controller都组合了@Component元注解.但在Spring MVC声明控制器Bean的时候,只能使用@Controller.</li>
@@ -369,10 +354,10 @@
 &gt; <a href="http://blog.csdn.net/jcx5083761/article/details/9340209">什么是request,response</a></strong></li>
 </ul>
 
-<h2 id="spring-mvc--1">Spring MVC 基本配置</h2>
+<h1 id="spring-mvc--1">Spring MVC 基本配置</h1>
 <p>Spring MVC的定制配置需要我们的配置类集成一个WebMvcConfigurerAdapter类,并在此类使用@EnableWebMvc注解,来开启Spring MVC的配置支持.</p>
 
-<h2 id="spring-mvc--2">Spring MVC 静态资源配置</h2>
+<h1 id="spring-mvc--2">Spring MVC 静态资源配置</h1>
 <p><a href="http://blog.csdn.net/isea533/article/details/50412212">Spring Boot默认的静态资源配置</a>
   如果需要直接访问静态资源,可以在我们的配置类中重写 addResourceHandlers方法</p>
 
@@ -381,10 +366,8 @@
     <p>快捷的ViewController
 无需做任何业务处理,只是简单的页面转向,可以使用addViewControllers方法来实现.</p>
 
-    <p>```java
-package com.wangge.buzmgt.config;</p>
-
-    <p>import com.wangge.json.JSONFormatMethodProcessor;
+    <div class="highlighter-rouge"><pre class="highlight"><code>package com.wangge.buzmgt.config;
+import com.wangge.json.JSONFormatMethodProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
@@ -398,27 +381,27 @@ import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;</p>
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
-    <p>import java.util.ArrayList;
-import java.util.List;</p>
-
-    <p>@Configuration
+@Configuration
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
+
   @Override
   public void addViewControllers (ViewControllerRegistry registry) {
-    registry.addViewController (“/”).setViewName (“index”);
-    registry.addViewController (“/left”).setViewName (“left”);
-  }</p>
+    registry.addViewController ("/").setViewName ("index");
+    registry.addViewController ("/left").setViewName ("left");
+  }
 
-    <p>@Override
-  public void addReturnValueHandlers (List<handlermethodreturnvaluehandler> returnValueHandlers) {
+  @Override
+  public void addReturnValueHandlers (List&lt;HandlerMethodReturnValueHandler&gt; returnValueHandlers) {
     returnValueHandlers.add (new JSONFormatMethodProcessor (messageConverter ()));
-  }</handlermethodreturnvaluehandler></p>
+  }
 
-    <p>private List&lt;HttpMessageConverter<?>> messageConverter () {
-    List<HttpMessageConverter<?>&gt; converters = new ArrayList&lt;&gt; ();
+  private List&lt;HttpMessageConverter&lt;?&gt;&gt; messageConverter () {
+    List&lt;HttpMessageConverter&lt;?&gt;&gt; converters = new ArrayList&lt;&gt; ();
     converters.add (new ByteArrayHttpMessageConverter ());
     converters.add (new StringHttpMessageConverter ());
     converters.add (new ResourceHttpMessageConverter ());
@@ -427,15 +410,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     converters.add (new Jaxb2RootElementHttpMessageConverter ());
     converters.add (new MappingJackson2HttpMessageConverter ());
     return converters;
-  }</p>
-
-    <p>@Override
-  public void addResourceHandlers (ResourceHandlerRegistry registry) {
-    registry.addResourceHandler (“/static/**”).addResourceLocations (“classpath:/static/”);
   }
-}</p>
 
-    <p>```</p>
+  @Override
+  public void addResourceHandlers (ResourceHandlerRegistry registry) {
+    registry.addResourceHandler ("/static/**").addResourceLocations ("classpath:/static/");
+  }
+}
+</code></pre>
+    </div>
 
     <p>其中 addResourceLocations 指的是文件放置的目录,addResourceHandler指的是对外暴露的访问路径.</p>
   </li>
