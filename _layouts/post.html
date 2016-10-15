@@ -5,7 +5,7 @@ layout: default
   <div class="row">
     <div class="col-md-3">
       <div class="sidebar hidden-print" role="complementary">
-        {% include lefttree.html %} 
+        {% include lefttree.html %}
       </div>
     </div>
     <div class="col-md-9" role="main">
@@ -16,7 +16,48 @@ layout: default
               <!--
                 <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
               -->
-              <div class="meta">Posted on <span class="postdate">{{ page.date | date: "%b %d, %Y" }}</span> By <a target="_blank" href="{{site.url}}">{{ site.author }}</a></div>
+              {% capture year %}{{ page.date | date: "%Y" }}{% endcapture %}
+              {% capture month %}{{ page.date | date: "%B" }}{% endcapture %}
+              {% capture day %}{{ page.date | date: "%e" }}{% endcapture %}
+              {% capture cn_month %}
+                {% if month == 'January'%}
+                1月
+                {% endif %}
+                {% if month == 'February'%}
+                2月
+                {% endif %}
+                {% if month == 'March'%}
+                3月
+                {% endif %}
+                {% if month == 'April'%}
+                4月
+                {% endif %}
+                {% if month == 'May '%}
+                5月
+                {% endif %}
+                {% if month == 'June'%}
+                6月
+                {% endif %}
+                {% if month == 'July'%}
+                7月
+                {% endif %}
+                {% if month == 'August'%}
+                8月
+                {% endif %}
+                {% if month == 'September'%}
+                9月
+                {% endif %}
+                {% if month == 'October'%}
+                10月
+                {% endif %}
+                {% if month == 'November'%}
+                11月
+                {% endif %}
+                {% if month == 'December'%}
+                12月
+                {% endif %}
+              {% endcapture %}
+              <div class="meta">发表于 <span class="postdate">{{year}}年 {{cn_month}} {{day}}日</span> 作者 <a target="_blank" href="{{site.url}}">{{ site.author }}</a></div>
               <br />
             </header>
             <article class="post-content">
@@ -27,7 +68,7 @@ layout: default
       <div class="panel docs-content">
         <article class="post-content">
           <div class="wrapper">
-            {% include LessOrMore/comments %} 
+            {% include LessOrMore/comments %}
           </div>
         </article>
       </div>
