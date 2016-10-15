@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 在Spring Boot中使用Redis
-date: 2016-10-12 01:08:00 +0800
+date: 2016-10-12 08:08:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
 ---
