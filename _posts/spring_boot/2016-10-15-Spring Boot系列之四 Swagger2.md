@@ -85,6 +85,8 @@ tag: Spring Boot
 
   swagger2会把父级目录下的所有子目录中包含`basePackage`的目录全部扫描,也就是说,针对某一个项目创建的文档会不小心引入其他项目的接口....
 
+  SO.老老实实的再创建一层package吧!
+
 ### SampleController
 
 我们来创建一个例子展示Swagger2生成的文档
