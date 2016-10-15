@@ -17,9 +17,46 @@ layout: default
                   {% capture next_month %}{{ post.previous.date | date: "%B" }}{% endcapture %}
 
                   {% if forloop.first %}
-                    <li><a href="#year_{{this_year}}">{{this_year}}</a>
+                    <li><a href="#year_{{this_year}}">{{this_year}}年</a>
                       <ul class="nav">
-                        <li><a href="#month_{{this_year}}_{{this_month}}">{{this_month}}</a></li>
+                        <li><a href="#month_{{this_year}}_{{this_month}}">
+                          {% if this_month == 'January'%}
+                          一月
+                          {% endif %}
+                          {% if this_month == 'February'%}
+                          二月
+                          {% endif %}
+                          {% if this_month == 'March'%}
+                          三月
+                          {% endif %}
+                          {% if this_month == 'April'%}
+                          四月
+                          {% endif %}
+                          {% if this_month == 'May '%}
+                          五月
+                          {% endif %}
+                          {% if this_month == 'June'%}
+                          六月
+                          {% endif %}
+                          {% if this_month == 'July'%}
+                          七月
+                          {% endif %}
+                          {% if this_month == 'August'%}
+                          八月
+                          {% endif %}
+                          {% if this_month == 'September'%}
+                          九月
+                          {% endif %}
+                          {% if this_month == 'October'%}
+                          十月
+                          {% endif %}
+                          {% if this_month == 'November'%}
+                          十一月
+                          {% endif %}
+                          {% if this_month == 'December'%}
+                          十二月
+                          {% endif %}
+                        </a></li>
                   {% endif %}
 
                   {% if forloop.last %}
@@ -29,12 +66,86 @@ layout: default
                     {% if this_year != next_year %}
                         </ul>
                       </li>
-                      <li><a href="#year_{{next_year}}">{{next_year}}</a>
+                      <li><a href="#year_{{next_year}}">{{next_year}}年</a>
                         <ul class="nav">
-                          <li><a href="#month_{{next_year}}_{{next_month}}">{{next_month}}</a></li>
-                    {% else %}    
+                          <li><a href="#month_{{next_year}}_{{next_month}}">
+                            {% if next_month == 'January'%}
+                            一月
+                            {% endif %}
+                            {% if next_month == 'February'%}
+                            二月
+                            {% endif %}
+                            {% if next_month == 'March'%}
+                            三月
+                            {% endif %}
+                            {% if next_month == 'April'%}
+                            四月
+                            {% endif %}
+                            {% if next_month == 'May '%}
+                            五月
+                            {% endif %}
+                            {% if next_month == 'June'%}
+                            六月
+                            {% endif %}
+                            {% if next_month == 'July'%}
+                            七月
+                            {% endif %}
+                            {% if next_month == 'August'%}
+                            八月
+                            {% endif %}
+                            {% if next_month == 'September'%}
+                            九月
+                            {% endif %}
+                            {% if next_month == 'October'%}
+                            十月
+                            {% endif %}
+                            {% if next_month == 'November'%}
+                            十一月
+                            {% endif %}
+                            {% if next_month == 'December'%}
+                            十二月
+                            {% endif %}
+                          </a></li>
+                    {% else %}
                       {% if this_month != next_month %}
-                          <li><a href="#month_{{next_year}}_{{next_month}}">{{next_month}}</a></li>
+                          <li><a href="#month_{{next_year}}_{{next_month}}">
+                            {% if next_month == 'January'%}
+                            一月
+                            {% endif %}
+                            {% if next_month == 'February'%}
+                            二月
+                            {% endif %}
+                            {% if next_month == 'March'%}
+                            三月
+                            {% endif %}
+                            {% if next_month == 'April'%}
+                            四月
+                            {% endif %}
+                            {% if next_month == 'May '%}
+                            五月
+                            {% endif %}
+                            {% if next_month == 'June'%}
+                            六月
+                            {% endif %}
+                            {% if next_month == 'July'%}
+                            七月
+                            {% endif %}
+                            {% if next_month == 'August'%}
+                            八月
+                            {% endif %}
+                            {% if next_month == 'September'%}
+                            九月
+                            {% endif %}
+                            {% if next_month == 'October'%}
+                            十月
+                            {% endif %}
+                            {% if next_month == 'November'%}
+                            十一月
+                            {% endif %}
+                            {% if next_month == 'December'%}
+                            十二月
+                            {% endif %}
+                          </a></li>
                       {% endif %}
                     {% endif %}
                   {% endif %}
@@ -54,26 +165,179 @@ layout: default
                   {% capture next_month %}{{ post.previous.date | date: "%B" }}{% endcapture %}
 
                   {% if forloop.first %}
-                    <h2 id="year_{{this_year}}">{{this_year}}</h2>
-                    <h3 id="month_{{this_year}}_{{this_month}}">{{this_month}}</h3>
+                    <h2 id="year_{{this_year}}">{{this_year}}年</h2>
+                    <h3 id="month_{{this_year}}_{{this_month}}">
+                      {% if this_month == 'January'%}
+                      一月
+                      {% endif %}
+                      {% if this_month == 'February'%}
+                      二月
+                      {% endif %}
+                      {% if this_month == 'March'%}
+                      三月
+                      {% endif %}
+                      {% if this_month == 'April'%}
+                      四月
+                      {% endif %}
+                      {% if this_month == 'May '%}
+                      五月
+                      {% endif %}
+                      {% if this_month == 'June'%}
+                      六月
+                      {% endif %}
+                      {% if this_month == 'July'%}
+                      七月
+                      {% endif %}
+                      {% if this_month == 'August'%}
+                      八月
+                      {% endif %}
+                      {% if this_month == 'September'%}
+                      九月
+                      {% endif %}
+                      {% if this_month == 'October'%}
+                      十月
+                      {% endif %}
+                      {% if this_month == 'November'%}
+                      十一月
+                      {% endif %}
+                      {% if this_month == 'December'%}
+                      十二月
+                      {% endif %}
+                    </h3>
                     <ul>
                   {% endif %}
 
                   <ol class="breadcrumb">
-                   <li><span>{{ post.date | date: "%B %e, %Y" }}</span> &raquo; <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
+                    {% capture year %}{{ post.date | date: "%Y" }}{% endcapture %}
+                    {% capture month %}{{ post.date | date: "%B" }}{% endcapture %}
+                    {% capture day %}{{ post.date | date: "%e" }}{% endcapture %}
+                    {% capture cn_month %}
+                    {% if month == 'January'%}
+                    1月
+                    {% endif %}
+                    {% if month == 'February'%}
+                    2月
+                    {% endif %}
+                    {% if month == 'March'%}
+                    3月
+                    {% endif %}
+                    {% if month == 'April'%}
+                    4月
+                    {% endif %}
+                    {% if month == 'May '%}
+                    5月
+                    {% endif %}
+                    {% if month == 'June'%}
+                    6月
+                    {% endif %}
+                    {% if month == 'July'%}
+                    7月
+                    {% endif %}
+                    {% if month == 'August'%}
+                    8月
+                    {% endif %}
+                    {% if month == 'September'%}
+                    9月
+                    {% endif %}
+                    {% if month == 'October'%}
+                    10月
+                    {% endif %}
+                    {% if month == 'November'%}
+                    11月
+                    {% endif %}
+                    {% if month == 'December'%}
+                    12月
+                    {% endif %}
+                    {% endcapture %}
+
+                   <li><span>{{year}}年 {{cn_month}} {{day}}日</span> &raquo; <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></li>
                   </ol>
                   {% if forloop.last %}
                     </ul>
                   {% else %}
                     {% if this_year != next_year %}
                       </ul>
-                      <h2 id="year_{{next_year}}">{{next_year}}</h2>
-                      <h3 id="month_{{next_year}}_{{next_month}}">{{next_month}}</h3>
+                      <h2 id="year_{{next_year}}">{{next_year}} 年</h2>
+                      <h3 id="month_{{next_year}}_{{next_month}}">
+                        {% if next_month == 'January'%}
+                        一月
+                        {% endif %}
+                        {% if next_month == 'February'%}
+                        二月
+                        {% endif %}
+                        {% if next_month == 'March'%}
+                        三月
+                        {% endif %}
+                        {% if next_month == 'April'%}
+                        四月
+                        {% endif %}
+                        {% if next_month == 'May '%}
+                        五月
+                        {% endif %}
+                        {% if next_month == 'June'%}
+                        六月
+                        {% endif %}
+                        {% if next_month == 'July'%}
+                        七月
+                        {% endif %}
+                        {% if next_month == 'August'%}
+                        八月
+                        {% endif %}
+                        {% if next_month == 'September'%}
+                        九月
+                        {% endif %}
+                        {% if next_month == 'October'%}
+                        十月
+                        {% endif %}
+                        {% if next_month == 'November'%}
+                        十一月
+                        {% endif %}
+                        {% if next_month == 'December'%}
+                        十二月
+                        {% endif %}
+                      </h3>
                       <ul>
-                    {% else %}    
+                    {% else %}
                       {% if this_month != next_month %}
                         </ul>
-                        <h3 id="month_{{next_year}}_{{next_month}}">{{next_month}}</h3>
+                        <h3 id="month_{{next_year}}_{{next_month}}">
+                          {% if next_month == 'January'%}
+                          一月
+                          {% endif %}
+                          {% if next_month == 'February'%}
+                          二月
+                          {% endif %}
+                          {% if next_month == 'March'%}
+                          三月
+                          {% endif %}
+                          {% if next_month == 'April'%}
+                          四月
+                          {% endif %}
+                          {% if next_month == 'May '%}
+                          五月
+                          {% endif %}
+                          {% if next_month == 'June'%}
+                          六月
+                          {% endif %}
+                          {% if next_month == 'July'%}
+                          七月
+                          {% endif %}
+                          {% if next_month == 'August'%}
+                          八月
+                          {% endif %}
+                          {% if next_month == 'September'%}
+                          九月
+                          {% endif %}
+                          {% if next_month == 'October'%}
+                          十月
+                          {% endif %}
+                          {% if next_month == 'November'%}
+                          十一月
+                          {% endif %}
+                          {% if next_month == 'December'%}
+                          十二月
+                          {% endif %}
+                        </h3>
                         <ul>
                       {% endif %}
                     {% endif %}
