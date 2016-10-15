@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Spring Boot系列之一 起手式
-date: 2016-10-13 08:08:00
+date: 2016-10-13 08:08:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
 ---
