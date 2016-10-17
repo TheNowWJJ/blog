@@ -122,3 +122,8 @@ tag: Spring Boot
 ======
 
 本文只是简单的介绍了一下Swagger2在Spring Boot中的应用.如果还想继续了解Swagger2的内容,可以直接去[Swagger官网](http://swagger.io/)
+
+代码
+===
+
+[Spring Boot swagger2 api文档](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/swagger)

@@ -148,3 +148,7 @@ tag: Spring Boot
 
 这种方式我使用的很少,没法确切的说这种做法有什么好处,什么不好.
 从个人角度来看,这种做法,混淆了sql和java代码,虽然有一定的混乱,但好像更加清晰了,没有影响可读性.
+
+代码
+===
+[Spring Boot 注解方式整合MyBatis](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/mybatis-annotation)

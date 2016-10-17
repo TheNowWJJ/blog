@@ -367,3 +367,8 @@ tag: Spring Boot
 
   > [SpringMVC控制器接收不了PUT提交的参数的解决方案](https://my.oschina.net/buwei/blog/191942)
 * 如果感觉使用RESTful实在困难,那还是使用`GET,POST`吧... 选择适合自己的,才是最好的.
+
+代码
+===
+
+[Spring Boot restful使用](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/resutful)

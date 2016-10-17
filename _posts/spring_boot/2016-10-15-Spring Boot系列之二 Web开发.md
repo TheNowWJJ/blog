@@ -225,3 +225,8 @@ Spring Boot 对静态首页的支持
 设置Favicon
 ====================================
 	只需将自己的favicon.ico 防止在类路径根目录,类路径META-INF/resources/下,类路径resources/下,类路径static/下或者类路径public/下.
+
+代码
+===
+
+[Spring Boot 的web开发](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/web)

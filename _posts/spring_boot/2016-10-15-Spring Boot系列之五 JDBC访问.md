@@ -365,3 +365,8 @@ tag: Spring Boot
 ====
 
 从上面的例子中可以看出,Spring Boot在使用JDBC连接数据库的操作上非常简单.我们只需要引入相应的`start pom`文件,配置下数据库的连接属性,然后就可以直接在代码中使用`@Autowired private JdbcTemplate template`来进行数据库的操作.从而避免了使用xml配置时大量的xml文件产生.
+
+代码
+===
+
+[Spring Boot使用JDBC连接数据库](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/jdbc)

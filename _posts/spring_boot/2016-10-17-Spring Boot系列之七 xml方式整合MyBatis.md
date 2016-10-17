@@ -192,3 +192,8 @@ tag: Spring Boot
           Assert.assertNotEquals(null, user);
         }
       }
+
+代码
+===
+
+[https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/mybatis-annotation](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/mybatis-xml)
