@@ -287,6 +287,31 @@ Spring Boot 对静态首页的支持
       </body>
       </html>
 
+#### ExceptionHandler
+
+仅为示例
+
+      @ExceptionHandler(value = Exception.class)
+        @ResponseBody
+        public JsonResponse<String> exceptionHandler(HttpServletRequest request, AppInterfaceRuntimeException e) throws
+         Exception {
+
+          JsonResponse<String> response = new JsonResponse<>();
+
+          String code = e.getCode();
+          if (StringUtils.isBlank(code)) {
+            response.setErrorCode(code);
+          }
+
+          response.setErrorMsg(e.getMessage());
+          String msg = "调用: '" + request.getRequestURL().toString() + "' 接口时出现系统异常";
+          response.setResult(msg);
+
+          LogUtil.error(msg, e);
+
+          return response;
+        }
+
 代码
 ===
 
