@@ -226,6 +226,67 @@ Spring Boot 对静态首页的支持
 ====================================
 	只需将自己的favicon.ico 防止在类路径根目录,类路径META-INF/resources/下,类路径resources/下,类路径static/下或者类路径public/下.
 
+错误处理
+===
+
+通过以下代码,可以将接口调用或者页面访问时出现的404错误,500错误统一跳转到相应的页面,从而完成错误处理的统一.
+
+当然,如果觉得这种方式还不够,可以使用`@ExceptionHandler`进行处理.
+
+### ErrorController
+
+      package cn.veryjava;
+
+      import org.springframework.stereotype.Controller;
+      import org.springframework.web.bind.annotation.RequestMapping;
+
+      @Controller
+      public class ErrorController {
+        @RequestMapping("/404")
+        public String page404() {
+          return "error/404";
+        }
+
+        @RequestMapping("/500")
+        public String page500() {
+          return "error/500";
+        }
+      }
+
+### 页面
+
+#### 500
+
+      <!DOCTYPE html>
+      <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>500</title>
+        <link rel="icon" type="image/x-icon" href="static/favicon.ico" />
+
+      </head>
+      <body>
+      500
+      </body>
+      </html>
+
+#### 404
+
+      <!DOCTYPE html>
+      <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>404</title>
+        <link rel="icon" type="image/x-icon" href="static/favicon.ico" />
+
+      </head>
+      <body>
+      404 not found exception
+      </body>
+      </html>
+
 代码
 ===
 
