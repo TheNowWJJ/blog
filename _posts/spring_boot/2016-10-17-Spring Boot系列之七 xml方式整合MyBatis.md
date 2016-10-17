@@ -196,4 +196,4 @@ tag: Spring Boot
 代码
 ===
 
-[https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/mybatis-annotation](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/mybatis-xml)
+[Spring Boot xml方式整合MyBatis](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/mybatis-xml)
