@@ -372,4 +372,4 @@ keywords: Spring Boot,RESTful
 代码
 ===
 
-[Spring Boot restful使用](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/resutful)
+[Spring Boot restful使用](https://github.com/sunshineasbefore/veryjava.spring.boot/tree/master/restful)
