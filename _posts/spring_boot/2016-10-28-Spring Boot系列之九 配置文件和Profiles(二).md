@@ -23,7 +23,7 @@ Profiles
 
 ## `@Profile`注解和Multi-profile YAML文档
 
-在一个yml文件中定义多个profile的变量.
+直接看例子吧
 
 * VeryJavaProperties
 
@@ -80,7 +80,7 @@ Profiles
 
 ## 总结
 
-  这个例子中说明了两个问题,其一是`@Profile("dev")`这个注解指定profile环境,其二是`application.yml`配置文件指定了多个profile下的相同参数的不同值.
+  这个例子中说明了两个问题,其一是`@Profile("dev")`这个注解指定profile环境,其二是`application.yml`配置文件指定了多个profile下的相同参数的不同值,用于不同的环境.
 
 代码
 ===
