@@ -8,3 +8,4 @@ Disallow: /_sass/
 Disallow: /_categories
 Disallow: /style
 Disallow: /tag
+Sitemap: <{{site.url/sitemap.xml}}>
