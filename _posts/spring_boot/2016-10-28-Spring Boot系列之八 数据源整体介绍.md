@@ -4,6 +4,7 @@ title: Spring Boot系列之八 数据源配置整体介绍
 date: 2016-10-28 11:08:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,数据源配置,DataSource,DruidDataSource,hsqldb
 ---
 
 * content

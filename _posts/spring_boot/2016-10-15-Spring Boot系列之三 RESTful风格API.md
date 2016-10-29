@@ -4,6 +4,7 @@ title: Spring Boot系列之三 RESTful风格API
 date: 2016-10-15 08:18:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,RESTful
 ---
 
 * content

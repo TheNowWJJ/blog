@@ -4,6 +4,7 @@ title: Spring Boot系列之十 自定义banner和getExitCode
 date: 2016-10-28 11:12:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,自定义banner,getExitCode
 ---
 
 * content

@@ -4,6 +4,7 @@ title: Spring Boot系列之六 整合MyBatis 注解
 date: 2016-10-17 08:48:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,MyBatis注解
 ---
 
 * content

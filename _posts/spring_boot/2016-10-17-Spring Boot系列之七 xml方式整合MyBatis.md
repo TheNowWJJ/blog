@@ -4,6 +4,7 @@ title: Spring Boot系列之七 整合MyBatis xml配置
 date: 2016-10-17 08:58:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,MyBatis xml配置
 ---
 
 * content

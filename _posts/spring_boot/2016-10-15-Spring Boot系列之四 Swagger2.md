@@ -4,6 +4,7 @@ title: Spring Boot系列之四 使用Swagger2构建RESTful API文档
 date: 2016-10-15 08:28:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,Swagger2,RESTful API文档
 ---
 
 * content

@@ -4,6 +4,7 @@ title: Spring Boot系列之九 配置和Profiles(一)
 date: 2016-10-28 11:09:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,application.properties,application.yml,Profiles,@Profile
 ---
 
 * content

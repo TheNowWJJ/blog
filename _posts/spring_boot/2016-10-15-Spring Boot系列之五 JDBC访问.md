@@ -4,6 +4,7 @@ title: Spring Boot系列之五 使用JDBC访问数据库
 date: 2016-10-15 08:48:00 +0800
 categories: Spring-Boot
 tag: Spring Boot
+keywords: Spring Boot,JDBC
 ---
 
 * content

@@ -4,6 +4,7 @@ title: 基于java getter/setter方法配置apache shiro
 date: 2016-08-28 08:08:00 +0800
 categories: Apache-Shiro
 tag: shiro
+keywords: apache shiro,java getter/setter方法配置
 ---
 
 * content
