@@ -197,16 +197,16 @@ application.yml
 
 ### 配置随机值
 
-`RandomValuePropertySource` 可以让我们在配置文件中栉jie风沐雨产生随机值.这些随机值包含整数,long或字符串类型
+`RandomValuePropertySource` 可以让我们在配置文件中直接产生随机值.这些随机值包含整数,long或字符串类型
 
 几种生成随机数的例子:
 
-my.secret=${random.value}
-my.number=${random.int}
-my.bignumber=${random.long}
-my.uuid=${random.uuid}
-my.number.less.than.ten=${random.int(10)}
-my.number.in.range=${random.int[1024,65536]}
+      my.secret=${random.value}
+      my.number=${random.int}
+      my.bignumber=${random.long}
+      my.uuid=${random.uuid}
+      my.number.less.than.ten=${random.int(10)}
+      my.number.in.range=${random.int[1024,65536]}
 
 * 配置项
 
@@ -300,6 +300,7 @@ my.number.in.range=${random.int[1024,65536]}
           System.out.println(properties.getMy().getLessThanTen());
           System.out.println(properties.getMy().getInRange());
       }
+
 ### 加载application属性文件
 
   默认情况下 Spring Boot加载`src/main/resources/application.properties`文件,当然我们可以通过命令行指定配置文件的位置或名称.
@@ -315,8 +316,8 @@ my.number.in.range=${random.int[1024,65536]}
 
   当然必须引用先前定义的,而不是之后定义的.
 
-        app.name=MyApp
-        app.description=${app.name} is a Spring Boot application
+      app.name=MyApp
+      app.description=${app.name} is a Spring Boot application
 
   Over.
 
