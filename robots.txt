@@ -1,11 +1,11 @@
 # robots.txt generated at http://tool.chinaz.com/robots/
 User-agent: *
 Disallow:
-Disallow: /_includes/
-Disallow: /_layouts/
-Disallow: /_posts/
-Disallow: /_sass/
+Disallow: /_includes
+Disallow: /_layouts
+Disallow: /_posts
+Disallow: /_sass
 Disallow: /_categories
 Disallow: /style
 Disallow: /tag
-Sitemap: <{{site.url/sitemap.xml}}>
+Sitemap: www.veryjava.cn/sitemap.xml
