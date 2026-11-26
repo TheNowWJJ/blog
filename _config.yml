@@ -2,38 +2,24 @@
 name: 阳光如初.
 email: work_wjj@163.com
 author: 阳光如初.
-url: http://www.veryjava.cn
+url: "https://TheNowWJJ.github.io"
+baseurl: "/blog"
 resume_site: # 个人简历页面
-github: https://github.com/sunshineasbefore
-baseurl:
+github: https://github.com/TheNowWJJ
 description: 怀揣梦想,永不止步!
-meta_description: 阳光如初;sunshineasbefore;个人博客;怀揣梦想,永不止步;
-keywords: 阳光如初,sunshineasbefore,个人博客,怀揣梦想,永不止步
+meta_description: Java 后端、企业系统架构与 AI 工程化笔记
+keywords: Java,Spring Boot,架构,AI,工程实践
 motto: 怀揣梦想,永不止步!
-#banner: 怀揣梦想,永不止步!
 
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 
-#permalink: /:categories/:year/:month/:day/:title/
-permalink: /:year/:month/:day/:title/
+# 分类进永久链接,避免不同分类下同日期同序号的文章互相覆盖
+permalink: /:categories/:year/:month/:day/:title/
 paginate: 10
 
-exclude: ['README.md', 'Gemfile.lock', 'Gemfile', 'Rakefile']
-
-github_username: sunshineasbefore.
+exclude: ['.idea', 'README.md', 'Gemfile.lock', 'Gemfile', 'Rakefile', 'vendor', '.github']
+github_username: TheNowWJJ
 highlighter: rouge
 
 # Build settings
 markdown: kramdown
-FB:
-  comments :
-    provider : duoshuo
-    duoshuo:
-        short_name : ssab
-    disqus :
-        short_name : ssab
-    # facebook :
-    #   appid : 123
-    #   num_posts: 5
-    #   width: 580
-    #   colorscheme: light
